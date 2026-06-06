@@ -1,0 +1,30 @@
+# Metadata file for md2pdf `remarkable` profile (pandoc + typst).
+#
+# Passed via `--metadata-file=<this>` on the pandoc command line.
+# Sets the page-margin map that pandoc's typst template emits as
+# `#set page(margin: (...))`.
+#
+# Why a metadata file and not -V margin-* flags:
+# pandoc-typst's template renders the `margin` variable as a typst
+# map (key/value pairs), not as separate variables. The CLI -V flag
+# can set scalar variables but cannot construct a map. The result is
+# that -V margin-top=1.5cm and friends are silently ignored — every
+# render falls back to typst's 2.5cm default. Discovered Marc 2026-05-25
+# while trying to narrow the side margins. The metadata-file form is
+# the supported pandoc mechanism for passing structured (map-shaped)
+# variables.
+#
+# Why 1.5cm uniform (current rule, Marc 2026-05-25):
+# Earlier in the same day we tested an asymmetric 1.5cm top/bottom +
+# 0.75cm left/right configuration. After reading the rendered PDF on
+# the device with accurate measurements (now that the -V flag bug is
+# fixed and the values actually take effect), Marc settled on 1.5cm
+# uniform as the comfortable reading width. The asymmetric experiment
+# is preserved in the commit history (0ff35d7f) and in the technical-
+# quirk reference memory if it's ever wanted back.
+
+margin:
+  top: 1.5cm
+  bottom: 1.5cm
+  left: 1.5cm
+  right: 1.5cm
