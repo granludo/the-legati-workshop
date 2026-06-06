@@ -21,3 +21,15 @@ A writing and research workshop is a long-running collaboration between you and 
 ## Who built this
 
 This scaffold was distilled from a working workshop by Marc Alier (Ludo), a professor at UPC Barcelona who uses it for books, academic papers, course materials, student supervision, and institutional work. The good-practices guide is written in his voice. The tooling and conventions are his. The opinions are his. The agents are blank — because your agents should be yours.
+
+---
+
+## License
+
+Copyright (c) 2026 Marc Alier Forment (Ludo)
+
+Licensed under **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)**.
+
+You can share and adapt this material freely, provided you: give attribution to Marc Alier, don't use it for commercial purposes, and distribute any derivative works under the same license.
+
+Full license: see `LICENSE` — or https://creativecommons.org/licenses/by-nc-sa/4.0/
