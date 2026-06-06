@@ -1,0 +1,13 @@
+{
+  "name": "refs-check-url-verify",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Playwright URL-liveness re-check for Grumpy's *-refs-checks.md source-of-truth files. Loads bot-blocked / unreachable reference URLs in a real headless Chromium and writes back alive + title-match verdicts.",
+  "bin": {
+    "verify-urls": "./verify-urls.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.60.0"
+  }
+}

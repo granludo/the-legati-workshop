@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git status*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(hostname)",
+      "Bash(ls *)",
+      "Bash(find . *)",
+      "Bash(grep *)",
+      "Bash(python3 tools/*)",
+      "Bash(uv run *)",
+      "Bash(/opt/homebrew/bin/pandoc*)",
+      "Bash(pandoc *)",
+      "Bash(/opt/homebrew/bin/typst*)",
+      "Bash(typst *)",
+      "Bash(pdfinfo *)",
+      "Bash(mv TO-READ/*)",
+      "Bash(chmod +x *)"
+    ],
+    "deny": [
+      "Bash(git push*)",
+      "Bash(rm -rf *)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean *)"
+    ]
+  }
+}
