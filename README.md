@@ -34,7 +34,9 @@ A writing and research workshop is a long-running collaboration between you and 
 
 ## Who built this
 
-This scaffold was distilled from a working workshop by Marc Alier (Ludo), a professor at UPC Barcelona who uses it for books, academic papers, course materials, student supervision, and institutional work. The good-practices guide is written in his voice. The tooling and conventions are his. The opinions are his. The agents are blank — because your agents should be yours.
+This scaffold was distilled from a working workshop by Marc Alier (Ludo) (https://wasabi.essi.upc.edu/ludo), a professor at UPC Barcelona who uses it for working on books, academic papers, course materials, student supervision, and institutional work. The good-practices guide is written in his voice. The tooling and conventions are his. The opinions are his. The agents are blank — because your agents should be yours.
+
+Using Obsidian for browsing the documents you and your agents work on is recomended. 
 
 ---
 
