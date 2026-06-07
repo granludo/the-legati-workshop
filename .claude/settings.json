@@ -19,7 +19,8 @@
       "Bash(typst *)",
       "Bash(pdfinfo *)",
       "Bash(mv TO-READ/*)",
-      "Bash(chmod +x *)"
+      "Bash(chmod +x *)",
+      "Bash(python3 engineering-projects/legati-observatory/obs.py*)"
     ],
     "deny": [
       "Bash(git push*)",
@@ -27,5 +28,12 @@
       "Bash(git reset --hard*)",
       "Bash(git clean *)"
     ]
+  },
+  "hooks": {
+    "SessionStart": [{ "hooks": [{ "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\"" }] }],
+    "PreToolUse": [{ "matcher": "*", "hooks": [{ "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\"" }] }],
+    "PostToolUse": [{ "matcher": "*", "hooks": [{ "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\"" }] }],
+    "SubagentStop": [{ "hooks": [{ "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\"" }] }],
+    "Stop": [{ "hooks": [{ "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\"" }] }]
   }
 }
