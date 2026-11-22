@@ -58,6 +58,7 @@ def main() -> int:
             "cwd": cwd,
             "project": obs.project_of(cwd),
             "type": TYPE_MAP.get(hook, (hook or "event").lower()),
+            "harness": "claude-code",
         }
         tool = ev.get("tool_name")
         if tool:
@@ -68,6 +69,10 @@ def main() -> int:
                 record["target"] = tgt
         if ev.get("parent_session_id"):
             record["parent_session_id"] = ev["parent_session_id"]
+        # The harness id outlives the launcher env (Codex: same thread id after a move to the desktop app);
+        # pin the resolved legatus under it so later hooks and shells still know who this is.
+        if ev.get("session_id"):
+            obs.remember_agent(str(ev["session_id"]), record["agent"])
         obs.append_event(record)
         obs.touch_presence(cwd=cwd)
     except Exception:

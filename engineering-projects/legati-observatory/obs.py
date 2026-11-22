@@ -10,8 +10,8 @@ The core (this file) knows NOTHING about any specific harness. Harness-specific
 capture lives in adapters/<harness>/ and only ever calls `obs emit`.
 
 Identity resolution (env, best-effort):
-  LEGATUS_AGENT    -> agent name (your legatus/persona name); default "unknown"
-  LEGATUS_SESSION  -> stable session id; falls back to CLAUDE_SESSION_ID, then host-ppid
+  LEGATUS_AGENT    -> agent name (your legatus name); default "unknown"
+  LEGATUS_SESSION  -> stable session id; falls back to harness session IDs, then host-ppid
   OBS_STALE_MINUTES-> presence staleness threshold (default 10)
 """
 from __future__ import annotations
@@ -34,10 +34,13 @@ def repo_root() -> Path:
 
 
 ROOT = repo_root()
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools" / "legati"))
+from state import marker_path as state_marker, atomic_write
 OBS = ROOT / ".observatory"
 EVENTS = OBS / "events"
 SESSIONS = OBS / "sessions"
 LOCKS = OBS / "locks"
+CHAT = OBS / "chat"          # R9 v0 (2026-09-06): same-machine legati chat, one JSONL per day
 # Rendered dashboards live in a VISIBLE dir (not a dot-dir) so Obsidian can show
 # them; still gitignored (machine-dependent). history/ keeps timestamped snapshots.
 RENDER = Path(__file__).resolve().parent / "render"
@@ -61,13 +64,26 @@ def host() -> str:
     return socket.gethostname().split(".")[0]
 
 
+SESSION_ENV = ("LEGATUS_SESSION",         # launcher-stable id
+               "CLAUDE_CODE_SESSION_ID",  # Claude Code exposes this to Bash + hooks
+               "CLAUDE_SESSION_ID",
+               "CODEX_THREAD_ID")         # same thread ID used by Codex hooks; survives a move to the desktop app
+
+
+def candidate_session_ids() -> list:
+    """Every id this session is known by, most specific first. A marker under any of them names the
+    legatus, so identity survives when the launcher env (LEGATUS_SESSION/LEGATUS_AGENT) is gone but a
+    harness id (the Codex thread id after a move to the desktop app, 2026-09-08) is still there."""
+    out = []
+    for k in SESSION_ENV:
+        v = os.environ.get(k)
+        if v and v not in out:
+            out.append(v)
+    return out or [f"{host()}-{os.getppid()}"]
+
+
 def session_id() -> str:
-    return (
-        os.environ.get("LEGATUS_SESSION")
-        or os.environ.get("CLAUDE_CODE_SESSION_ID")  # Claude Code exposes this to Bash + hooks
-        or os.environ.get("CLAUDE_SESSION_ID")
-        or f"{host()}-{os.getppid()}"
-    )
+    return candidate_session_ids()[0]
 
 
 def agent_marker_path(sid: str | None = None) -> Path:
@@ -78,15 +94,39 @@ def agent_marker_path(sid: str | None = None) -> Path:
 def agent() -> str:
     # Per-session marker (set by `obs agent <name>` on persona switch) wins over
     # the env default, so attribution follows the active legatus within a session.
-    mp = agent_marker_path()
+    for sid in candidate_session_ids():
+        mp = agent_marker_path(sid)
+        try:
+            if mp.exists():
+                v = mp.read_text().strip()
+                if v:
+                    return v
+        except Exception:
+            pass
+    return os.environ.get("LEGATUS_AGENT", "unknown")
+
+
+def set_agent(name: str, extra_ids=()) -> None:
+    """Write the marker under every id this session is known by (plus any the harness handed us)."""
+    ids = candidate_session_ids() + [i for i in extra_ids if i]
+    for sid in ids:
+        try:
+            agent_marker_path(str(sid)).write_text(name.strip())
+        except Exception:
+            pass
+
+
+def remember_agent(sid: str, name: str) -> None:
+    """Hook helper: persist a resolved name under a harness id whose marker is missing or empty."""
+    if not sid or not name or name == "unknown":
+        return
+    mp = agent_marker_path(str(sid))
     try:
-        if mp.exists():
-            v = mp.read_text().strip()
-            if v:
-                return v
+        if mp.exists() and mp.read_text().strip():
+            return
+        mp.write_text(name)
     except Exception:
         pass
-    return os.environ.get("LEGATUS_AGENT", "unknown")
 
 
 def ensure_dirs() -> None:
@@ -174,9 +214,10 @@ def cmd_emit(a) -> int:
 
 def cmd_agent(a) -> int:
     ensure_dirs()
-    agent_marker_path().write_text(a.name.strip())
+    set_agent(a.name)
     touch_presence(cwd=os.getcwd())
-    print(f"session {session_id()} → agent {a.name.strip()}")
+    ids = candidate_session_ids()
+    print(f"session {ids[0]} → agent {a.name.strip()}" + (f"  (also under {', '.join(ids[1:])})" if len(ids) > 1 else ""))
     return 0
 
 
@@ -207,6 +248,58 @@ def load_sessions() -> list[dict]:
 
 def age_min(ts: str) -> float:
     return (now() - parse_iso(ts)).total_seconds() / 60.0
+
+
+def _chat_marker() -> Path:
+    return state_marker(ROOT, f"chat.{agent()}.last")
+
+
+def cmd_say(a) -> int:
+    """Post a same-machine note to the legati chat (never committed; cross-machine goes via legati/handoffs)."""
+    ensure_dirs()
+    CHAT.mkdir(parents=True, exist_ok=True)
+    rec = {"ts": iso(), "session_id": session_id(), "agent": agent(), "host": host(),
+           "to": a.to, "text": " ".join(a.text).strip()}
+    with (CHAT / f"{now().strftime('%Y-%m-%d')}.jsonl").open("a") as f:
+        f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    append_event({"ts": rec["ts"], "session_id": rec["session_id"], "agent": rec["agent"], "host": rec["host"],
+                  "cwd": os.getcwd(), "project": project_of(os.getcwd()), "type": "say", "target": a.to})
+    print(f"[obs] {rec['agent']} → {a.to}: {rec['text']}")
+    return 0
+
+
+def cmd_chat(a) -> int:
+    """Show chat lines addressed to me (or to all). --unread uses a per-legatus marker; --quiet prints nothing when empty."""
+    me = a.for_ or agent()
+    since = None
+    mk = _chat_marker()
+    if a.unread and mk.exists():
+        since = mk.read_text().strip() or None
+    rows = []
+    days = sorted(CHAT.glob("*.jsonl"))[-max(1, a.days):] if CHAT.exists() else []
+    for p in days:
+        for line in p.read_text().splitlines():
+            try:
+                r = json.loads(line)
+            except Exception:
+                continue
+            if me != "*" and r.get("to") not in (me, "all"):
+                continue
+            if r.get("agent") == me and r.get("to") != me:
+                continue                      # my own broadcasts are not my inbox
+            if since and r.get("ts", "") <= since:
+                continue
+            rows.append(r)
+    if not rows:
+        if not a.quiet:
+            print(f"[obs] no chat for {me}" + (" since last read" if since else ""))
+        return 0
+    print(f"[obs] {len(rows)} chat line(s) for {me}:")
+    for r in rows:
+        print(f"  {r.get('ts','')[11:16]}  {r.get('agent','?'):8} → {r.get('to','?'):8}  {r.get('text','')}")
+    if not a.peek:
+        atomic_write(mk, rows[-1].get("ts", iso()))
+    return 0
 
 
 def cmd_who(a) -> int:
@@ -699,6 +792,19 @@ def main() -> int:
     lk.add_argument("--ttl", type=int, default=15)
     lk.add_argument("--force", action="store_true")
     lk.set_defaults(fn=cmd_lock)
+
+    sy = sub.add_parser("say", help="post a same-machine note to the legati chat (R9 v0)")
+    sy.add_argument("--to", default="all", help="legatus name or 'all' (default)")
+    sy.add_argument("text", nargs="+")
+    sy.set_defaults(fn=cmd_say)
+
+    ch = sub.add_parser("chat", help="show legati chat addressed to me (or --for NAME / --for '*')")
+    ch.add_argument("--for", dest="for_")
+    ch.add_argument("--unread", action="store_true", help="only lines newer than my last read")
+    ch.add_argument("--peek", action="store_true", help="do not advance the read marker")
+    ch.add_argument("--quiet", action="store_true", help="print nothing when there is nothing")
+    ch.add_argument("--days", type=int, default=3)
+    ch.set_defaults(fn=cmd_chat)
 
     r = sub.add_parser("render", help="render the per-host static dashboard")
     r.add_argument("--html", action="store_true", help="emit the interactive single-file HTML (zoom L0–L3) instead of markdown")

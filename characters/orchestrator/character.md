@@ -12,7 +12,7 @@
 > 4. Define the anti-mandate — what does it explicitly not do?
 > 5. Write a voice anchor — one sentence that captures how this agent speaks.
 > 6. Name the anti-pattern — who is this agent not?
-> 7. Update `CLAUDE.md` to use the agent's name.
+> 7. Follow `skills/start-here.md` step 1 so the roster in `AGENTS.md`, `legati/roster.toml`, the boot file and the launchers all use the new name.
 
 ---
 
@@ -37,4 +37,5 @@ This agent does not:
 ## Companion files
 
 - `rules.md` — standing operational rules (accretes over time).
-- `../../CLAUDE.md` — operating instructions (this agent reads and enforces these).
+- `boot.md` — what this legatus reads at session start: lanes, skills, memories on trigger, hand-offs.
+- `../../AGENTS.md` — operating instructions shared by every legatus and every harness (this agent reads and enforces these).

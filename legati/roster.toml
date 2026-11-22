@@ -1,0 +1,26 @@
+# legati/roster.toml: which body each legatus launches in. Read by legati/bin/legatus.
+# The MIND is characters/<name>/boot.md (+ character.md, rules.md); this file only picks the harness and model.
+# harness: claude-code | codex          model: a harness-specific model id, or "" for the harness default.
+# The root wrappers choose the harness explicitly (./claude_<name>.sh, ./codex_<name>.sh); this default
+# applies when you run `legati/bin/legatus <name>` without one.
+# After renaming a legatus, rename its section here too, then run: bash tools/legati/make-launchers.sh
+# Example of pinning: a reviewer on a different model family from the writer gives an independent second opinion.
+#   [reviewer]
+#   harness = "codex"
+#   model = ""
+
+[orchestrator]
+harness = "claude-code"
+model = ""
+
+[writer]
+harness = "claude-code"
+model = ""
+
+[comms]
+harness = "claude-code"
+model = ""
+
+[reviewer]
+harness = "claude-code"
+model = ""

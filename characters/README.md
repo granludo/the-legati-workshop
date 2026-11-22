@@ -8,7 +8,7 @@ The word matters. The AI industry calls these "agents," which implies autonomous
 
 ## The four starter agents
 
-This workshop seeds four agent roles. They have no names, no personalities, and no characters yet. That's your job. Each folder contains a stub `character.md` and an empty `rules.md`. Fill them in.
+This workshop seeds four agent roles. They have no names, no personalities, and no characters yet. That's your job. Each folder contains a short `boot.md` (what the legatus reads at session start), a stub `character.md` and an empty `rules.md`. Fill them in.
 
 | Folder | Role | Your job |
 |---|---|---|
@@ -39,6 +39,23 @@ The agents in this workshop were named from *Expeditionary Force* (Craig Alanson
 
 ---
 
-## The CLAUDE.md pointer
+## Boot files, the roster and the launchers
 
-When you've named your agents and written their character files, update `CLAUDE.md` to list them by name in the roster section. The roster in CLAUDE.md is the canonical list of who's active. If an agent isn't listed there, the session doesn't know it exists.
+A session is one legatus. It reads `AGENTS.md` (the core, shared by every harness), then **only** its own `characters/<name>/boot.md`, which points at its `character.md`, its `rules.md`, the skills it runs and the memories it opens when a trigger fires. Keep boot files short: everything a legatus does not need in the first minute stays behind a link.
+
+The roster has three places that must agree, and `/start-here` (step 1) updates all of them when you name or rename a legatus:
+
+1. the roster lines in `AGENTS.md` §1 (and the "which legatus?" question there);
+2. the folder `characters/<name>/` and the heading and reply prefix in its `boot.md`;
+3. the section `[<name>]` in `legati/roster.toml`, which picks the default harness (`claude-code` or `codex`) and model.
+
+Then regenerate the root launchers with `bash tools/legati/make-launchers.sh`: you get `./claude_<name>.sh` and `./codex_<name>.sh` for every legatus with a boot file. A launcher sets `LEGATUS_AGENT`, names the terminal tab and hands the boot file to the harness. Two legati can share a tab: `legati/bin/legatus comms --with reviewer`.
+
+## Handoff map (starter)
+
+- Orchestrator → Writer for any prose of more than a few paragraphs that should read as yours.
+- Orchestrator → Comms for schedule and inbox lookups.
+- Anyone → Reviewer before a deliverable leaves the workshop. The reviewer proposes, you decide, the writer rewrites.
+- Writer → Orchestrator for tooling and rendering trouble.
+
+Between sessions these hand-offs are files (`tools/legati/handoff.py`); inside one session they are a persona switch for one block, announced in the reply.

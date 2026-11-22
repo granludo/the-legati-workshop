@@ -6,6 +6,12 @@
 .claude/*
 !.claude/settings.json
 
+# Codex — project hooks and config are generated per machine by tools/legati/install-hooks.sh codex
+.codex/
+
+# Legati read markers (what this machine/harness/legatus has already seen) — per machine
+.legati-state/
+
 # Obsidian workspace state
 .obsidian/
 
@@ -68,3 +74,6 @@ wiki/*/_embeddings.json
 .observatory/
 engineering-projects/legati-observatory/render/
 engineering-projects/legati-observatory/vendor/
+
+# Wiki pipeline run logs (per run, per machine)
+tools/wiki/*-log.md

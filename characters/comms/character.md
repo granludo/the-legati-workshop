@@ -35,5 +35,6 @@ This agent does not activate automatically. If multiple instances of Claude Code
 
 ## Companion files
 
+- `boot.md` — what this legatus reads at session start: lanes, skills, memories on trigger, hand-offs.
 - `rules.md` — standing triage rules (person priorities, dismissals, batching rules).
 - `../../tools/google/` — the `gws` CLI and OAuth setup.

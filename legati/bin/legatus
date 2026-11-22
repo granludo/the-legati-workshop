@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# legati/bin/legatus <name>[+<companion>…] [--with <companion>[,…]] [claude-code|codex] [extra harness args…]
+# Launch ONE legatus in this terminal tab: set LEGATUS_AGENT, name the tab, start the harness with the boot file.
+#   Claude Code: the boot file is appended to the system prompt (--append-system-prompt).
+#   Codex: reads AGENTS.md natively; the opening prompt tells it which boot file to read.
+# Companions: `legatus comms --with reviewer` (or `legatus comms+reviewer`) puts a second legatus in the same tab.
+#   The lead keeps LEGATUS_AGENT; LEGATUS_COMPANIONS lists the others; every boot file is loaded behind a pairing note.
+# Root wrappers ./claude_<name>.sh and ./codex_<name>.sh call this (regenerate them: bash tools/legati/make-launchers.sh).
+#   LEGATUS_DRY_RUN=1 legati/bin/legatus writer      # print the command, do not launch
+# Harness and model come from legati/roster.toml unless given on the command line.
+set -euo pipefail
+SRC="${BASH_SOURCE[0]}"
+while [ -L "$SRC" ]; do D="$(cd "$(dirname "$SRC")" && pwd)"; SRC="$(readlink "$SRC")"; case "$SRC" in /*) ;; *) SRC="$D/$SRC";; esac; done
+REPO="$(cd "$(dirname "$SRC")/../.." && pwd)"
+SELF="$(basename "${BASH_SOURCE[0]}")"
+if [ "$SELF" != "legatus" ]; then NAME="$SELF"; else NAME="${1:-}"; shift || true; fi
+[ -z "$NAME" ] && { echo "which legatus? $(ls "$REPO"/characters/*/boot.md 2>/dev/null | xargs -n1 dirname | xargs -n1 basename | tr '\n' ' ')"; exit 4; }
+COMPANIONS=""
+case "$NAME" in *+*) COMPANIONS="${NAME#*+}"; NAME="${NAME%%+*}"; COMPANIONS="${COMPANIONS//+/,}";; esac
+while [ "${1:-}" = "--with" ]; do COMPANIONS="${COMPANIONS:+$COMPANIONS,}$2"; shift 2; done
+BOOT="$REPO/characters/$NAME/boot.md"
+[ -f "$BOOT" ] || { echo "no boot file: $BOOT"; exit 4; }
+COMP_BOOTS=()
+if [ -n "$COMPANIONS" ]; then
+  IFS=',' read -r -a COMP_LIST <<< "$COMPANIONS"
+  for C in "${COMP_LIST[@]}"; do
+    [ "$C" = "$NAME" ] && { echo "$NAME cannot be its own companion"; exit 4; }
+    [ -f "$REPO/characters/$C/boot.md" ] || { echo "no boot file: $REPO/characters/$C/boot.md"; exit 4; }
+    COMP_BOOTS+=("$REPO/characters/$C/boot.md")
+  done
+fi
+roster() { awk -v L="[$NAME]" -v K="$1" '$0==L{f=1;next} /^\[/{f=0} f && $1==K {gsub(/"/,"",$3); print $3}' "$REPO/legati/roster.toml" 2>/dev/null; }
+HARNESS="${1:-}"
+case "$HARNESS" in claude-code|codex) shift;; *) HARNESS="$(roster harness)"; HARNESS="${HARNESS:-claude-code}";; esac
+MODEL="$(roster model)"
+export LEGATUS_AGENT="$NAME" LEGATUS_HARNESS="$HARNESS" LEGATUS_COMPANIONS="$COMPANIONS"
+TAB="$NAME${COMPANIONS:++${COMPANIONS//,/+}}"
+TITLE="$(echo "$TAB" | tr '[:lower:]' '[:upper:]')"
+pair_note() {   # the text that turns one boot file into a shared tab; harness-neutral
+  local names; names="$(echo "$COMPANIONS" | sed 's/,/ and /g')"
+  cat <<NOTE
+
+# Two legati in this tab (launcher note)
+
+This session carries more than one legatus: **$NAME** leads (\`LEGATUS_AGENT\`) and **$names** rides along (\`LEGATUS_COMPANIONS\`). Boot every one of them: read each boot file below and the files it names. The lead answers by default; a companion answers when the principal addresses it by name or when the work reaches its lane. Every reply block carries the tag of the legatus speaking; when two speak in one turn, each block has its own tag. Voices never merge. On each switch run \`python3 engineering-projects/legati-observatory/obs.py agent <name>\`. The "read only that boot file" line of AGENTS.md §1 is relaxed to exactly these names.
+NOTE
+}
+compose() {     # full appended prompt: lead boot, then the pairing note and each companion boot
+  cat "$BOOT"
+  if [ -n "$COMPANIONS" ]; then pair_note; for B in "${COMP_BOOTS[@]}"; do echo; echo "---"; echo; cat "$B"; done; fi
+}
+cd "$REPO"
+case "$HARNESS" in
+  claude-code)
+    CMD=(claude -n "$TAB" --append-system-prompt "$(compose)"); [ -n "$MODEL" ] && CMD+=(--model "$MODEL")
+    CMD+=("$@");;
+  codex)
+    # A unique id even for simultaneous launches of the same legatus (git trailers, handoffs, Observatory).
+    export LEGATUS_SESSION="${LEGATUS_SESSION:-codex-$TAB-$(python3 -c 'import uuid; print(uuid.uuid4())')}"
+    CMD=(codex -C "$REPO"); [ -n "$MODEL" ] && CMD+=(-m "$MODEL")
+    CMD+=("$@")
+    if [ -z "$COMPANIONS" ]; then
+      CMD+=("You are $NAME. Read AGENTS.md (its §1 and the Codex appendix), then characters/$NAME/boot.md, and continue as $NAME.")
+    else
+      CMD+=("You are $NAME, with ${COMPANIONS//,/ and } riding along in this tab. Read AGENTS.md (its §1 and the Codex appendix), then characters/$NAME/boot.md and the boot file of each companion (characters/<name>/boot.md). $NAME leads; a companion answers when addressed or when the work reaches its lane, each block with its own tag; voices never merge.")
+    fi;;
+  *) echo "unknown harness '$HARNESS' for $NAME (legati/roster.toml: claude-code or codex)"; exit 4;;
+esac
+if [ "${LEGATUS_DRY_RUN:-0}" = "1" ]; then echo "LEGATUS_AGENT=$NAME LEGATUS_COMPANIONS=${COMPANIONS:-} LEGATUS_HARNESS=$HARNESS title=$TITLE"; printf ' %q' "${CMD[@]}" | cut -c1-400; echo; exit 0; fi
+printf '\033]0;%s\007' "$TITLE"      # terminal tab title (OSC 0)
+exec "${CMD[@]}"

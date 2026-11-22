@@ -1,7 +1,7 @@
 ---
 type: project-folder
 project: Legati Observatory
-status: working — portable core + Claude Code adapter
+status: working — portable core + Claude Code and Codex adapters
 ---
 
 # Legati Observatory
@@ -24,12 +24,13 @@ The core (`obs.py` + renderers) knows nothing about any harness. To support a ne
 
 | File | What |
 |---|---|
-| [`obs.py`](obs.py) | The portable core CLI — `emit` · `task` · `heartbeat` · `who` · `agent` · `lock {acquire,check,release}` · `render`. Pure stdlib, Python 3.9+. |
+| [`obs.py`](obs.py) | The portable core CLI — `emit` · `task` · `heartbeat` · `who` · `agent` · `lock {acquire,check,release}` · `say` · `chat` · `render`. Pure stdlib, Python 3.9+. |
 | [`DESIGN.md`](DESIGN.md) | The design — the portability firewall, event schema, file layout, lock protocol, renderers. |
 | [`ADAPTERS.md`](ADAPTERS.md) | The portability contract: event schema + worked Claude Code hook config + how to port to another harness. |
-| [`adapters/claude-code/hook-handler.py`](adapters/claude-code/hook-handler.py) | Claude Code capture adapter (the only harness-aware code; fail-silent, exits 0 so it can never block a session). |
+| [`adapters/claude-code/hook-handler.py`](adapters/claude-code/hook-handler.py) | Claude Code capture adapter (harness-aware code lives only in adapters; fail-silent, exits 0 so it can never block a session). |
+| [`adapters/codex/hook-handler.py`](adapters/codex/hook-handler.py) | Codex CLI capture adapter (same contract). Installed per machine by `bash tools/legati/install-hooks.sh codex`. |
 
-The committed [`.claude/settings.json`](../../.claude/settings.json) already wires the five Claude Code hook events to the adapter using `$CLAUDE_PROJECT_DIR`, so a fresh clone starts capturing on the next session.
+The committed [`.claude/settings.json`](../../.claude/settings.json) already wires the five Claude Code hook events to the adapter using `$CLAUDE_PROJECT_DIR`, so a fresh clone starts capturing on the next session. Codex needs one step per machine: `bash tools/legati/install-hooks.sh codex`, then approve the hooks once inside Codex with `/hooks`.
 
 ## Usage
 

@@ -20,7 +20,14 @@
       "Bash(pdfinfo *)",
       "Bash(mv TO-READ/*)",
       "Bash(chmod +x *)",
-      "Bash(python3 engineering-projects/legati-observatory/obs.py*)"
+      "Bash(python3 engineering-projects/legati-observatory/obs.py*)",
+      "Bash(bash tools/git/sync.sh *)",
+      "Bash(bash tools/legati/*)",
+      "Bash(python3 tools/legati/*)",
+      "Bash(python3 -B tools/legati/*)",
+      "Bash(LEGATUS_DRY_RUN=1 *)",
+      "Bash(llm logs*)",
+      "Bash(llm models*)"
     ],
     "deny": [
       "Bash(git push*)",
@@ -30,10 +37,75 @@
     ]
   },
   "hooks": {
-    "SessionStart": [{ "hooks": [{ "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\"" }] }],
-    "PreToolUse": [{ "matcher": "*", "hooks": [{ "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\"" }] }],
-    "PostToolUse": [{ "matcher": "*", "hooks": [{ "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\"" }] }],
-    "SubagentStop": [{ "hooks": [{ "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\"" }] }],
-    "Stop": [{ "hooks": [{ "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\"" }] }]
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/tools/legati/session-start.sh\""
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\""
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/tools/legati/turn-start.sh\""
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/engineering-projects/legati-observatory/adapters/claude-code/hook-handler.py\""
+          }
+        ]
+      }
+    ]
   }
 }

@@ -40,5 +40,6 @@ Before any writing task, this agent reads `principals/[your-name]/writing-profil
 
 ## Companion files
 
+- `boot.md` — what this legatus reads at session start: lanes, skills, memories on trigger, hand-offs.
 - `rules.md` — standing writing rules (accretes over time).
 - `../../principals/[your-name]/writing-profile.md` — your voice (the most important document for this agent).

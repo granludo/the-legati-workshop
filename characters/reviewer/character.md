@@ -45,5 +45,6 @@
 
 ## Companion files
 
+- `boot.md` — what this legatus reads at session start: lanes, skills, memories on trigger, hand-offs.
 - `rules.md` — standing review calibration rules (venue norms, domain conventions).
 - `../../tools/refs-check/` — reference verification tooling.
