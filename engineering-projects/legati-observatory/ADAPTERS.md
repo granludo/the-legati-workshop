@@ -1,10 +1,10 @@
-# ADAPTERS — the portability contract
+# ADAPTERS: el contrato de portabilidad
 
-The Legati Observatory stays portable because **the core (`obs.py` + renderers) knows nothing about any harness.** All harness-specific knowledge lives in `adapters/<harness>/` and its only job is to translate that harness's events into **one schema**. Swap harnesses → write one adapter → done.
+El Observatorio de los legati sigue siendo portable porque **el núcleo (`obs.py` + los renderizadores) no sabe nada de ningún harness.** Todo el conocimiento específico de un harness vive en `adapters/<harness>/`, y su único trabajo es traducir los eventos de ese harness a **un solo esquema**. Cambias de harness → escribes un adaptador → listo.
 
-## The event schema (the contract)
+## El esquema de eventos (el contrato)
 
-One JSON object per line, appended to `.observatory/events/<YYYY-MM-DD>.jsonl`. Required: `ts`, `session_id`, `agent`, `host`, `cwd`, `project`, `type`. Optional, when known: `tool`, `target`, `parent_session_id`, `model`, `tokens_in`, `tokens_out`, `cost_usd`, `harness` (`claude-code` | `codex` | …, so dashboards can tell the bodies apart; the legatus is still `agent`).
+Un objeto JSON por línea, añadido al final de `.observatory/events/<YYYY-MM-DD>.jsonl`. Obligatorios: `ts`, `session_id`, `agent`, `host`, `cwd`, `project`, `type`. Opcionales, cuando se conocen: `tool`, `target`, `parent_session_id`, `model`, `tokens_in`, `tokens_out`, `cost_usd`, `harness` (`claude-code` | `codex` | …, para que los dashboards distingan los cuerpos; el legatus sigue siendo `agent`).
 
 ```json
 {"ts":"2026-06-01T18:07:30+02:00","session_id":"abc123","agent":"orchestrator",
@@ -13,19 +13,19 @@ One JSON object per line, appended to `.observatory/events/<YYYY-MM-DD>.jsonl`. 
  "model":"claude-opus-4-8","tokens_in":0,"tokens_out":0,"cost_usd":0.0}
 ```
 
-`type` vocabulary: `session_start` · `prompt` · `tool_use` · `tool_result` · `subagent_stop` · `session_end` · `task` · `notification` · `say` (a same-machine chat line; the text lives in `.observatory/chat/`). An adapter may emit either by importing `obs` and calling `obs.append_event(record)` (used here) or by shelling out to `obs.py emit …`.
+Vocabulario de `type`: `session_start` · `prompt` · `tool_use` · `tool_result` · `subagent_stop` · `session_end` · `task` · `notification` · `say` (una línea de chat en la misma máquina; el texto vive en `.observatory/chat/`). Un adaptador puede emitir de dos maneras: importando `obs` y llamando a `obs.append_event(record)` (lo que se hace aquí) o lanzando `obs.py emit …` desde el shell.
 
-**Identity** is resolved by the core from the environment (so it's harness-agnostic):
-- `LEGATUS_AGENT` — which legatus (your persona name); default `unknown`.
-- `LEGATUS_SESSION` — stable session id; falls back to `CLAUDE_CODE_SESSION_ID`, `CLAUDE_SESSION_ID`, `CODEX_THREAD_ID`, then `host-ppid`.
+**La identidad** la resuelve el núcleo a partir del entorno (así no depende del harness):
+- `LEGATUS_AGENT`: qué legatus (el nombre de tu persona); por defecto, `unknown`.
+- `LEGATUS_SESSION`: id de sesión estable; si falta, se usa `CLAUDE_CODE_SESSION_ID`, `CLAUDE_SESSION_ID`, `CODEX_THREAD_ID` y, por último, `host-ppid`.
 
-**Per-persona attribution.** If your workshop switches personas *within* a single session, a static `LEGATUS_AGENT` would mislabel everything. The fix uses the session id the harness exposes to **both** the Bash tool and the hooks (for Claude Code, `CLAUDE_CODE_SESSION_ID`), so an `obs agent <name>` run as a Bash tool and the hook-handler resolve the **same** session. Precedence for `agent`: a per-session marker (`.observatory/sessions/<sid>.agent`, written by `obs agent <name>`) **wins over** the env default. So: set `env.LEGATUS_AGENT` as the session default, and have each persona run `obs agent <name>` on switch — captured tool events then attribute to the active legatus until the next switch. `session_id()` resolves `LEGATUS_SESSION` → `CLAUDE_CODE_SESSION_ID` → `CLAUDE_SESSION_ID` → `CODEX_THREAD_ID` → `host-ppid`. Codex exposes `CODEX_THREAD_ID` to shell tools and it matches the hook payload's session id. The marker is written under every id the session is known by, so the name survives when the launcher environment is gone. Git trailers and hand-offs use the same precedence.
+**Atribución por persona.** Si tu taller cambia de persona **dentro** de una misma sesión, un `LEGATUS_AGENT` estático lo etiquetaría todo mal. La solución usa el id de sesión que el harness expone **tanto** a la herramienta Bash **como** a los hooks (en Claude Code, `CLAUDE_CODE_SESSION_ID`), de modo que un `obs agent <name>` ejecutado como herramienta Bash y el hook-handler resuelven la **misma** sesión. Precedencia para `agent`: un marcador por sesión (`.observatory/sessions/<sid>.agent`, escrito por `obs agent <name>`) **prevalece sobre** el valor por defecto del entorno. Así que: define `env.LEGATUS_AGENT` como valor por defecto de la sesión y haz que cada persona ejecute `obs agent <name>` al cambiar; a partir de ahí, los eventos de herramientas capturados se atribuyen al legatus activo hasta el siguiente cambio. `session_id()` resuelve `LEGATUS_SESSION` → `CLAUDE_CODE_SESSION_ID` → `CLAUDE_SESSION_ID` → `CODEX_THREAD_ID` → `host-ppid`. Codex expone `CODEX_THREAD_ID` a las herramientas de shell, y coincide con el id de sesión del payload del hook. El marcador se escribe con cada id por el que se conoce la sesión, así que el nombre sobrevive cuando desaparece el entorno del lanzador. Los trailers de git y los traspasos usan la misma precedencia.
 
-## Claude Code adapter (the worked example)
+## Adaptador de Claude Code (el ejemplo resuelto)
 
-`adapters/claude-code/hook-handler.py` reads the CC hook JSON from stdin, maps `hook_event_name` → our `type`, pulls `tool_name` / `tool_input.file_path` → `tool` / `target`, and records via the core. **It exits 0 on every path — it can never block a session.**
+`adapters/claude-code/hook-handler.py` lee por stdin el JSON del hook de CC, traduce `hook_event_name` → nuestro `type`, saca `tool_name` / `tool_input.file_path` → `tool` / `target` y lo registra a través del núcleo. **Sale con 0 en todos los caminos: nunca puede bloquear una sesión.**
 
-Install on a host by adding hooks to that host's **`~/.claude/settings.json`** (or the project `.claude/settings.json`). This repo's committed `.claude/settings.json` already wires them up using `$CLAUDE_PROJECT_DIR`, so a fresh clone captures events out of the box. The manual form:
+Se instala en una máquina añadiendo hooks al **`~/.claude/settings.json`** de esa máquina (o al `.claude/settings.json` del proyecto). El `.claude/settings.json` versionado de este repositorio ya los conecta usando `$CLAUDE_PROJECT_DIR`, así que un clon recién hecho captura eventos desde el primer momento. La forma manual:
 
 ```jsonc
 {
@@ -39,17 +39,17 @@ Install on a host by adding hooks to that host's **`~/.claude/settings.json`** (
 }
 ```
 
-Verify with `python3 …/obs.py render` and open `engineering-projects/legati-observatory/render/dashboard-<host>.md`.
+Compruébalo con `python3 …/obs.py render` y abre `engineering-projects/legati-observatory/render/dashboard-<host>.md`.
 
-## Codex adapter
+## Adaptador de Codex
 
-`adapters/codex/hook-handler.py`: Codex hooks send the same stdin JSON shape as Claude Code's, so the port is the event map (Codex adds `SessionEnd`, `PermissionRequest`, `Interrupt`, `PreCompact`/`PostCompact`, `SubagentStart`) plus target extraction from `apply_patch` patches. Installed per machine by `bash tools/legati/install-hooks.sh codex` into `<repo>/.codex/hooks.json` (gitignored, absolute paths); Codex runs project hooks only after the repo is trusted in `~/.codex/config.toml` and each hook is approved once by hash (`/hooks`). The launcher sets a stable `LEGATUS_SESSION` for Codex runs so the shell tool's `obs agent` and the hook handler resolve the same session.
+`adapters/codex/hook-handler.py`: los hooks de Codex envían por stdin un JSON con la misma forma que los de Claude Code, así que portarlo se reduce al mapa de eventos (Codex añade `SessionEnd`, `PermissionRequest`, `Interrupt`, `PreCompact`/`PostCompact`, `SubagentStart`) más la extracción del target a partir de los parches de `apply_patch`. Se instala en cada máquina con `bash tools/legati/install-hooks.sh codex`, en `<repo>/.codex/hooks.json` (en el gitignore, con rutas absolutas); Codex solo ejecuta los hooks del proyecto cuando el repositorio es de confianza en `~/.codex/config.toml` y cada hook se ha aprobado una vez por su hash (`/hooks`). El lanzador fija un `LEGATUS_SESSION` estable en las ejecuciones de Codex para que el `obs agent` de la herramienta de shell y el hook handler resuelvan la misma sesión.
 
-## How to port to another harness (pi, Cursor, …)
+## Cómo portarlo a otro harness (pi, Cursor, …)
 
-1. Copy `adapters/claude-code/` → `adapters/<harness>/`.
-2. Rewrite **only** the field mapping in `hook-handler.py`: map that harness's event names → the `type` vocabulary above, and its tool/file fields → `tool`/`target`. Keep the fail-silent, exit-0 discipline.
-3. Wire it into that harness's hook/event mechanism (its analogue of `settings.json`).
-4. Nothing in `obs.py` or the renderer changes. If the new harness can't emit some fields (cost, tokens), omit them — they're all optional.
+1. Copia `adapters/claude-code/` → `adapters/<harness>/`.
+2. Reescribe **solo** la correspondencia de campos en `hook-handler.py`: traduce los nombres de eventos de ese harness → el vocabulario de `type` de arriba, y sus campos de herramienta y de fichero → `tool`/`target`. Mantén la disciplina de fallar en silencio y salir con 0.
+3. Conéctalo al mecanismo de hooks o de eventos de ese harness (su equivalente de `settings.json`).
+4. No cambia nada en `obs.py` ni en el renderizador. Si el harness nuevo no puede emitir algunos campos (coste, tokens), omítelos: todos son opcionales.
 
-That's the whole firewall: harnesses come and go; the schema and the core stay.
+Ese es todo el cortafuegos: los harnesses van y vienen; el esquema y el núcleo se quedan.

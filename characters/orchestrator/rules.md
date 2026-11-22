@@ -1,10 +1,10 @@
-# [Orchestrator] — standing rules
+# [Orquestador]: reglas permanentes
 
-> [!todo] You
-> This file starts empty. Rules accrete here as you give the agent instructions across sessions. When you correct the agent ("don't do X", "always do Y when Z"), that rule belongs here so the agent doesn't need the same correction twice.
+> [!todo] Tú
+> Este fichero empieza vacío. Las reglas se van acumulando aquí a medida que das instrucciones al agente, sesión tras sesión. Cuando corriges al agente («no hagas X», «haz siempre Y cuando Z»), esa regla va aquí para que el agente no necesite la misma corrección dos veces.
 >
-> Structure: each rule leads with the rule itself, then a **Why:** line (the reason — often a past incident) and a **How to apply:** line (when this guidance kicks in).
+> Estructura: cada regla empieza por la regla en sí, seguida de una línea **Por qué:** (el motivo, a menudo un incidente pasado) y una línea **Cómo aplicarla:** (cuándo entra en juego esta pauta).
 
 ---
 
-*(no rules yet — add them as your sessions teach you what this agent needs)*
+*(todavía no hay reglas: añádelas a medida que las sesiones te enseñen lo que necesita este agente)*

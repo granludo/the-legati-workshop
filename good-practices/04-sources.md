@@ -1,29 +1,29 @@
-# 4. Source management
+# 4. Gestión de fuentes
 
-A source is raw material — a paper, a recording, a video, a book chapter, a web article. Sources are not outputs. They feed your thinking; they are not your thinking. The distinction sounds obvious, but the workflow consequences are significant.
+Una fuente es material en bruto: un artículo científico, una grabación, un vídeo, un capítulo de libro, un artículo web. Las fuentes no son resultados. Alimentan tu pensamiento; no son tu pensamiento. La distinción parece obvia, pero sus consecuencias en el flujo de trabajo son considerables.
 
-The `sources/` folder is not a library. It's a processing queue with long-term storage. Something enters as a source, gets processed into usable form, and then sits as a citable, searchable resource for future sessions. If it doesn't get processed, it's just a file accumulating dust.
+La carpeta `sources/` no es una biblioteca. Es una cola de procesamiento con almacenamiento a largo plazo. Algo entra como fuente, se procesa hasta tener una forma utilizable y luego se queda ahí como recurso citable y buscable para futuras sesiones. Si no se procesa, es solo un fichero cogiendo polvo.
 
-## The processing pipeline
+## La cadena de procesamiento
 
-Every source that enters the workshop goes through the `/add-source` skill. That skill handles the mechanics: transcript extraction for video and audio, text extraction for PDFs, clean retrieval for web articles. What it produces is not just a copy of the source — it's the source plus metadata: where it came from, when you acquired it, what it's for, key claims or passages you flagged.
+Toda fuente que entra en el taller pasa por la skill `/add-source`. Esa skill se encarga de la mecánica: extraer la transcripción del vídeo y el audio, extraer el texto de los PDF, recuperar limpios los artículos web. Lo que produce no es solo una copia de la fuente, sino la fuente con sus metadatos: de dónde viene, cuándo la conseguiste, para qué la quieres, las afirmaciones o los pasajes clave que marcaste.
 
-The reason for this discipline: a source that's just a PDF or a transcript is hard to use in a session. A source that's been processed — with a summary, with key passages extracted, with a README that explains why you cared about it — is immediately useful. The three minutes of processing saves ten minutes of search across twenty sessions.
+El motivo de esta disciplina: una fuente que es solo un PDF o una transcripción cuesta de usar en una sesión. Una fuente procesada (con un resumen, con los pasajes clave extraídos, con un README que explica por qué te interesó) es útil al momento. Los tres minutos de procesamiento ahorran diez minutos de búsqueda en veinte sesiones.
 
-## Whisper transcripts need review
+## Las transcripciones de Whisper hay que revisarlas
 
-If you process audio or video through automatic transcription, never trust the transcript directly. Automatic speech recognition makes characteristic errors: proper nouns, technical terms, in-group vocabulary, language-switching. It often mishears the specific words that matter most. Run a review pass before citing anything from a transcript. For your own language, a quick skim is enough; for technical content, a more careful pass.
+Si procesas audio o vídeo con transcripción automática, no te fíes nunca de la transcripción tal cual. El reconocimiento automático del habla comete errores característicos: nombres propios, términos técnicos, la jerga de cada grupo, los cambios de idioma. A menudo entiende mal justo las palabras que más importan. Haz una pasada de revisión antes de citar nada de una transcripción. En tu propia lengua basta con un vistazo rápido; en contenido técnico, una pasada más cuidadosa.
 
-## The shared vs. per-project split
+## Lo compartido y lo de cada proyecto
 
-Sources that a single project needs go in `sources/[project-slug]/`. Sources that multiple projects might draw on go in `sources/shared/`. When a source migrates from one project to shared, update both `INDEX.md` files.
+Las fuentes que necesita un solo proyecto van en `sources/[project-slug]/`. Las que pueden usar varios proyectos van en `sources/shared/`. Cuando una fuente pasa de un proyecto a compartida, actualiza los dos ficheros `INDEX.md`.
 
-Don't be too clever about the split. When in doubt, put it in the project folder. Premature sharing creates confusion about who owns the source and whether updates affect other projects.
+No te pases de listo con la división. En caso de duda, ponla en la carpeta del proyecto. Compartir antes de tiempo crea confusión sobre de quién es la fuente y sobre si los cambios afectan a otros proyectos.
 
-## Your own past work
+## Tu propio trabajo anterior
 
-Your own published papers belong in `sources/shared/papers-own/`. This sounds redundant — you know what you wrote — but it has a specific purpose: giving the writing agent concrete examples of your voice and your argument style in their final, published form. The writing profile describes your voice abstractly; your own papers instantiate it. When the agent is struggling to match your register, reading three of your papers is more effective than re-reading the writing profile.
+Tus artículos publicados van en `sources/shared/papers-own/`. Parece redundante (ya sabes lo que escribiste), pero tiene un propósito concreto: darle al agente escritor ejemplos concretos de tu voz y de tu forma de argumentar en su versión final, publicada. El perfil de escritura describe tu voz en abstracto; tus artículos la encarnan. Cuando al agente le cuesta dar con tu registro, leer tres de tus artículos funciona mejor que volver a leer el perfil de escritura.
 
-## The citation discipline
+## La disciplina de las citas
 
-Sources feed citations. Citations require verification. Before any paper leaves the workshop, every reference should have a verified DOI or URL and a confirmed match between the title/authors you're citing and the actual document. The `/refs-check` tooling handles most of this automatically. The rule is: never invent a URL or DOI to fill in missing metadata — leave the field empty and escalate to yourself. A broken citation is better than a fabricated one.
+Las fuentes alimentan las citas. Las citas exigen verificación. Antes de que un artículo salga del taller, cada referencia debería tener un DOI o una URL verificados y una coincidencia confirmada entre el título y los autores que citas y el documento real. Las herramientas de `/refs-check` se encargan automáticamente de casi todo esto. La regla es: no te inventes nunca una URL o un DOI para rellenar metadatos que faltan; deja el campo vacío y escálalo a ti mismo. Una cita rota es mejor que una inventada.

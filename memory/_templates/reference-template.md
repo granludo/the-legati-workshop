@@ -1,14 +1,14 @@
 ---
 name: reference-[slug]
-description: [one-line summary — what external resource does this point to, and why?]
+description: [resumen en una línea (¿a qué recurso externo apunta y por qué?)]
 metadata:
   type: reference
 ---
 
-**Location:** [URL, path, or system name]
+**Ubicación:** [URL, ruta o nombre del sistema]
 
-**What it contains:** [What information lives here? What would you look for here?]
+**Qué contiene:** [¿Qué información vive aquí? ¿Qué buscarías aquí?]
 
-**When to use:** [What triggers a lookup here? What questions does this resource answer?]
+**Cuándo usarla:** [¿Qué lleva a consultar aquí? ¿Qué preguntas responde este recurso?]
 
-**Access:** [How to reach it — credentials needed, tool to use, any gotchas.]
+**Acceso:** [Cómo llegar: credenciales necesarias, herramienta que hay que usar, posibles trampas.]

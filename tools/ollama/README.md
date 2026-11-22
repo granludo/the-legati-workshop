@@ -1,13 +1,13 @@
 # tools/ollama/
 
-> [!note] Prefer `llm`
-> New work calls models through the `llm` command ([tools/llm/README.md](../llm/README.md)), which also reaches Ollama through the `llm-ollama` plugin and logs every call. This helper stays for the scripts that already use it (`tools/wiki/`).
+> [!note] Preferible: `llm`
+> El trabajo nuevo llama a los modelos mediante el comando `llm` ([tools/llm/README.md](../llm/README.md)), que también llega a Ollama con el plugin `llm-ollama` y registra todas las llamadas. Este script auxiliar se queda para los scripts que ya lo usan (`tools/wiki/`).
 
-Helper for one or more Ollama servers: a big desktop machine on your network, or `localhost`. Edit the `SERVERS` list at the top of `call.py` with your addresses (the shipped values are the original workshop's LAN and will not answer on yours).
+Script auxiliar para uno o varios servidores Ollama: un ordenador de sobremesa potente de tu red, o `localhost`. Edita la lista `SERVERS` al principio de `call.py` con tus direcciones (los valores que trae son los de la red local del taller original y en la tuya no responderán).
 
-The helper probes the servers in order and picks the first reachable one that has the requested model. Prefer large models: small local models degrade quickly on long contexts and on languages other than English.
+El script auxiliar sondea los servidores por orden y elige el primero accesible que tenga el modelo pedido. Prefiere modelos grandes: los modelos locales pequeños se degradan enseguida con contextos largos y en idiomas distintos del inglés.
 
-## Quick use
+## Uso rápido
 
 ```bash
 # List models across the whole fleet (shows which server has what)
@@ -36,59 +36,59 @@ python3 tools/ollama/call.py embed \
     --in some-text.txt
 ```
 
-Zero dependencies — uses only stdlib `urllib`. Runs with plain `python3` or via `uv run`.
+Cero dependencias: solo usa `urllib` de la biblioteca estándar. Funciona con `python3` sin más o con `uv run`.
 
-## When it fails
+## Cuando falla
 
-Two failure modes:
+Dos modos de fallo:
 
-**Exit code 2 — all servers unreachable.** No server in `SERVERS` answered the probe. Usually this machine is off the network where the server lives (a laptop on conference Wi-Fi), or the server is off.
+**Código de salida 2: ningún servidor accesible.** Ningún servidor de `SERVERS` ha respondido al sondeo. Normalmente esta máquina está fuera de la red donde vive el servidor (un portátil en la wifi de un congreso), o el servidor está apagado.
 
 ```
 ERROR: no Ollama server reachable. Tried: <your SERVERS list>
 HINT:  Fall back to the session model for this task and tell the principal you fell back.
 ```
 
-**Exit code 3 — model not available.** A server was reachable but didn't have the requested model. The helper prints what's actually available so you can pick an alternative.
+**Código de salida 3: modelo no disponible.** Había un servidor accesible, pero no tenía el modelo pedido. El script auxiliar imprime lo que sí está disponible para que puedas elegir una alternativa.
 
-**Fallback protocol:** when a calling agent (Claude) sees exit code 2:
-1. Tell the principal it fell back to the session model.
-2. Do the task directly in the current conversation.
-3. Not silently degrade, not retry in a loop.
+**Protocolo de respaldo:** cuando un agente que lo llama (Claude) ve el código de salida 2:
+1. Avisa al principal de que ha recurrido al modelo de la sesión.
+2. Hace la tarea directamente en la conversación actual.
+3. No se degrada en silencio ni reintenta en bucle.
 
-When the agent sees exit code 3: run `list` to see the current fleet, pick a sensible alternative, retry once. If still unavailable, tell the principal.
+Cuando el agente ve el código de salida 3: ejecuta `list` para ver la flota actual, elige una alternativa sensata y reintenta una vez. Si sigue sin estar disponible, avisa al principal.
 
-## Context window policy
+## Política de ventana de contexto
 
-In the original workshop's experience, **small models** (under 70B params) degrade when context goes above ~64k, so the helper caps `num_ctx` at 65536 for those. Larger models (70B+) use their default (which on this server is set high). Override with `--num-ctx N` if you know what you're doing.
+Según la experiencia del taller original, los **modelos pequeños** (por debajo de 70B parámetros) se degradan cuando el contexto pasa de ~64k, así que el script auxiliar limita `num_ctx` a 65536 para ellos. Los modelos más grandes (70B o más) usan su valor por defecto (que en este servidor está configurado alto). Puedes cambiarlo con `--num-ctx N` si sabes lo que haces.
 
-## Timeouts
+## Tiempos de espera
 
-Default 900 seconds (15 min). Local models are slow on first call (warmup) and slow on long generations. If that's not enough, override with `TIMEOUT_SECONDS` in `call.py` or pass a shorter prompt.
+Por defecto, 900 segundos (15 min). Los modelos locales son lentos en la primera llamada (calentamiento) y en las generaciones largas. Si no basta, cámbialo con `TIMEOUT_SECONDS` en `call.py` o pasa un prompt más corto.
 
-## Dynamic model discovery
+## Descubrimiento dinámico de modelos
 
-Models change on the servers over time. **Always run `list` first** to see what's currently available instead of assuming a specific model exists. Today's models may differ from yesterday's — and which server has which model can change between pulls.
+Los modelos de los servidores cambian con el tiempo. **Ejecuta siempre `list` primero** para ver qué hay disponible en lugar de dar por hecho que existe un modelo concreto. Los modelos de hoy pueden no ser los de ayer, y qué servidor tiene qué modelo puede cambiar entre descargas.
 
-## When to route tasks here vs. Claude Opus
+## Cuándo mandar tareas aquí y cuándo a Claude Opus
 
-**Use local Ollama (Qwen 3.5 122B or whatever the current "fast" model is) for:**
-- Routine translation drafts (CA ↔ ES ↔ EN, will be rewritten by the principal)
-- Summarization of long source material
-- Classification / tagging
-- Transcription cleanup (fixing named entities, removing hallucinations)
-- Initial outline skeletons the principal will overwrite
-- Bulk text operations (regex isn't enough, semantics is enough)
+**Usa el Ollama local (Qwen 3.5 122B o el modelo «rápido» que toque) para:**
+- Borradores rutinarios de traducción (CA ↔ ES ↔ EN, que el principal reescribirá)
+- Resúmenes de material de fuentes largo
+- Clasificación / etiquetado
+- Limpieza de transcripciones (corregir entidades con nombre, eliminar alucinaciones)
+- Esqueletos de esquema iniciales que el principal sobrescribirá
+- Operaciones masivas sobre texto (las regex no bastan; con semántica basta)
 
-**Use Opus for:**
-- Anything requiring the principal's voice (needs writing profile + worldview)
-- Intellectual synthesis, cross-domain reasoning
-- Editorial dialogue with the principal
-- Final drafts of chapters and papers
-- Decisions and structural tradeoffs
+**Usa Opus para:**
+- Todo lo que requiera la voz del principal (necesita el perfil de escritura + la visión del mundo)
+- Síntesis intelectual, razonamiento entre dominios
+- El diálogo editorial con el principal
+- Versiones finales de capítulos y artículos
+- Decisiones y compromisos estructurales
 
-**Rule of thumb:** if a task is *mechanical and voluminous*, Ollama. If it's *interpretive and load-bearing*, Opus.
+**Regla práctica:** si una tarea es **mecánica y voluminosa**, Ollama. Si es **interpretativa y crítica**, Opus.
 
-## Memory pointer
+## Referencia en la memoria
 
-See [../../memory/reference_ollama_server.md](../../memory/reference_ollama_server.md) for the canonical infrastructure reference, kept in sync with any model/server changes.
+Consulta [../../memory/reference_ollama_server.md](../../memory/reference_ollama_server.md) para la referencia canónica de infraestructura, que se mantiene al día con cualquier cambio de modelos o de servidores.

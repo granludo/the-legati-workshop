@@ -1,16 +1,16 @@
-Convert one or more markdown files to print-ready PDFs using pandoc and the first available PDF engine on the current machine.
+Convierte uno o varios ficheros markdown en PDF listos para imprimir con pandoc y el primer motor PDF disponible en la máquina actual.
 
-## Why this skill branches
+## Por qué esta skill se ramifica
 
-This repo can run on more than one machine, and machines do not always have the same PDF toolchain. One machine may have **typst**; another may have **xelatex** from MacTeX; a third may have different paths. Pandoc does not fall back automatically — if you ask it for a missing engine it errors out. So this skill detects what is available before running pandoc, and uses the matching command template.
+Este repositorio puede funcionar en más de una máquina, y no todas tienen la misma cadena de herramientas para PDF. Una máquina puede tener **typst**; otra, **xelatex** de MacTeX; una tercera, rutas distintas. Pandoc no recurre a una alternativa por su cuenta: si le pides un motor que no está, da error. Por eso esta skill detecta qué hay disponible antes de ejecutar pandoc y usa la plantilla de comando correspondiente.
 
-## Instructions
+## Instrucciones
 
-1. **Identify the markdown file(s) to convert** from the user's arguments. If no file is specified, ask.
+1. **Identifica el fichero o los ficheros markdown que hay que convertir** a partir de los argumentos del usuario. Si no se indica ninguno, pregunta.
 
-1a. **Identify the profile** from the user's arguments. Two profiles exist (see "Profiles" below). If no profile is specified, use **`default`**. If the user says "remarkable" / "tablet" / "for my reMarkable" / "for E-Ink", use the **`remarkable`** profile.
+1a. **Identifica el perfil** a partir de los argumentos del usuario. Hay dos perfiles (véase «Perfiles» más abajo). Si no se indica ninguno, usa **`default`**. Si el usuario dice «remarkable» / «tablet» / «para mi reMarkable» / «para E-Ink», usa el perfil **`remarkable`**.
 
-2. **Detect the PDF engine** in this priority order — stop at the first one found:
+2. **Detecta el motor PDF** en este orden de prioridad y detente en el primero que encuentres:
 
    ```bash
    # Typst — check homebrew, usr/local, cargo, then PATH
@@ -34,21 +34,21 @@ This repo can run on more than one machine, and machines do not always have the 
    echo "none" && exit 1
    ```
 
-   If no engine is found, stop and tell the user — installing typst or MacTeX is a one-time setup step. Do not silently degrade.
+   Si no encuentras ningún motor, detente y díselo al usuario: instalar typst o MacTeX es un paso de configuración que se hace una sola vez. No degrades el resultado en silencio.
 
-3. **Detect the repo root** before building sidecar paths:
+3. **Detecta la raíz del repositorio** antes de construir las rutas de los ficheros auxiliares:
 
    ```bash
    REPO_ROOT=$(git rev-parse --show-toplevel)
    ```
 
-   Sidecar files for the `remarkable` profile live at `$REPO_ROOT/skills/md2pdf-remarkable-meta.yaml` and `$REPO_ROOT/skills/md2pdf-remarkable-header.typ`. Use absolute paths in every pandoc command so the skill works regardless of the user's current working directory.
+   Los ficheros auxiliares del perfil `remarkable` están en `$REPO_ROOT/skills/md2pdf-remarkable-meta.yaml` y `$REPO_ROOT/skills/md2pdf-remarkable-header.typ`. Usa rutas absolutas en todos los comandos de pandoc para que la skill funcione sea cual sea el directorio de trabajo del usuario.
 
-4. **Use the command template for the detected engine.** Templates differ between engines (flag dialects) and profiles (visual target values). Pick (engine, profile) → command.
+4. **Usa la plantilla de comando del motor detectado.** Las plantillas cambian según el motor (dialectos de flags) y el perfil (valores visuales objetivo). Elige (motor, perfil) → comando.
 
-### Template A — Typst (`--pdf-engine=typst`)
+### Plantilla A: Typst (`--pdf-engine=typst`)
 
-**Profile `default`** — Palatino 11pt, 2.5/3cm margins, US letter, coloured URLs, TOC:
+**Perfil `default`**: Palatino 11pt, márgenes de 2.5/3cm, US letter, URL en color, índice (TOC):
 
 ```bash
 pandoc INPUT.md \
@@ -66,9 +66,9 @@ pandoc INPUT.md \
   --toc
 ```
 
-**Profile `remarkable`** — Palatino 13pt, 1.5cm uniform margins, A5, black links, line stretch 1.3, TOC.
+**Perfil `remarkable`**: Palatino 13pt, márgenes uniformes de 1.5cm, A5, enlaces en negro, interlineado 1.3, índice (TOC).
 
-**Important quirk.** Pandoc's typst writer renders the `margin` variable as a typst map (`#set page(margin: (...))`), not as separate scalar variables. The CLI `-V margin-top=…` / `-V margin-left=…` flags are silently ignored — every render falls back to typst's 2.5cm default. The fix is to pass margins via `--metadata-file` pointing at `skills/md2pdf-remarkable-meta.yaml`, which constructs the correct map. Do not duplicate margin values on the pandoc command line — the yaml is the single source of truth for geometry.
+**Una rareza importante.** El writer de typst de pandoc genera la variable `margin` como un mapa de typst (`#set page(margin: (...))`), no como variables escalares separadas. Los flags de línea de comandos `-V margin-top=…` / `-V margin-left=…` se ignoran en silencio: todos los renderizados vuelven al valor por defecto de typst, 2.5cm. La solución es pasar los márgenes con `--metadata-file` apuntando a `skills/md2pdf-remarkable-meta.yaml`, que construye el mapa correcto. No dupliques los valores de margen en la línea de comandos de pandoc: el yaml es la única fuente de verdad de la geometría.
 
 ```bash
 pandoc INPUT.md \
@@ -85,11 +85,11 @@ pandoc INPUT.md \
   --toc
 ```
 
-The two sidecar files split responsibilities: `md2pdf-remarkable-meta.yaml` carries page geometry (the map pandoc's typst writer needs); `md2pdf-remarkable-header.typ` carries element-size overrides (tables 10pt, figure captions 10pt, breakable-table fix). Edit those files directly to tune the profile — don't change the command template.
+Los dos ficheros auxiliares se reparten el trabajo: `md2pdf-remarkable-meta.yaml` lleva la geometría de página (el mapa que necesita el writer de typst de pandoc); `md2pdf-remarkable-header.typ` lleva los ajustes de tamaño de los elementos (tablas a 10pt, pies de figura a 10pt, el arreglo para que las tablas puedan partirse entre páginas). Edita esos ficheros directamente para afinar el perfil; no cambies la plantilla de comando.
 
-### Template B — xelatex or lualatex
+### Plantilla B: xelatex o lualatex
 
-**Profile `default`** — Palatino 11pt, 2.5cm margins, US letter, coloured URLs, TOC:
+**Perfil `default`**: Palatino 11pt, márgenes de 2.5cm, US letter, URL en color, índice (TOC):
 
 ```bash
 PATH="/Library/TeX/texbin:$PATH" pandoc INPUT.md \
@@ -107,7 +107,7 @@ PATH="/Library/TeX/texbin:$PATH" pandoc INPUT.md \
   --toc
 ```
 
-**Profile `remarkable`** — Palatino 13pt, 1.5cm uniform margins, A5, black links, line stretch 1.3:
+**Perfil `remarkable`**: Palatino 13pt, márgenes uniformes de 1.5cm, A5, enlaces en negro, interlineado 1.3:
 
 ```bash
 PATH="/Library/TeX/texbin:$PATH" pandoc INPUT.md \
@@ -129,12 +129,12 @@ PATH="/Library/TeX/texbin:$PATH" pandoc INPUT.md \
   --toc
 ```
 
-Notes on Template A vs Template B differences:
-- Typst wants `papersize=us-letter`; xelatex wants `papersize=letter` / `papersize=a5paper`.
-- Typst's margin bug (silently ignored `-V margin-*` flags) does not affect xelatex — you can pass the four split geometry flags directly.
-- xelatex needs `PATH` prepended with `/Library/TeX/texbin` when MacTeX is installed there and not on the default shell PATH. This is the most common macOS MacTeX setup.
+Diferencias entre la plantilla A y la plantilla B:
+- Typst quiere `papersize=us-letter`; xelatex quiere `papersize=letter` / `papersize=a5paper`.
+- El fallo de márgenes de typst (los flags `-V margin-*` ignorados en silencio) no afecta a xelatex: puedes pasar directamente los cuatro flags de geometría por separado.
+- xelatex necesita anteponer `/Library/TeX/texbin` al `PATH` cuando MacTeX está instalado ahí y no en el PATH por defecto del shell. Es la configuración más habitual de MacTeX en macOS.
 
-### Template C — pdflatex (last-resort fallback)
+### Plantilla C: pdflatex (último recurso)
 
 ```bash
 PATH="/Library/TeX/texbin:$PATH" pandoc INPUT.md \
@@ -149,59 +149,59 @@ PATH="/Library/TeX/texbin:$PATH" pandoc INPUT.md \
   --toc
 ```
 
-**Pdflatex does not use system fonts** — it uses its own font catalogue and cannot load Palatino from the OS. Output defaults to Computer Modern. Tell the user explicitly when you fall back to this template. For the `remarkable` profile under pdflatex, use `papersize=a5paper`, `fontsize=12pt` (pdflatex caps at 12pt for the standard `article` class), split `geometry:` flags for 1.5cm uniform margins, and `-V linestretch=1.3`.
+**Pdflatex no usa las fuentes del sistema**: usa su propio catálogo de fuentes y no puede cargar la Palatino del sistema operativo. La salida usa por defecto Computer Modern. Díselo explícitamente al usuario cuando recurras a esta plantilla. Para el perfil `remarkable` con pdflatex, usa `papersize=a5paper`, `fontsize=12pt` (con la clase estándar `article`, pdflatex llega como máximo a 12pt), flags `geometry:` separados para márgenes uniformes de 1.5cm y `-V linestretch=1.3`.
 
-## Profiles
+## Perfiles
 
-### Profile `default` — standard print
-- **Target:** A printed deliverable (chapter, paper, handout) viewed on letter/A4 paper or on screen at 100% zoom.
-- **Values:** US letter, Palatino 11pt, 2.5–3cm margins, coloured URLs (blue), TOC.
-- **When to use:** the default for almost everything.
+### Perfil `default`: impresión estándar
+- **Objetivo:** un entregable impreso (capítulo, artículo, material de clase) que se lee en papel carta/A4 o en pantalla al 100% de zoom.
+- **Valores:** US letter, Palatino 11pt, márgenes de 2.5–3cm, URL en color (azul), índice (TOC).
+- **Cuándo usarlo:** el perfil por defecto para casi todo.
 
-### Profile `remarkable` — E-Ink tablet (reMarkable or similar ≤ 12")
-- **Target:** Readable on an E-Ink tablet without zooming.
-- **Values:** A5, Palatino 13pt, Menlo 11pt for code, 1.5cm uniform margins, line stretch 1.3, black links (no colour — E-Ink renders blue links as illegible grey), TOC.
-- **Why A5 + 13pt:** the reMarkable scales pages width-fit to its visible area. US letter scales to ~58%, making 11pt source text read at ~6.4pt — why you need to zoom. A5 scales to ~85%, making 13pt source text read at ~11pt — same effective size as a printed book.
-- **When to use:** user explicitly requests the reMarkable / tablet / E-Ink profile.
-- **Trade-offs:** more pages than default (smaller page, similar content density). Acceptable on a tablet; not for paper print.
+### Perfil `remarkable`: tableta E-Ink (reMarkable o similar ≤ 12")
+- **Objetivo:** que se lea en una tableta E-Ink sin hacer zoom.
+- **Valores:** A5, Palatino 13pt, Menlo 11pt para el código, márgenes uniformes de 1.5cm, interlineado 1.3, enlaces en negro (sin color: la tinta electrónica muestra los enlaces azules como un gris ilegible), índice (TOC).
+- **Por qué A5 + 13pt:** la reMarkable escala las páginas ajustándolas al ancho de su área visible. US letter queda al ~58%, así que un texto de 11pt se lee a ~6.4pt: por eso hay que hacer zoom. A5 queda al ~85%, así que un texto de 13pt se lee a ~11pt, el mismo tamaño efectivo que un libro impreso.
+- **Cuándo usarlo:** cuando el usuario pide explícitamente el perfil reMarkable / tableta / E-Ink.
+- **Contrapartidas:** más páginas que con el perfil por defecto (página más pequeña, densidad de contenido parecida). Aceptable en una tableta; no para imprimir en papel.
 
-### Adding a new profile
+### Añadir un perfil nuevo
 
-Add it here with: target, values, why-these-numbers, when-to-use, trade-offs. Add the value overrides under each engine template. Update the "Requirements" section if a new profile needs a new dependency.
+Añádelo aquí con: objetivo, valores, por qué esos números, cuándo usarlo, contrapartidas. Añade los valores que cambian en cada plantilla de motor. Actualiza la sección «Requisitos» si el perfil nuevo necesita una dependencia nueva.
 
-5. **The output PDF goes in the same directory as the input file**, with the same name but `.pdf` extension. Quote file paths containing spaces. **If a non-default profile is used, suffix the output filename with the profile name** to avoid clobbering: e.g. `my-chapter.md` → `my-chapter.remarkable.pdf`. The default profile renders to plain `<name>.pdf`.
+5. **El PDF de salida va en el mismo directorio que el fichero de entrada**, con el mismo nombre y la extensión `.pdf`. Pon entre comillas las rutas que contengan espacios. **Si se usa un perfil distinto del de por defecto, añade su nombre como sufijo al nombre del fichero de salida** para no sobrescribir nada: p. ej., `my-chapter.md` → `my-chapter.remarkable.pdf`. El perfil por defecto genera simplemente `<name>.pdf`.
 
-6. **After generating, run `pdfinfo`** on the output to confirm page count and file size, and report to the user:
-   - Which engine was used (and the full path where it was found)
-   - Which profile was used
-   - Page count and file size
-   - Page size (confirm A5 vs letter as expected)
-   - Any visual-result differences from the target (relevant only if Template C was used)
+6. **Después de generarlo, ejecuta `pdfinfo`** sobre la salida para confirmar el número de páginas y el tamaño del fichero, e informa al usuario de:
+   - Qué motor se ha usado (y la ruta completa donde se ha encontrado)
+   - Qué perfil se ha usado
+   - El número de páginas y el tamaño del fichero
+   - El tamaño de página (confirma A5 o carta, según lo esperado)
+   - Cualquier diferencia visual respecto al objetivo (solo relevante si se ha usado la plantilla C)
 
-7. **Move remarkable PDFs to `TO-READ/`.** After step 6, move the `.remarkable.pdf` to the repo root's `TO-READ/` folder:
+7. **Mueve los PDF remarkable a `TO-READ/`.** Tras el paso 6, mueve el `.remarkable.pdf` a la carpeta `TO-READ/` de la raíz del repositorio:
 
    ```bash
    mkdir -p "$REPO_ROOT/TO-READ"
    mv "PATH/TO/<name>.remarkable.pdf" "$REPO_ROOT/TO-READ/<name>.remarkable.pdf"
    ```
 
-   `TO-READ/` is a staging area for tablet reading — drag files from there into your tablet's desktop sync app. The folder is tracked but its contents are gitignored (add `TO-READ/*.pdf` to `.gitignore` if not already). The default profile stays next to the source; only the remarkable variant moves to `TO-READ/`.
+   `TO-READ/` es una zona de espera para la lectura en tableta: arrastra los ficheros desde ahí a la aplicación de sincronización de escritorio de tu tableta. La carpeta está versionada, pero su contenido está en el gitignore (añade `TO-READ/*.pdf` a `.gitignore` si aún no está). El PDF del perfil por defecto se queda junto a la fuente; solo la variante remarkable se mueve a `TO-READ/`.
 
-## Known machine configurations
+## Configuraciones de máquina conocidas
 
-Fill this in as you run the skill on each machine. Update rather than append.
+Rellena esta tabla a medida que ejecutes la skill en cada máquina. Actualiza en lugar de añadir.
 
-| Hostname | pandoc | typst | xelatex / MacTeX | Template to use | Last verified |
+| Hostname | pandoc | typst | xelatex / MacTeX | Plantilla que usar | Última verificación |
 |---|---|---|---|---|---|
-| *(add your hostname here)* | | | | | |
+| *(añade aquí tu hostname)* | | | | | |
 
-Run `hostname` at the shell to get your machine name.
+Ejecuta `hostname` en el shell para obtener el nombre de tu máquina.
 
-## Requirements
+## Requisitos
 
-- **pandoc** (required on every machine)
-- **At least one of:** typst, xelatex, lualatex, or pdflatex
+- **pandoc** (obligatorio en todas las máquinas)
+- **Al menos uno de:** typst, xelatex, lualatex o pdflatex
 
-If pandoc is missing, stop and tell the user. If no PDF engine is present, suggest installing typst (lighter, faster, cleaner defaults) or MacTeX (heavier but handles more edge cases).
+Si falta pandoc, detente y díselo al usuario. Si no hay ningún motor PDF, sugiere instalar typst (más ligero, más rápido, valores por defecto más limpios) o MacTeX (más pesado, pero resuelve más casos límite).
 
 $ARGUMENTS

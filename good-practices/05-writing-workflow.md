@@ -1,43 +1,43 @@
-# 5. The writing workflow
+# 5. El flujo de escritura
 
-The single most important improvement in my writing workflow over the past year has been focusing on the reader. Not on what I want to say — on what the reader needs to receive. When I start a session by asking "who is reading this and what do they need?" instead of "what should I write?", the output improves immediately and substantially.
+La mejora más importante de mi flujo de escritura en el último año ha sido centrarme en el lector. No en lo que quiero decir, sino en lo que el lector necesita recibir. Cuando empiezo una sesión preguntando «¿quién va a leer esto y qué necesita?» en lugar de «¿qué debería escribir?», el resultado mejora enseguida, y mucho.
 
-This sounds obvious. It is not. The temptation with AI-assisted writing is to prompt for content — "write me a section about X" — and then try to improve what comes back. The result is always generic, because the prompt was generic. The reader was nowhere in the room.
+Parece obvio. No lo es. La tentación con la escritura asistida por IA es pedir contenido («escríbeme una sección sobre X») y luego intentar mejorar lo que vuelve. El resultado siempre es genérico, porque la petición era genérica. El lector no estaba en la sala.
 
-The discipline is to establish the reader before writing anything. Who are they? What do they already know? What do they need to understand or decide or feel by the end? What will they push back against? Once you have a clear reader, the agent can do real work.
+La disciplina es fijar el lector antes de escribir nada. ¿Quién es? ¿Qué sabe ya? ¿Qué necesita entender, decidir o sentir al terminar? ¿Contra qué se va a revolver? Cuando tienes claro el lector, el agente puede hacer trabajo de verdad.
 
-## The three-document chain
+## La cadena de tres documentos
 
-For any piece of substance — a paper, a chapter, a long article — I have found the following workflow reliable:
+Para cualquier texto con sustancia (un artículo, un capítulo, un texto largo), este flujo me ha resultado fiable:
 
-1. **The dense reference document.** This is for you, not the reader. It contains everything you know about the subject: the argument structure, the evidence, the counterarguments, the claims you're confident in and the ones you're uncertain about. The agent helps you build it, but it's your thinking. Dense, bullet-pointed, cross-referenced, annotated. This document never ships.
+1. **El documento de referencia denso.** Es para ti, no para el lector. Contiene todo lo que sabes sobre el tema: la estructura del argumento, las pruebas, los contraargumentos, las afirmaciones de las que estás seguro y las que no. El agente te ayuda a construirlo, pero el pensamiento es tuyo. Denso, en viñetas, con referencias cruzadas, anotado. Este documento no se publica nunca.
 
-2. **The draft.** The agent writes this *from the reference document, not from scratch*. This is the key discipline: the draft is an engineering operation on the reference document. It translates dense notes into readable prose for the specific reader you've identified. The agent doesn't need to know what to say — you've already said it in the reference. It needs to know how to say it for this reader.
+2. **El borrador.** El agente lo escribe **a partir del documento de referencia, no desde cero**. Esta es la disciplina clave: el borrador es una operación de ingeniería sobre el documento de referencia. Traduce notas densas a prosa legible para el lector concreto que has identificado. El agente no necesita saber qué decir: ya lo has dicho tú en la referencia. Necesita saber cómo decirlo para este lector.
 
-3. **Your editing pass.** The draft is not the output. It's the starting point for your editing. The agent produces fluent sentences but not your sentences. Your job is to cut what's generic, intensify what's specific, and enforce your voice throughout. The editing pass is where the work becomes yours.
+3. **Tu pasada de edición.** El borrador no es el resultado. Es el punto de partida de tu edición. El agente produce frases fluidas, pero no tus frases. Tu trabajo es cortar lo genérico, reforzar lo concreto e imponer tu voz de principio a fin. La pasada de edición es donde el trabajo se vuelve tuyo.
 
-This workflow seems inefficient — three documents instead of one. In practice it's faster, because each stage has a clear input and a clear constraint. The agent knows exactly what it's doing at each step. You're never looking at a blank page.
+Este flujo parece ineficiente: tres documentos en lugar de uno. En la práctica es más rápido, porque cada etapa tiene una entrada clara y una restricción clara. El agente sabe exactamente qué está haciendo en cada paso. Nunca te quedas delante de una página en blanco.
 
-## First draft in English, then translate
+## Primer borrador en inglés, luego traducir
 
-If you write in a language other than English, write the first draft in English and then translate. This sounds counterintuitive if English is not your primary language. But AI systems generate sharper, more idiomatic, more structurally sound prose in English. A Catalan text generated cold from a Catalan prompt will have different weaknesses than a Catalan text translated from a well-crafted English original. The translation step is not a burden — it's quality control.
+Si escribes en una lengua que no es el inglés, escribe el primer borrador en inglés y luego tradúcelo. Parece contraintuitivo si el inglés no es tu lengua principal. Pero los sistemas de IA generan en inglés una prosa más afilada, más idiomática y mejor estructurada. Un texto en catalán generado en frío a partir de un prompt en catalán tendrá debilidades distintas de las de un texto en catalán traducido de un buen original en inglés. El paso de la traducción no es una carga: es control de calidad.
 
-The exception: if the specific register or argumentation style is culturally specific to another language (certain kinds of irony, certain rhetorical traditions), write the draft in that language and have a bilingual review pass catch what was lost.
+La excepción: si el registro o el estilo de argumentación son propios de la cultura de otra lengua (ciertos tipos de ironía, ciertas tradiciones retóricas), escribe el borrador en esa lengua y haz que una pasada de revisión bilingüe recoja lo que se haya perdido.
 
-## The writing profile is a living document
+## El perfil de escritura es un documento vivo
 
-The writing profile is not finished. It's never finished. Every time a draft misses your voice and you can articulate why, you have new material for the profile. Every time an agent produces something that sounds exactly like you and you notice it, record what made that work — so you can reproduce it.
+El perfil de escritura no está terminado. No lo estará nunca. Cada vez que un borrador no da con tu voz y sabes articular por qué, tienes material nuevo para el perfil. Cada vez que un agente produce algo que suena exactamente a ti y te das cuenta, apunta qué hizo que funcionara, para poder reproducirlo.
 
-I update my writing profile two or three times a month. Not wholesale rewrites — small additions. "I noticed I was correcting every instance of X — add it to the avoid list." "The agent nailed the opening of this piece — it did Y, which is what I do. Add that as a pattern." The profile becomes richer over time, and the first drafts get progressively better.
+Actualizo mi perfil de escritura dos o tres veces al mes. No son reescrituras completas: son pequeños añadidos. «He visto que corregía todos los casos de X: añádelo a la lista de lo que hay que evitar.» «El agente ha clavado el arranque de este texto: ha hecho Y, que es lo que hago yo. Añádelo como patrón.» El perfil se enriquece con el tiempo, y los primeros borradores mejoran poco a poco.
 
-## Domain separation
+## Separación de dominios
 
-If you write across multiple topic domains, keep them separated. Writing style applies everywhere — tone, rhythm, metaphor rules, the way you structure arguments. But topic content and references stay domain-specific. An essay about AI in education should not suddenly import your software engineering war stories unless the connection is genuinely organic to the argument. The risk of collapse is real when an agent is asked to work across domains: it will start importing patterns from the adjacent domain because they're in the same session context.
+Si escribes sobre varios dominios temáticos, mantenlos separados. El estilo de escritura vale para todos: el tono, el ritmo, las reglas sobre metáforas, la forma de estructurar los argumentos. Pero el contenido temático y las referencias son de cada dominio. Un ensayo sobre la IA en la educación no debería importar de repente tus batallitas de ingeniería del software, a menos que la conexión salga con naturalidad del propio argumento. El riesgo de que todo se mezcle es real cuando le pides a un agente que trabaje en varios dominios: empezará a importar patrones del dominio vecino porque están en el mismo contexto de sesión.
 
-The discipline: maintain separate folders for separate domains, maintain separate source collections for separate domains, and be explicit with the agent about which domain you're working in at the start of each session.
+La disciplina: carpetas separadas para dominios separados, colecciones de fuentes separadas para dominios separados, y decirle explícitamente al agente en qué dominio trabajas al principio de cada sesión.
 
-## On LLM prose tics
+## Sobre los tics de prosa de los LLM
 
-AI-generated text has characteristic patterns that mark it as AI-generated. Readers notice them even if they can't name them. The common ones: "delve," "crucial," "fascinating," "intricate," "in today's world," "navigate the landscape," "embark on," "seamlessly," "tapestry." These are not wrong, exactly — they're just weirdly frequent in AI output and weirdly absent from good human writing.
+El texto generado por IA tiene patrones característicos que lo delatan. Los lectores los notan aunque no sepan ponerles nombre. Los habituales, en inglés: «delve», «crucial», «fascinating», «intricate», «in today's world», «navigate the landscape», «embark on», «seamlessly», «tapestry». No es que estén mal, exactamente: es que son extrañamente frecuentes en lo que produce la IA y extrañamente raros en la buena escritura humana.
 
-Before any document leaves the workshop, run a sweep for these. The reviewer agent can do this. The writing agent should know to avoid them. Neither is a substitute for reading the document yourself. The writer you are is the final quality control.
+Antes de que un documento salga del taller, haz un barrido en busca de estos tics. El agente revisor puede hacerlo. El agente escritor debería saber evitarlos. Ninguno de los dos sustituye leer el documento tú mismo. El escritor que eres tú es el último control de calidad.

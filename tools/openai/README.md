@@ -1,10 +1,10 @@
 # tools/openai/
 
-Helper for OpenAI's API — parallel to `tools/ollama/call.py`. Same CLI shape, different backend.
+Script auxiliar para la API de OpenAI, paralelo a `tools/ollama/call.py`. La misma forma de CLI, otro backend.
 
-Use this when a task needs **frontier-quality reasoning** that local Ollama can't reach AND the call is worth real money. For routine/voluminous work stay on Ollama. For the principal's voice and editorial dialogue stay on Claude (current conversation).
+Úsalo cuando una tarea necesite **razonamiento de nivel frontera** que el Ollama local no alcanza Y la llamada merezca dinero de verdad. Para el trabajo rutinario o voluminoso, quédate en Ollama. Para la voz del principal y el diálogo editorial, quédate en Claude (la conversación actual).
 
-## Quick use
+## Uso rápido
 
 ```bash
 # List currently available models (free — uses /v1/models)
@@ -39,94 +39,94 @@ python3 tools/openai/call.py generate \
     --reasoning-effort high
 ```
 
-Zero dependencies — uses only stdlib `urllib`. Runs with plain `python3`.
+Cero dependencias: solo usa `urllib` de la biblioteca estándar. Funciona con `python3` sin más.
 
-## API key
+## Clave de API
 
-The helper reads the API key from, in order:
-1. Environment variable `OPENAI_API_KEY` (canonical, matches the OpenAI SDK)
-2. Environment variable `openai_api_key` (lowercase fallback)
-3. The repo's `.env` file (also case-insensitive — `OPENAI_API_KEY` or `openai_api_key`)
+El script auxiliar lee la clave de API de estos sitios, por este orden:
+1. La variable de entorno `OPENAI_API_KEY` (la canónica, coincide con el SDK de OpenAI)
+2. La variable de entorno `openai_api_key` (alternativa en minúsculas)
+3. El fichero `.env` del repositorio (también sin distinguir mayúsculas: `OPENAI_API_KEY` o `openai_api_key`)
 
-The key is **never printed or logged** — not even in error messages. The `.env` file is gitignored (verified).
+La clave **nunca se imprime ni se registra**, ni siquiera en los mensajes de error. El fichero `.env` está en el gitignore (verificado).
 
-If the key is missing or invalid, the helper exits with code 2 and a clear hint. It will not silently degrade.
+Si la clave falta o no es válida, el script auxiliar termina con código 2 y una pista clara. No se degrada en silencio.
 
-## When to route tasks here vs. Ollama vs. Claude
+## Cuándo mandar tareas aquí, a Ollama o a Claude
 
-This is the third tier in the compute routing rules. The first two are documented in [memory/reference_ollama_server.md](../../memory/reference_ollama_server.md).
+Este es el tercer nivel de las reglas de enrutado del cómputo. Los dos primeros están documentados en [memory/reference_ollama_server.md](../../memory/reference_ollama_server.md).
 
-**Use OpenAI (this helper) for:**
-- **Frontier-quality second opinion / review.** Take a chapter draft, run it through GPT-5.4 or o3-pro with a critical-editor system prompt, get a structured critique. Pair with the writing profile + density rules for calibration.
-- **Deep reasoning tasks** where local Ollama models visibly hit a ceiling and getting the right answer matters. Reasoning models (o3-pro, o4-mini-deep-research) for problems with verifiable structure.
-- **Complex multilingual nuance** where the local 122B Qwen falls short on specific Catalan/Spanish idioms or cultural register.
-- **Anything where the principal said "use the highest performance model".**
+**Usa OpenAI (este script auxiliar) para:**
+- **Segunda opinión o revisión de nivel frontera.** Coge el borrador de un capítulo, pásalo por GPT-5.4 u o3-pro con un prompt de sistema de editor crítico y obtén una crítica estructurada. Combínalo con el perfil de escritura + las reglas de densidad para calibrar.
+- **Tareas de razonamiento profundo** en las que los modelos locales de Ollama tocan techo a la vista y acertar importa. Modelos de razonamiento (o3-pro, o4-mini-deep-research) para problemas con estructura verificable.
+- **Matices multilingües complejos** en los que el Qwen 122B local se queda corto con expresiones concretas del catalán o del castellano o con el registro cultural.
+- **Cualquier cosa para la que el principal haya dicho «usa el modelo de mayor rendimiento».**
 
-**Stay on Ollama (`tools/ollama/call.py`) for:**
-- Routine translation drafts
-- Bulk summarization of long source material
-- Classification, tagging, transcription cleanup
-- First-pass outlines the principal will rewrite
-- Anything mechanical and voluminous where the output is raw material
+**Quédate en Ollama (`tools/ollama/call.py`) para:**
+- Borradores rutinarios de traducción
+- Resúmenes masivos de material de fuentes largo
+- Clasificación, etiquetado, limpieza de transcripciones
+- Esquemas de primera pasada que el principal reescribirá
+- Todo lo mecánico y voluminoso cuya salida es materia prima
 
-**Stay on Claude Opus (current conversation) for:**
-- Anything that needs to BE in the principal's voice (final drafts, chapter rewrites)
-- Editorial dialogue with the principal
-- Structural decisions and tradeoffs
-- Anything load-bearing where getting it wrong would silently damage a document the principal trusts
+**Quédate en Claude Opus (la conversación actual) para:**
+- Todo lo que tenga que ESTAR en la voz del principal (versiones finales, reescrituras de capítulos)
+- El diálogo editorial con el principal
+- Decisiones estructurales y compromisos
+- Todo lo crítico en lo que un error dañaría en silencio un documento en el que confía el principal
 
-**Rule of thumb:**
-- *mechanical and voluminous* → Ollama (free, local)
-- *interpretive and load-bearing in the principal's voice* → Claude (current session)
-- *frontier reasoning, second opinion, deep critique* → OpenAI (paid)
+**Regla práctica:**
+- mecánico y voluminoso → Ollama (gratis, local)
+- interpretativo y crítico, en la voz del principal → Claude (la sesión actual)
+- razonamiento de frontera, segunda opinión, crítica profunda → OpenAI (de pago)
 
-## Cost
+## Coste
 
-OpenAI calls cost real money. Token usage is logged to stderr after every call:
+Las llamadas a OpenAI cuestan dinero de verdad. El uso de tokens se registra en stderr después de cada llamada:
 
 ```
 [using gpt-5.4]
 [tokens: prompt=12453 completion=2891 total=15344]
 ```
 
-For reasoning models, reasoning tokens are reported separately because they're billed differently:
+En los modelos de razonamiento, los tokens de razonamiento se informan por separado porque se facturan de otra manera:
 
 ```
 [tokens: prompt=12453 completion=8421 (reasoning=5530) total=20874]
 ```
 
-Be deliberate. A `gpt-5.4-pro` review of a 30k-token chapter at high reasoning effort is not cheap. When in doubt, run on a smaller sample first.
+Hazlo a conciencia. Una revisión con `gpt-5.4-pro` de un capítulo de 30k tokens con esfuerzo de razonamiento alto no es barata. Si dudas, pruébalo antes con una muestra más pequeña.
 
-## Model selection
+## Selección de modelo
 
-**Always run `list` first.** The available model lineup changes month to month. Don't hardcode model names in scripts; check what's there.
+**Ejecuta siempre `list` primero.** La gama de modelos disponibles cambia de un mes a otro. No escribas nombres de modelo a fuego en los scripts; comprueba qué hay.
 
 ```bash
 python3 tools/openai/call.py list --filter gpt-5
 ```
 
-As a snapshot from when this helper was first written (2026-04-11):
+Como instantánea del momento en que se escribió este script auxiliar (2026-04-11):
 
-| Tier | Model | Use for |
+| Nivel | Modelo | Uso |
 |---|---|---|
-| Flagship | `gpt-5.4` | General high-quality review, chapter critique |
-| Flagship pro | `gpt-5.4-pro` | The most thorough review — slow, expensive, best |
-| Flagship mini | `gpt-5.4-mini` | Faster/cheaper iteration on the same task |
-| Reasoning | `o3-pro` | Deep critical analysis with reasoning trace |
-| Reasoning long | `o3-deep-research` / `o4-mini-deep-research` | Multi-step research/synthesis tasks |
-| Codex | `gpt-5.4` (or `gpt-5.3-codex`) | Code review |
+| Insignia | `gpt-5.4` | Revisión general de alta calidad, crítica de capítulos |
+| Insignia pro | `gpt-5.4-pro` | La revisión más exhaustiva: lenta, cara, la mejor |
+| Insignia mini | `gpt-5.4-mini` | Iteración más rápida y barata sobre la misma tarea |
+| Razonamiento | `o3-pro` | Análisis crítico profundo con traza de razonamiento |
+| Razonamiento largo | `o3-deep-research` / `o4-mini-deep-research` | Tareas de investigación o síntesis de varios pasos |
+| Codex | `gpt-5.4` (o `gpt-5.3-codex`) | Revisión de código |
 
-This snapshot will go stale within weeks. Re-run `list` instead of trusting it.
+Esta instantánea quedará desfasada en cuestión de semanas. Vuelve a ejecutar `list` en lugar de fiarte de ella.
 
-## Reasoning models
+## Modelos de razonamiento
 
-For o-series models (o3, o3-pro, o4-mini, etc.), pass `--reasoning-effort low|medium|high`.
+Para los modelos de la serie o (o3, o3-pro, o4-mini, etc.), pasa `--reasoning-effort low|medium|high`.
 
-Reasoning models may reject `--temp` and behave differently around `--max-tokens`. If the API returns an error about an unsupported parameter, drop it and retry once.
+Los modelos de razonamiento pueden rechazar `--temp` y comportarse de otra manera con `--max-tokens`. Si la API devuelve un error por un parámetro no admitido, quítalo y reintenta una vez.
 
-## Image generation
+## Generación de imágenes
 
-The helper exposes the `image` subcommand for the `gpt-image-*` model family. Same key, same `.env` resolution, same error handling as the chat path. The `image` subcommand hits `/v1/images/generations` and writes the resulting PNG (base64-decoded by the helper) to `--out`.
+El script auxiliar ofrece el subcomando `image` para la familia de modelos `gpt-image-*`. La misma clave, la misma resolución del `.env` y el mismo tratamiento de errores que la vía de chat. El subcomando `image` llama a `/v1/images/generations` y escribe el PNG resultante (que el script decodifica de base64) en `--out`.
 
 ```bash
 # List image models
@@ -150,28 +150,28 @@ python3 tools/openai/call.py image \
 ```
 
 Flags:
-- `--size`: `1024x1024` (square) · `1536x1024` (landscape, fits 16:9 slides) · `1024x1536` (portrait) · `auto`
+- `--size`: `1024x1024` (cuadrado) · `1536x1024` (horizontal, cabe en diapositivas 16:9) · `1024x1536` (vertical) · `auto`
 - `--quality`: `low | medium | high (default) | auto`
-- `--n`: number of variants (default 1; files suffixed `-1`, `-2`, …)
-- `--output-format`: `png | jpeg | webp` (model default if omitted)
-- `--background`: `transparent | opaque | auto` (transparent works with `png`/`webp`)
+- `--n`: número de variantes (por defecto 1; ficheros con sufijo `-1`, `-2`, …)
+- `--output-format`: `png | jpeg | webp` (si se omite, el valor por defecto del modelo)
+- `--background`: `transparent | opaque | auto` (el fondo transparente funciona con `png`/`webp`)
 
-Cost as of early 2026: a `high`-quality 1024×1024 or 1536×1024 runs roughly **$0.15–$0.20** per image. Usage is logged to stderr the same way chat usage is.
+Coste a principios de 2026: una imagen 1024×1024 o 1536×1024 de calidad `high` sale aproximadamente a **$0.15–$0.20**. El uso se registra en stderr igual que el del chat.
 
-Full skill for when-to-use and prompt patterns: [`../../skills/image-gen.md`](../../skills/image-gen.md).
+La skill completa, con cuándo usarlo y patrones de prompt: [`../../skills/image-gen.md`](../../skills/image-gen.md).
 
-## Failure modes
+## Modos de fallo
 
-**Exit code 1** — empty prompt or other usage error.
+**Código de salida 1**: prompt vacío u otro error de uso.
 
-**Exit code 2** — API/network failure. The helper prints the API's error message (truncated to 1000 chars) and exits. Do not silently retry. **Tell the principal** when this happens, the same way the Ollama helper's fallback protocol works.
+**Código de salida 2**: fallo de la API o de la red. El script auxiliar imprime el mensaje de error de la API (truncado a 1000 caracteres) y termina. No reintentes en silencio. **Díselo al principal** cuando pase, igual que en el protocolo de respaldo del script auxiliar de Ollama.
 
-The most common causes:
-- Missing or invalid API key (`401 unauthorized`) — check `.env`
-- Model name typo (`404 model not found`) — run `list` to see what exists
-- Rate limit (`429`) — retry once with backoff, then tell the principal
-- Context too long (`400`) — split the input or use a model with bigger context
+Las causas más habituales:
+- Clave de API ausente o no válida (`401 unauthorized`): revisa `.env`
+- Errata en el nombre del modelo (`404 model not found`): ejecuta `list` para ver qué existe
+- Límite de peticiones (`429`): reintenta una vez con espera progresiva y luego avisa al principal
+- Contexto demasiado largo (`400`): divide la entrada o usa un modelo con más contexto
 
-## Memory pointer
+## Referencia en la memoria
 
-See [`../../memory/reference_openai_api.md`](../../memory/reference_openai_api.md) for the canonical infrastructure reference, kept in sync with any model lineup changes the principal reports.
+Consulta [`../../memory/reference_openai_api.md`](../../memory/reference_openai_api.md) para la referencia canónica de infraestructura, que se mantiene al día con cualquier cambio en la gama de modelos que comunique el principal.

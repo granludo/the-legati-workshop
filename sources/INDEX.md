@@ -1,8 +1,8 @@
-# Sources index
+# Índice de fuentes
 
-All source material lives under `sources/`. Sources are raw inputs — things you read, watch, or listen to that feed your thinking and writing. They are distinct from your writing projects, which are outputs.
+Todo el material de fuentes vive en `sources/`. Las fuentes son entradas en bruto: lo que lees, ves o escuchas y que alimenta lo que piensas y escribes. Son distintas de tus proyectos de escritura, que son salidas.
 
-## Structure
+## Estructura
 
 ```
 sources/
@@ -14,17 +14,17 @@ sources/
 └── [project-slug]/  ← sources scoped to a single project
 ```
 
-## How to add a source
+## Cómo añadir una fuente
 
-Use the `/add-source` skill. It handles:
-- **YouTube / video:** transcript extraction → processing → placement
-- **PDF:** metadata extraction → text extract → placement
-- **Audio:** transcription via mlx-whisper → processing → placement
-- **Web article:** fetch → clean → placement
-- **Text / paste:** direct placement
+Usa la skill `/add-source`. Se encarga de:
+- **YouTube / vídeo:** extracción de la transcripción → procesamiento → ubicación
+- **PDF:** extracción de metadatos → extracción del texto → ubicación
+- **Audio:** transcripción con mlx-whisper → procesamiento → ubicación
+- **Artículo web:** descarga → limpieza → ubicación
+- **Texto / pegado:** ubicación directa
 
-Every source gets a `README.md` documenting what it is, where it came from, and what it's for.
+Cada fuente recibe un `README.md` que documenta qué es, de dónde viene y para qué sirve.
 
-## Sources currently indexed
+## Fuentes indexadas actualmente
 
-*(none yet — they accrete as you work)*
+*(ninguna todavía: se van acumulando a medida que trabajas)*

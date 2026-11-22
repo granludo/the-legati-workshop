@@ -1,25 +1,25 @@
-# /status — orientation briefing
+# /status: resumen de orientación
 
-**When to invoke:** at the start of a session when you're not sure where to begin, or when you want a read-only snapshot of what's active, what's urgent, and what decisions are open.
+**Cuándo invocarla:** al principio de una sesión, cuando no sabes por dónde empezar, o cuando quieres una instantánea en solo lectura de lo que está activo, lo que es urgente y las decisiones que siguen abiertas.
 
-**Who runs it:** the Orchestrator. Read-only — no changes to any file.
+**Quién la ejecuta:** el orquestador (`orchestrator`). Solo lectura: no se cambia ningún fichero.
 
 ---
 
-## What to do
+## Qué hacer
 
-1. Read `INDEX.md` for the current project map.
-2. Read `memory/MEMORY.md` for persistent context.
-3. Scan each active project's `BACKLOG.md` for the top item.
-4. Check `TODO.md` (if it exists) for open actions.
-5. Report back: active projects, top backlog item per project, open decisions, available skills.
+1. Lee `INDEX.md` para tener el mapa actual de proyectos.
+2. Lee `memory/MEMORY.md` para el contexto persistente.
+3. Repasa el `BACKLOG.md` de cada proyecto activo para ver el primer elemento.
+4. Mira `TODO.md` (si existe) para las acciones abiertas.
+5. Informa: proyectos activos, primer elemento del backlog de cada proyecto, decisiones abiertas, skills disponibles.
 
-## Format
+## Formato
 
-Report as plain text to the user. No markdown headers needed — this is a conversational briefing, not a document. Keep it under 300 words. Lead with what's hot, end with what's waiting.
+Informa al usuario en texto plano. No hacen falta encabezados markdown: es un resumen de conversación, no un documento. Menos de 300 palabras. Empieza por lo que quema y termina por lo que espera.
 
-Example structure:
-- **Active projects:** [list]
-- **Most urgent item:** [single most important thing to do right now]
-- **Open decisions:** [things blocking progress that need the user's call]
-- **Available skills:** [remind the user what they can invoke]
+Estructura de ejemplo:
+- **Proyectos activos:** [lista]
+- **Lo más urgente:** [lo más importante que hay que hacer ahora mismo, una sola cosa]
+- **Decisiones abiertas:** [lo que bloquea el avance y necesita que decida el usuario]
+- **Skills disponibles:** [recuérdale al usuario lo que puede invocar]

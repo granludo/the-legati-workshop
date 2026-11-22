@@ -1,35 +1,35 @@
-# 3. The memory system
+# 3. El sistema de memoria
 
-The memory system is what turns a series of sessions into a continuous collaboration. Without it, every session starts from zero: the agent doesn't know who you are, what you're working on, what corrections you've already given, or what decisions you've already made. With it, the first five minutes of every session can be spent doing actual work instead of re-establishing context.
+El sistema de memoria es lo que convierte una serie de sesiones en una colaboración continua. Sin él, cada sesión empieza de cero: el agente no sabe quién eres, en qué trabajas, qué correcciones le has dado ya ni qué decisiones has tomado. Con él, los primeros cinco minutos de cada sesión se pueden dedicar a trabajar de verdad en lugar de a reconstruir el contexto.
 
-The key insight is the distinction between a memory file and a note. A note is something you wrote. A memory file is something the agent reads at session start. The discipline of writing memory files is the discipline of asking: "what would a new agent — reading only this repo — need to know to serve me well?"
+La idea clave es la distinción entre un fichero de memoria y una nota. Una nota es algo que has escrito tú. Un fichero de memoria es algo que el agente lee al empezar la sesión. La disciplina de escribir ficheros de memoria es la disciplina de preguntarse: «¿qué necesitaría saber un agente nuevo, que solo lee este repositorio, para servirme bien?».
 
-## The four memory types
+## Los cuatro tipos de memoria
 
-**User memories** are about you — your role, your expertise, how you prefer to work, what frustrates you. A good user memory isn't a biography; it's a briefing. "I have twenty years of software engineering experience but this is my first serious engagement with academic writing" is useful. "I like to work in the morning and prefer short responses" is marginally useful. "I am a thoughtful person who values good work" is noise.
+**Las memorias de usuario** tratan de ti: tu rol, tu experiencia, cómo prefieres trabajar, qué te saca de quicio. Una buena memoria de usuario no es una biografía; es un briefing. «Tengo veinte años de experiencia en ingeniería del software, pero esta es mi primera incursión seria en la escritura académica» es útil. «Me gusta trabajar por la mañana y prefiero respuestas cortas» es útil a medias. «Soy una persona reflexiva que valora el trabajo bien hecho» es ruido.
 
-**Feedback memories** capture corrections and confirmations. When you say "don't do that" to an agent, that's a feedback memory. When you say "yes, exactly — keep doing that," that's also a feedback memory (people forget to write these down, but they're just as important — if you only save corrections, the agents will grow over-cautious). The rule: lead with the rule, add the reason. A correction without a reason will be misapplied.
+**Las memorias de feedback** recogen correcciones y confirmaciones. Cuando le dices a un agente «no hagas eso», eso es una memoria de feedback. Cuando le dices «sí, exacto, sigue así», también lo es (la gente se olvida de apuntar estas, pero importan igual: si solo guardas correcciones, los agentes se volverán demasiado prudentes). La regla: primero la regla, luego el motivo. Una corrección sin motivo se aplicará mal.
 
-**Project memories** track the state of active work — what's in flight, what's decided, what's blocked. These decay fast: a project memory from three months ago may be stale. Always include the date and a note on when the memory is no longer relevant.
+**Las memorias de proyecto** siguen el estado del trabajo en marcha: qué está en curso, qué se ha decidido, qué está bloqueado. Caducan deprisa: una memoria de proyecto de hace tres meses puede estar obsoleta. Incluye siempre la fecha y una nota sobre cuándo deja de ser relevante.
 
-**Reference memories** point to external resources — where bugs are tracked, which calendar is authoritative, where to find the normativa for a particular process. These are pointers, not content.
+**Las memorias de referencia** apuntan a recursos externos: dónde se registran los bugs, qué calendario manda, dónde está la normativa de un proceso concreto. Son punteros, no contenido.
 
-## What not to save
+## Qué no guardar
 
-This is where people go wrong. The temptation is to save everything — every conversation, every decision, every piece of context. Don't.
+Aquí es donde la gente se equivoca. La tentación es guardarlo todo: cada conversación, cada decisión, cada pedazo de contexto. No lo hagas.
 
-Don't save things you can derive from the code or the git history. If the architecture is visible in the files, you don't need a memory file about it. Don't save debugging solutions or fix recipes — the fix is in the code; the commit message has the context. Don't save ephemeral task details — what you're doing right now belongs in a task tracker, not in memory.
+No guardes lo que se puede deducir del código o del historial de git. Si la arquitectura se ve en los ficheros, no necesitas un fichero de memoria sobre ella. No guardes soluciones de depuración ni recetas de arreglos: el arreglo está en el código y el mensaje de commit tiene el contexto. No guardes detalles efímeros de tareas: lo que estás haciendo ahora mismo va en un gestor de tareas, no en la memoria.
 
-Memory is for things that are non-obvious from the current state of the repo and that a new agent reading the repo would need to serve you well. If a future agent could figure it out by reading the files, it's not a memory.
+La memoria es para lo que no resulta evidente a partir del estado actual del repositorio y que un agente nuevo que lo leyera necesitaría para servirte bien. Si un agente futuro lo puede averiguar leyendo los ficheros, no es una memoria.
 
-## The MEMORY.md index
+## El índice MEMORY.md
 
-`memory/MEMORY.md` is an index, not a content store. It's loaded into every session context. Keep it under 200 lines — it's not a dashboard, it's a pointer file. Each entry is one line: a link to the memory file and a one-line description specific enough that a future agent can decide whether to open the file.
+`memory/MEMORY.md` es un índice, no un almacén de contenido. Se carga en el contexto de cada sesión. Mantenlo por debajo de las 200 líneas: no es un panel de control, es un fichero de punteros. Cada entrada es una línea: un enlace al fichero de memoria y una descripción de una línea lo bastante concreta para que un agente futuro pueda decidir si abre el fichero.
 
-"User profile" is a bad index entry. "User is a civil engineer with ten years of bridge design experience, new to academic writing" is a good index entry — the agent can decide without opening the file whether this is relevant to the current task.
+«Perfil de usuario» es una mala entrada de índice. «El usuario es ingeniero de caminos con diez años de experiencia en diseño de puentes y nuevo en la escritura académica» es una buena entrada: el agente puede decidir sin abrir el fichero si es relevante para la tarea que tiene entre manos.
 
-## The archive-not-delete rule
+## La regla de archivar, no borrar
 
-Old memory files that are no longer accurate don't get deleted. They go to `archive/`. The reasons are practical: first, a discarded memory sometimes turns out to be relevant again. Second, the history of what you believed at different points is itself informative. Third, the archive costs nothing — the agent won't read archived files unless you ask it to.
+Los ficheros de memoria antiguos que ya no son exactos no se borran. Van a `archive/`. Los motivos son prácticos: primero, una memoria descartada a veces vuelve a ser relevante. Segundo, la historia de lo que creías en distintos momentos es informativa por sí misma. Tercero, el archivo no cuesta nada: el agente no leerá los ficheros archivados a menos que se lo pidas.
 
-This rule extends to everything in the workshop. Delete nothing. Archive instead.
+Esta regla se extiende a todo el taller. No borres nada. Archiva.

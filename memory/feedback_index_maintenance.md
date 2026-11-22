@@ -1,17 +1,17 @@
 ---
 name: index-maintenance
-description: Any change to the filesystem or to project state updates the relevant INDEX.md and BACKLOG.md in the same commit. Starter memory from the original workshop; keep, edit or delete.
+description: Cualquier cambio en el sistema de ficheros o en el estado de un proyecto actualiza el INDEX.md y el BACKLOG.md correspondientes en el mismo commit. Memoria de partida del taller original; consérvala, edítala o bórrala.
 metadata:
   type: feedback
 ---
 
-When files or folders are added, moved, renamed or archived, update the maintained maps **in the same commit**: `INDEX.md` (repo layout and projects), `sources/INDEX.md` (source material), the project's `BACKLOG.md` (what was actually worked on, done or postponed), and `memory/MEMORY.md` when a memory is added.
+Cuando se añaden, mueven, renombran o archivan ficheros o carpetas, actualiza los mapas mantenidos **en el mismo commit**: `INDEX.md` (estructura del repositorio y proyectos), `sources/INDEX.md` (material de fuentes), el `BACKLOG.md` del proyecto (en qué se ha trabajado de verdad, qué se ha hecho o aplazado) y `memory/MEMORY.md` cuando se añade una memoria.
 
-**Why:** several sessions work on the repo, often in parallel and from different harnesses. Anyone returning after a break, human or legatus, orients from these files. When they drift from the filesystem, every briefing built on them is wrong, and nobody notices until a session acts on a stale map.
+**Por qué:** varias sesiones trabajan en el repositorio, a menudo en paralelo y desde harness distintos. Quien vuelve después de una pausa, humano o legatus, se orienta con estos ficheros. Cuando se desvían del sistema de ficheros, todos los resúmenes construidos sobre ellos están mal, y nadie se da cuenta hasta que una sesión actúa sobre un mapa desfasado.
 
-**How to apply:**
-- Treat the index and backlog update as part of "done", never as a follow-up commit.
-- Read the file before adding an entry, so the format stays consistent.
-- Finished backlog items move to a done section with the date; they are not deleted (they are the project's history).
-- Adding a source: use `/add-source`, which does the index update as part of the pipeline.
-- Never bypass this with a "will fix later" commit message.
+**Cómo aplicarla:**
+- Trata la actualización del índice y del backlog como parte de «hecho», nunca como un commit posterior.
+- Lee el fichero antes de añadir una entrada, para que el formato siga siendo coherente.
+- Los elementos terminados del backlog pasan a una sección de hechos con la fecha; no se borran (son la historia del proyecto).
+- Para añadir una fuente: usa `/add-source`, que actualiza el índice como parte del proceso.
+- Nunca te lo saltes con un mensaje de commit del tipo «ya lo arreglaré».

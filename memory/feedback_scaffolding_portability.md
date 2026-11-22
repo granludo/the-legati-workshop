@@ -1,17 +1,17 @@
 ---
 name: scaffolding-portability
-description: Keep the durable layer (skills/, memory/, characters/, project folders, runbooks) harness-neutral. Natural-language invocation is canonical; harness-specific files live in .claude/ and .codex/, per machine. Starter memory from the original workshop; keep, edit or delete.
+description: Mantén la capa duradera (skills/, memory/, characters/, carpetas de proyecto, manuales de procedimiento) independiente del harness. La invocación en lenguaje natural es la canónica; los ficheros específicos de cada harness viven en .claude/ y .codex/, por máquina. Memoria de partida del taller original; consérvala, edítala o bórrala.
 metadata:
   type: feedback
 ---
 
-The repo is the durable agent: the model rotates underneath it, and so does the harness (Claude Code today, Codex next to it, something else later). The durable layer must work under any of them without rework.
+El repositorio es el agente duradero: el modelo va rotando por debajo, y el harness también (hoy Claude Code, Codex a su lado, más adelante otra cosa). La capa duradera debe funcionar con cualquiera de ellos sin rehacer nada.
 
-**Why:** the original workshop started on one harness and later added a second. Every place where a skill or a rule assumed one harness's mechanics had to be found and rewritten. The places that were plain markdown and plain scripts needed nothing.
+**Por qué:** el taller original empezó con un harness y más tarde añadió un segundo. Hubo que encontrar y reescribir cada sitio donde una skill o una regla daba por supuesta la mecánica de un harness concreto. Los sitios que eran markdown y scripts sin más no necesitaron nada.
 
-**How to apply:**
-- **Natural-language invocation is canonical** ("Reviewer, look at chapter 3"). A slash command is a typing convenience that depends on one harness's parser.
-- **Skills are plain markdown** in `skills/`: no harness-specific frontmatter or placeholders in the body. A file in `.claude/commands/` may exist only as a one-line pointer to the skill.
-- **Harness-specific files stay out of the durable layer:** hook wiring, MCP configs, harness settings live in `.claude/` and `.codex/`. What is per machine is gitignored (`.codex/`, `.claude/settings.local.json`).
-- **Rules live in `AGENTS.md`**, read by every harness; each harness gets a short appendix with only what is specific to it.
-- **Tools are CLIs or scripts** that any harness can call from a shell, never a protocol only one harness speaks.
+**Cómo aplicarla:**
+- **La invocación en lenguaje natural es la canónica** («Revisor, mira el capítulo 3»). Un comando de barra es una comodidad al teclear que depende del analizador de un harness concreto.
+- **Las skills son markdown sin más** en `skills/`: nada de frontmatter ni de marcadores específicos de un harness en el cuerpo. Un fichero en `.claude/commands/` solo puede existir como puntero de una línea a la skill.
+- **Los ficheros específicos de un harness quedan fuera de la capa duradera:** la conexión de los hooks, las configuraciones MCP y los ajustes del harness viven en `.claude/` y `.codex/`. Lo que es de cada máquina va en el gitignore (`.codex/`, `.claude/settings.local.json`).
+- **Las reglas viven en `AGENTS.md`**, que lee todo harness; cada harness tiene un apéndice corto con solo lo que le es específico.
+- **Las herramientas son CLI o scripts** que cualquier harness puede llamar desde una shell, nunca un protocolo que solo habla un harness.

@@ -1,40 +1,40 @@
-# /observatory — see who's working and don't step on them
+# /observatory: mira quién está trabajando y no le pises el trabajo
 
-**When to invoke:** whenever more than one agent session may be running against this repo at once — before you regenerate a shared file (a dashboard, an index, a backlog), when you want to know who else is live, or when you switch persona and want your activity attributed correctly. Also the skill to read when you want to *render* the dashboard.
+**Cuándo invocarla:** siempre que pueda haber más de una sesión de agente trabajando a la vez sobre este repositorio: antes de regenerar un fichero compartido (un dashboard, un índice, un backlog), cuando quieras saber quién más está activo o cuando cambies de persona y quieras que tu actividad se atribuya bien. También es la skill que hay que leer cuando quieras renderizar el dashboard.
 
-**Who runs it:** any agent (any legatus). The capture is automatic via hooks; this skill is the **self-report + coordination** layer that only the agent can drive.
+**Quién la ejecuta:** cualquier agente (cualquier legatus). La captura es automática mediante hooks; esta skill es la capa de **autoinforme + coordinación**, la que solo puede llevar el propio agente.
 
-The full design is in [`../engineering-projects/legati-observatory/README.md`](../engineering-projects/legati-observatory/README.md) and [`DESIGN.md`](../engineering-projects/legati-observatory/DESIGN.md). This skill is the operational how-to.
+El diseño completo está en [`../engineering-projects/legati-observatory/README.md`](../engineering-projects/legati-observatory/README.md) y [`DESIGN.md`](../engineering-projects/legati-observatory/DESIGN.md). Esta skill es la guía operativa.
 
 ---
 
-## The one environment variable
+## La única variable de entorno
 
 ```bash
 OBS=engineering-projects/legati-observatory/obs.py
 ```
 
-## On every persona switch — attribute your events
+## En cada cambio de persona: atribuye tus eventos
 
-The hooks capture every tool call automatically, but they need to know *which* legatus is acting. The moment you switch persona, run:
+Los hooks capturan automáticamente cada llamada a una herramienta, pero necesitan saber **qué** legatus está actuando. En cuanto cambies de persona, ejecuta:
 
 ```bash
 python3 $OBS agent <your-legatus-name>     # e.g. orchestrator, writer, reviewer
 ```
 
-This writes a per-session marker that wins over the session default, so all subsequent captured events attribute to the active legatus until the next switch. Idempotent and cheap — run it on every switch.
+Esto escribe un marcador por sesión que prevalece sobre el valor por defecto de la sesión, de modo que todos los eventos capturados a partir de ahí se atribuyen al legatus activo hasta el siguiente cambio. Es idempotente y barato: ejecútalo en cada cambio.
 
-## Set what you're doing (optional but useful)
+## Indica qué estás haciendo (opcional pero útil)
 
 ```bash
 python3 $OBS task "drafting the methodology paper §5"
 ```
 
-`current_task` is the human-readable "what am I doing" that only you know — it shows up in the presence table.
+`current_task` es el «qué estoy haciendo» legible por humanos que solo sabes tú; aparece en la tabla de presencia.
 
-## Before a risky shared write — check, then lock
+## Antes de una escritura compartida arriesgada: comprueba y luego bloquea
 
-This is the point of the whole thing. If you are about to regenerate a file another session might also be writing (a dashboard, an `INDEX.md`, a `BACKLOG.md`):
+Esta es la razón de ser de todo el sistema. Si vas a regenerar un fichero que otra sesión también podría estar escribiendo (un dashboard, un `INDEX.md`, un `BACKLOG.md`):
 
 ```bash
 python3 $OBS who                                          # 1. who else is live, doing what?
@@ -43,21 +43,21 @@ python3 $OBS lock acquire <slug> --task "..." --ttl 15    # 2. claim it (atomic;
 python3 $OBS lock release <slug>                          # 3. release when done
 ```
 
-`lock acquire` uses atomic exclusive-create, so **two cooperating agents cannot both win the same lock**. If the acquire **fails**, it returns the current owner — **surface that to the user and stand down**, do not race. A lock auto-frees after its TTL if the owner crashed (no deadlock).
+`lock acquire` usa creación exclusiva atómica, así que **dos agentes que cooperan no pueden ganar los dos el mismo bloqueo**. Si la adquisición **falla**, devuelve el propietario actual: **díselo al usuario y retírate**, no compitas. Un bloqueo se libera solo al vencer su TTL si el propietario se ha caído (sin interbloqueo).
 
-The lock is *advisory* — it works because cooperating agents honor it. Encode the discipline in your agent guide: *before regenerating any shared file, acquire its lock; if the acquire is denied, stand down.*
+El bloqueo es **consultivo**: funciona porque los agentes que cooperan lo respetan. Escribe la disciplina en tu guía de agentes: «antes de regenerar cualquier fichero compartido, adquiere su bloqueo; si te lo deniegan, retírate».
 
-## Render the dashboard
+## Renderiza el dashboard
 
 ```bash
 python3 $OBS render            # markdown -> render/dashboard-<host>.md  (read it in your editor)
 python3 $OBS render --html     # interactive single-file HTML -> render/dashboard-<host>.html (open in a browser)
 ```
 
-Both surfaces are static, gitignored, and per-host. The markdown is the at-a-glance view; the HTML is interactive (filter by agent/project/time, drill into a session, cost bars).
+Las dos superficies son estáticas, están en el gitignore y son propias de cada máquina. El markdown es la vista rápida; el HTML es interactivo (filtro por agente/proyecto/tiempo, detalle de una sesión, barras de coste).
 
-## What you do NOT need to do
+## Lo que NO tienes que hacer
 
-- **You don't start a server or a daemon.** Everything is static files rendered on demand.
-- **You don't commit any of it.** `.observatory/` and `render/` are gitignored — they're machine- and host-dependent.
-- **You don't configure capture per session.** The hooks in `.claude/settings.json` already wire it up; a fresh clone captures on the next session.
+- **No arrancas ningún servidor ni demonio.** Todo son ficheros estáticos que se renderizan a demanda.
+- **No haces commit de nada de esto.** `.observatory/` y `render/` están en el gitignore: dependen de la máquina.
+- **No configuras la captura en cada sesión.** Los hooks de `.claude/settings.json` ya la conectan; un clon recién hecho captura desde la siguiente sesión.

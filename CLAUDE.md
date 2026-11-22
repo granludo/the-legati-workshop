@@ -1,13 +1,13 @@
-# The Legati Workshop: Claude Code entry point
+# The Legati Workshop: punto de entrada para Claude Code
 
 @AGENTS.md
 
-## Claude Code appendix (only what is specific to this harness)
+## Apéndice de Claude Code (solo lo específico de este harness)
 
-- **If the import above did not load, read [AGENTS.md](AGENTS.md) now.** It is the core; its §1 (become one legatus) comes first.
-- **Launch as a legatus with a named tab:** `./claude_<name>.sh` from the repo root. It wraps `legati/bin/legatus <name> claude-code`, which sets `LEGATUS_AGENT`, appends `characters/<name>/boot.md` to the system prompt and names the tab. By hand: `LEGATUS_AGENT=writer claude -n writer --append-system-prompt "$(cat characters/writer/boot.md)"`.
-- **Hooks** are in the tracked `.claude/settings.json`, with `$CLAUDE_PROJECT_DIR` paths, so a fresh clone works: the session-start brief, the per-turn inbox check and the Observatory capture. Claude Code asks you to trust the folder the first time. Per-machine additions go in `.claude/settings.local.json` (gitignored).
-- **Permissions:** the tracked `.claude/settings.json` carries the `allow` / `deny` rules; deny rules hold in every permission mode. Plain `git push` is denied on purpose: pushes happen inside `tools/git/sync.sh`, after the rebase.
-- **Memory:** the repo's `memory/` is the workshop memory, indexed in `memory/MEMORY.md`. Claude Code's own auto-memory (`~/.claude/projects/<repo-slug>/memory/`) is per machine and invisible to Codex and to your other machines: anything worth keeping that lands there moves into `memory/`, with an index line, in the same session.
-- **Commits:** put the harness's attribution trailers in the `-m` / `-F` message; `tools/git/sync.sh` adds `Legatus:` / `Harness:` / `Host:`.
-- **Slash commands:** `skills/<name>.md` is the only copy of a skill. A file in `~/.claude/commands/` or `.claude/commands/` exists only for typing convenience and is a one-line pointer to the repo skill, never a copy: a copy drifts, and Codex never sees it.
+- **Si la importación de arriba no se ha cargado, lee ahora [AGENTS.md](AGENTS.md).** Es el núcleo; su §1 (conviértete en un legatus) va primero.
+- **Lanza un legatus con una pestaña con nombre:** `./claude_<name>.sh` desde la raíz del repositorio. Envuelve `legati/bin/legatus <name> claude-code`, que define `LEGATUS_AGENT`, añade `characters/<name>/boot.md` al prompt de sistema y pone nombre a la pestaña. A mano: `LEGATUS_AGENT=writer claude -n writer --append-system-prompt "$(cat characters/writer/boot.md)"`.
+- **Los hooks** están en el `.claude/settings.json` versionado, con rutas `$CLAUDE_PROJECT_DIR`, así que un clon recién hecho funciona: el resumen de inicio de sesión, la comprobación de la bandeja en cada turno y la captura del Observatorio. Claude Code te pide que confíes en la carpeta la primera vez. Los añadidos propios de cada máquina van en `.claude/settings.local.json` (en el gitignore).
+- **Permisos:** el `.claude/settings.json` versionado contiene las reglas `allow` / `deny`; las reglas deny valen en cualquier modo de permisos. El `git push` directo está denegado a propósito: los push se hacen dentro de `tools/git/sync.sh`, después del rebase.
+- **Memoria:** el `memory/` del repositorio es la memoria del taller, indexada en `memory/MEMORY.md`. La automemoria propia de Claude Code (`~/.claude/projects/<repo-slug>/memory/`) es de cada máquina e invisible para Codex y para tus otras máquinas: lo que valga la pena conservar y acabe allí se traslada a `memory/`, con su línea de índice, en la misma sesión.
+- **Commits:** pon los trailers de atribución del harness en el mensaje `-m` / `-F`; `tools/git/sync.sh` añade `Legatus:` / `Harness:` / `Host:`.
+- **Comandos de barra:** `skills/<name>.md` es la única copia de una skill. Un fichero en `~/.claude/commands/` o `.claude/commands/` existe solo por comodidad al teclear y es un puntero de una línea a la skill del repositorio, nunca una copia: una copia se desvía con el tiempo, y Codex nunca la ve.

@@ -1,24 +1,24 @@
-# skills/ — the folder convention and the table
+# skills/: la convención de la carpeta y la tabla
 
-When the principal invokes a skill (by addressing a legatus in natural language, "Writer, unslop chapter 3"; by naming it in passing, "use /add-source on this URL"; or by typing `/<name> <args>`), **read `skills/<name>.md` from this repo and follow the instructions it contains.** This folder is the source of truth for every workshop skill, under every harness.
+Cuando el principal invoca una skill (dirigiéndose a un legatus en lenguaje natural, «Escritor, pásale el unslop al capítulo 3»; nombrándola de pasada, «usa /add-source con esta URL»; o tecleando `/<name> <args>`), **lee `skills/<name>.md` de este repositorio y sigue las instrucciones que contiene.** Esta carpeta es la fuente de verdad de todas las skills del taller, con cualquier harness.
 
-**Natural-language invocation is canonical.** A bare slash command may be intercepted by the harness's own parser before the legatus sees it; in that case just address the legatus. Skill files are plain markdown, not harness slash commands, so they work the same in Claude Code and in Codex ([memory/feedback_scaffolding_portability.md](../memory/feedback_scaffolding_portability.md)).
+**La invocación en lenguaje natural es la canónica.** Un comando de barra a secas puede interceptarlo el analizador del propio harness antes de que lo vea el legatus; en ese caso, dirígete al legatus sin más. Los ficheros de skill son markdown plano, no comandos de barra del harness, así que funcionan igual en Claude Code que en Codex ([memory/feedback_scaffolding_portability.md](../memory/feedback_scaffolding_portability.md)).
 
-**This table is the authority**; each legatus's `boot.md` lists the subset it runs. Adding a skill = the file + a row here. A name without a file → say so, do not guess.
+**Esta tabla es la autoridad**; el `boot.md` de cada legatus enumera el subconjunto que ejecuta. Añadir una skill = el fichero + una fila aquí. Un nombre sin fichero → dilo, no lo adivines.
 
-| Invoke | File | Who runs it | What it does |
+| Invocación | Fichero | Quién la ejecuta | Qué hace |
 |---|---|---|---|
-| `/start-here` | [start-here.md](start-here.md) | orchestrator | Onboarding: name your legati, write your profile, set up both harnesses and your first project. |
-| `/status` | [status.md](status.md) | orchestrator | Read-only orientation briefing: active projects, lanes, handoffs, top backlog items, skills, open decisions. |
-| `/write-as-[you]` | [write-as-user.md](write-as-user.md) | writer | Load your writing profile and worldview before any writing task. Rename it after setup. |
-| `/add-source` | [add-source.md](add-source.md) | orchestrator (pipeline), writer (analysis) | Intake a source (YouTube, PDF, audio, web article, text) into `sources/`. |
-| `/md2pdf` | [md2pdf.md](md2pdf.md) | any | Render markdown to print-ready PDFs via pandoc + Typst. |
-| `/image-gen` | [image-gen.md](image-gen.md) | orchestrator | Generate a designed image through an image API. Paid: be deliberate. |
-| `/playwright` | [playwright.md](playwright.md) | any | Get a real browser for JS-rendered or login-gated pages: a reusable script under `tools/<slug>/`. |
-| `/observatory` | [observatory.md](observatory.md) | any | Who is live, what each session is doing, advisory file locks, same-machine chat. |
-| `/unslop-text` | [unslop-text.md](unslop-text.md) | writer (any legatus on its own output) | Strip AI giveaways from a text: per-language blacklists (English, Catalan, Spanish), an adverb audit, formulaic constructions, mannered prose. Subtractive only. |
-| `/throat-clearing-review` | [throat-clearing-review.md](throat-clearing-review.md) | writer reports, reviewer grades | Staged tightening of a release-bound document in four passes: phrasing, redundant paragraphs, tables and figures, phrase-level padding. Report first, edit nothing until the principal rules. |
-| `/korben-dallas` | [korben-dallas.md](korben-dallas.md) | any, only on request | Compress the answer, not the work: verdict first, two short paragraphs at most. Chat only; files stay full size. |
+| `/start-here` | [start-here.md](start-here.md) | orchestrator | Puesta en marcha: pon nombre a tus legati, escribe tu perfil, configura los dos harness y tu primer proyecto. |
+| `/status` | [status.md](status.md) | orchestrator | Resumen de orientación en solo lectura: proyectos activos, carriles, traspasos, primeros elementos del backlog, skills, decisiones abiertas. |
+| `/write-as-[you]` | [write-as-user.md](write-as-user.md) | writer | Carga tu perfil de escritura y tu visión del mundo antes de cualquier tarea de escritura. Renómbrala después de la puesta en marcha. |
+| `/add-source` | [add-source.md](add-source.md) | orchestrator (cadena), writer (análisis) | Incorpora una fuente (YouTube, PDF, audio, artículo web, texto) a `sources/`. |
+| `/md2pdf` | [md2pdf.md](md2pdf.md) | cualquiera | Convierte markdown en PDF listos para imprimir con pandoc + Typst. |
+| `/image-gen` | [image-gen.md](image-gen.md) | orchestrator | Genera una imagen diseñada mediante una API de imágenes. De pago: úsala a conciencia. |
+| `/playwright` | [playwright.md](playwright.md) | cualquiera | Un navegador de verdad para páginas que dependen de JS o que exigen inicio de sesión: un script reutilizable en `tools/<slug>/`. |
+| `/observatory` | [observatory.md](observatory.md) | cualquiera | Quién está activo, qué hace cada sesión, bloqueos orientativos de ficheros, chat en la misma máquina. |
+| `/unslop-text` | [unslop-text.md](unslop-text.md) | writer (cualquier legatus sobre lo que produce él mismo) | Quita de un texto lo que delata a la IA: listas negras por lengua (inglés, catalán, castellano), una auditoría de adverbios, construcciones formulaicas, prosa amanerada. Solo resta. |
+| `/throat-clearing-review` | [throat-clearing-review.md](throat-clearing-review.md) | writer informa, reviewer gradúa | Ajuste por etapas de un documento que va a publicarse, en cuatro pasadas: formulación, párrafos redundantes, tablas y figuras, relleno dentro de las frases. Primero el informe; no se edita nada hasta que decide el principal. |
+| `/korben-dallas` | [korben-dallas.md](korben-dallas.md) | cualquiera, solo si se pide | Comprime la respuesta, no el trabajo: el veredicto primero, dos párrafos cortos como mucho. Solo en el chat; los ficheros conservan su tamaño completo. |
 
-> [!todo] You
-> As you add legati with their own skills (a comms refresh, a reviewer checklist for your field), add rows here and list the skill in that legatus's `boot.md`.
+> [!todo] Tú
+> A medida que añadas legati con skills propias (una actualización de comunicaciones, una lista de comprobación del revisor para tu campo), añade filas aquí y lista la skill en el `boot.md` de ese legatus.

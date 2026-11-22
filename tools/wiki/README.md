@@ -1,59 +1,59 @@
 # tools/wiki/
 
-Scripts that build and maintain the wiki-index layer over the workshop's markdown.
+Scripts que construyen y mantienen la capa de wiki e índices sobre el markdown del taller.
 
-> [!note] Built for the original workshop
-> These scripts were written against one specific workshop: its folders, its legati and its model servers (see the `SERVERS` / backend switches at the top of `ingest.py` and `bootstrap.py`). Read them as a worked example to adapt, not a turnkey tool. Run logs (`*-log.md`) are written next to the scripts and are gitignored.
+> [!note] Hechos para el taller original
+> Estos scripts se escribieron para un taller concreto: sus carpetas, sus legati y sus servidores de modelos (mira los selectores `SERVERS` / backend al principio de `ingest.py` y `bootstrap.py`). Léelos como un ejemplo resuelto que adaptar, no como una herramienta llave en mano. Los registros de ejecución (`*-log.md`) se escriben junto a los scripts y están en el gitignore.
 
-## Files
+## Ficheros
 
-- **`bootstrap.py`** — first-pass scaffolding. Walks in-scope folders, calls Ollama (qwen3.5:122b) per file under a 16k-context budget, aggregates across files, writes per-facet scaffolds to `wiki/<facet>/<slug>.md`. Cached by file hash → idempotent on re-run. Run via `python3 tools/wiki/bootstrap.py [--smoke|--dry-run|--resume|--limit N|--skip-write]`.
-- **`chunk.py`** — splits long markdown into 16k-context-safe chunks for Ollama. Strategy: H2 splits → paragraph splits → sentence splits. Reusable from any wiki-bootstrap-adjacent tool.
-- **`validate.py`** — sanity-checker for the wiki tree: broken wikilinks, duplicate slugs, entries with no sources, sources missing on disk. Run after a bootstrap; safe to re-run any time.
-- **`bootstrap-log.md`** — append-only run log written by `bootstrap.py`. Records every per-file analysis, every aggregate count, every failure, every "decision needed from the principal" item.
-- **`cache/`** — gitignored. Per-file Ollama outputs keyed by SHA-256 of file content. Re-running `bootstrap.py --resume` skips files whose hash matches.
+- **`bootstrap.py`**: esqueleto de primera pasada. Recorre las carpetas del ámbito, llama a Ollama (qwen3.5:122b) para cada fichero con un presupuesto de 16k de contexto, agrega los resultados de todos los ficheros y escribe esqueletos por faceta en `wiki/<facet>/<slug>.md`. Caché por hash de fichero → idempotente al volver a ejecutarlo. Se ejecuta con `python3 tools/wiki/bootstrap.py [--smoke|--dry-run|--resume|--limit N|--skip-write]`.
+- **`chunk.py`**: divide el markdown largo en trozos que caben en 16k de contexto para Ollama. Estrategia: cortes por H2 → por párrafo → por frase. Reutilizable desde cualquier herramienta afín al bootstrap de la wiki.
+- **`validate.py`**: comprobador de coherencia del árbol de la wiki: wikilinks rotos, slugs duplicados, entradas sin fuentes, fuentes que no están en disco. Ejecútalo después de un bootstrap; se puede volver a ejecutar en cualquier momento sin riesgo.
+- **`bootstrap-log.md`**: registro de ejecución, solo de anexado, que escribe `bootstrap.py`. Recoge cada análisis por fichero, cada recuento agregado, cada fallo y cada punto de «decisión que necesita el principal».
+- **`cache/`**: en el gitignore. Salidas de Ollama por fichero, indexadas por el SHA-256 del contenido. Al volver a ejecutar `bootstrap.py --resume` se saltan los ficheros cuyo hash coincide.
 
-## Scope
+## Ámbito
 
-In-scope folders (markdown files only):
-- `writting-projects/` — except Hugo theme/build dirs (`themes/`, `public/`, `resources/`, `layouts/`, `archetypes/`, `static/`)
-- `characters/` — the legati identity files
-- `principals/` — human authors (you)
-- `memory/` — persistent memory system
-- `sources/` — raw source materials
-- `engineering-projects/` — engineering work folders
-- Selected root files: `INDEX.md`, `BACKLOG.md`, `PROJECTS.md`, `TODO.md`, `CLAUDE.md`, `README.md`
+Carpetas dentro del ámbito (solo ficheros markdown):
+- `writting-projects/`: salvo los directorios de tema y de compilación de Hugo (`themes/`, `public/`, `resources/`, `layouts/`, `archetypes/`, `static/`)
+- `characters/`: los ficheros de identidad de los legati
+- `principals/`: los autores humanos (tú)
+- `memory/`: el sistema de memoria persistente
+- `sources/`: el material de fuentes en bruto
+- `engineering-projects/`: carpetas de trabajo de ingeniería
+- Ficheros seleccionados de la raíz: `INDEX.md`, `BACKLOG.md`, `PROJECTS.md`, `TODO.md`, `CLAUDE.md`, `README.md`
 
-Out of scope:
-- `inbox/` — the comms legatus's email/calendar lore (volatile, lane-separate, a rule of the original workshop)
-- `archive/` — preserved but inactive
-- `confidential/` — gitignored
-- `worldview-draft/` — per-host graph pilot (gitignored, may not exist on every machine)
+Fuera del ámbito:
+- `inbox/`: el saber de correo y calendario del legatus comms (volátil, en un carril aparte, una regla del taller original)
+- `archive/`: conservado pero inactivo
+- `confidential/`: en el gitignore
+- `worldview-draft/`: piloto de grafo por máquina (en el gitignore, puede no existir en todas las máquinas)
 
-## Constraints
+## Restricciones
 
-- **`qwen3.5:122b` only** (per `memory/feedback_ollama_big_guns_only.md`). Both Studios reachable from this host.
-- **16k context max** (per `memory/feedback_ollama_context_under_16k.md`). `chunk.py` enforces a working budget of 10k input tokens / call.
-- **No git commits** during the bootstrap. The script writes files; the principal commits.
+- **Solo `qwen3.5:122b`** (según `memory/feedback_ollama_big_guns_only.md`). Los dos Studios son accesibles desde esta máquina.
+- **Contexto máximo de 16k** (según `memory/feedback_ollama_context_under_16k.md`). `chunk.py` impone un presupuesto de trabajo de 10k tokens de entrada por llamada.
+- **Ningún commit de git** durante el bootstrap. El script escribe ficheros; el principal hace el commit.
 
-## Output
+## Salida
 
-- `wiki/<facet>/<slug>.md` — per-entry scaffolds. Frontmatter (type, slug, status, dates, source-count) + Summary + Timeline (auto-built from git log over linked sources) + Evolution placeholder + Sources list + Cross-references placeholder.
-- `wiki/<facet>/INDEX.md` — alphabetical facet index.
-- `wiki/INDEX.md` — top-level wiki map.
-- `wiki/keywords/keywords.md` — flat alphabetical keyword reference (terms appearing in ≥2 files, capitalized-token heuristic).
+- `wiki/<facet>/<slug>.md`: esqueletos por entrada. Frontmatter (type, slug, status, fechas, source-count) + Summary + Timeline (construida automáticamente a partir del git log de las fuentes enlazadas) + marcador de Evolution + lista de Sources + marcador de Cross-references.
+- `wiki/<facet>/INDEX.md`: índice alfabético de la faceta.
+- `wiki/INDEX.md`: mapa de primer nivel de la wiki.
+- `wiki/keywords/keywords.md`: referencia plana y alfabética de palabras clave (términos que aparecen en ≥2 ficheros, heurística de tokens con mayúscula inicial).
 
-## Re-running
+## Volver a ejecutarlo
 
-Two reasons to re-run:
-1. **Resume after partial completion** — `python3 tools/wiki/bootstrap.py --resume`. Cache hits are free; only newly-changed files get re-analyzed.
-2. **Iterate on the prompt or schema** — delete the cache (`rm -rf tools/wiki/cache/`), re-run. Forces fresh Ollama calls for everything.
+Dos motivos para volver a ejecutarlo:
+1. **Reanudar tras una ejecución incompleta**: `python3 tools/wiki/bootstrap.py --resume`. Los aciertos de caché son gratis; solo se vuelven a analizar los ficheros que han cambiado.
+2. **Iterar sobre el prompt o el esquema**: borra la caché (`rm -rf tools/wiki/cache/`) y vuelve a ejecutarlo. Obliga a hacer llamadas nuevas a Ollama para todo.
 
-After any re-run, run `python3 tools/wiki/validate.py` to catch broken links and orphans.
+Tras cualquier reejecución, ejecuta `python3 tools/wiki/validate.py` para detectar enlaces rotos y huérfanos.
 
-## Maintenance going forward
+## Mantenimiento a partir de ahora
 
-The bootstrap is a *first pass*. Steady-state maintenance:
-- **On-touch** — when a content file under in-scope folders is added / edited / moved, the wiki entries that reference it should also be touched in the same commit. Pre-commit hook at `tools/git-hooks/pre-commit-wiki-check.sh` warns when this discipline slips.
-- **Weekly orchestrator sweep** — periodic `validate.py` run, propose updates for entries whose `last-touched` lags.
-- **Filling the long tail** — bootstrap leaves many entries as scaffolds (auto-generated frontmatter + sources + timeline; placeholder Summary/Evolution). The orchestrator and the writer fill summaries/evolution incrementally as work touches the underlying files. High-value entries (top projects, named persons, key-ideas) get priority.
+El bootstrap es una **primera pasada**. Mantenimiento en régimen estable:
+- **Al tocar**: cuando se añade, edita o mueve un fichero de contenido en las carpetas del ámbito, las entradas de la wiki que lo referencian deberían tocarse también en el mismo commit. El hook pre-commit de `tools/git-hooks/pre-commit-wiki-check.sh` avisa cuando se relaja esta disciplina.
+- **Barrido semanal del orquestador**: ejecución periódica de `validate.py`, con propuestas de actualización para las entradas cuyo `last-touched` se ha quedado atrás.
+- **Rellenar la cola larga**: el bootstrap deja muchas entradas como esqueletos (frontmatter generado + fuentes + cronología; Summary/Evolution de relleno). El orquestador y el escritor van rellenando resúmenes y evolución a medida que el trabajo toca los ficheros subyacentes. Las entradas de más valor (proyectos principales, personas con nombre, ideas clave) tienen prioridad.

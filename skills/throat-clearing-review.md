@@ -1,152 +1,152 @@
-# /throat-clearing-review — find the prose that announces itself instead of speaking
+# /throat-clearing-review: encontrar la prosa que se anuncia en lugar de hablar
 
-Two-legatus review of a release-bound document: **the writer detects and
-proposes rewrites, the reviewer grades severity, the source document is never
-altered.** The output is a report the principal reads with a verdict attached to
-every finding, so they can apply, adapt or reject each one with the pen in hand.
+Revisión a dos legati de un documento que va a publicarse: **el escritor detecta y
+propone reescrituras, el revisor gradúa la gravedad, el documento fuente no se altera
+nunca.** El resultado es un informe que el principal lee con un veredicto asociado a
+cada hallazgo, para poder aplicar, adaptar o rechazar cada uno con el bolígrafo en la mano.
 
-**Invoke:** *"Writer, throat-clearing review on `<file>`"* or
-`/throat-clearing-review <file>`. Fires on the principal's request, not
-automatically.
+**Invocación:** «Escritor, revisión de carraspeo de `<file>`» o
+`/throat-clearing-review <file>`. Se dispara a petición del principal, no
+de forma automática.
 
-**Origin (2026-08-09).** In the original workshop, the author, reading the
-proof of a paper, hit this paragraph:
+**Origen (2026-08-09).** En el taller original, el autor, leyendo las pruebas
+de un artículo, se topó con este párrafo:
 
 > "The mechanism behind that sensitivity is worth naming, because it applies to
 > anyone computing this quantity. […] That is an argument for repetition, and
 > for treating a configuration failure as a run that has not happened yet rather
 > than as a result."
 
-The reaction — *"If we need to say 'when a run failed due to an error in the
-setup we fixed it and repeated the run', say that"* — is the whole skill. The
-first execution produced a phrasing report with 25 findings, 2 of them factual
-errors the style sweep flushed out.
+La reacción («If we need to say 'when a run failed due to an error in the
+setup we fixed it and repeated the run', say that») es la skill entera. La
+primera ejecución produjo un informe de formulación con 25 hallazgos, 2 de ellos
+errores de hecho que el barrido de estilo sacó a la luz.
 
 ---
 
-## The test
+## La prueba
 
-For every sentence: **could it say what happened, with a verb, in one pass?**
-If the sentence delays a fact, decorates a fact, or grades its own delivery of
-a fact, it is a finding.
+Para cada frase: **¿podría decir lo que pasó, con un verbo, de una sola vez?**
+Si la frase retrasa un hecho, adorna un hecho o pone nota a su propia manera de
+contar un hecho, es un hallazgo.
 
-## The offense taxonomy
+## La taxonomía de faltas
 
-1. **Throat-clearing** — announcing that something is about to be said instead
-   of saying it. Signatures: *"X is worth naming, because…"*, *"worth drawing
-   out"*, *"worth reading carefully"*, *"worth being exact about which"*,
-   *"worth separating because"*, *"What makes this worth reporting is…"*,
-   *"The striking feature of this table is…"*. The fix is almost always
-   deletion of the announcement — the substance that follows was already doing
-   the job.
+1. **Carraspeo**: anunciar que se va a decir algo en lugar de decirlo.
+   Firmas: «X is worth naming, because…», «worth drawing
+   out», «worth reading carefully», «worth being exact about which»,
+   «worth separating because», «What makes this worth reporting is…»,
+   «The striking feature of this table is…». El arreglo casi siempre es
+   borrar el anuncio: lo que viene detrás ya estaba haciendo
+   el trabajo.
 
-2. **Elliptical evasion** — a plain fact dressed as an aphorism, so the reader
-   must decode what could have been stated. Signatures from the first run:
-   *"a run that has not happened yet rather than as a result"* (= we fixed the
-   config and re-ran it), *"not a failed measurement but an absent one"*,
-   *"the ledger will empty on its own"*, *"promote that from reading to
-   finding"*, *"sent us back to the machine"*. The fix is the spade rule:
-   call a spade a spade and say the fact.
+2. **Evasión elíptica**: un hecho simple disfrazado de aforismo, de modo que el lector
+   tiene que descifrar lo que se podría haber dicho sin más. Firmas de la primera ejecución:
+   «a run that has not happened yet rather than as a result» (= arreglamos
+   la configuración y lo volvimos a ejecutar), «not a failed measurement but an absent one»,
+   «the ledger will empty on its own», «promote that from reading to
+   finding», «sent us back to the machine». El arreglo es la regla del pan y el vino:
+   al pan, pan, y al vino, vino; di el hecho.
 
-3. **Meta-commentary** — the document narrating its own rhetoric or its own
-   production instead of its subject. Signatures: *"and we state it as such"*,
-   *"we state it narrowly"*, *"we note it rather than build on it"*, and the
-   worst subtype, **drafting-history bleed**: text addressed to "a reader who
-   later meets an earlier draft" in a venue where only the final text exists.
-   Related: **agentless verbs** ("the findings publish regardless of
-   direction" — findings don't publish; we publish them) and
-   **lecture-the-reader constructions** ("A reader who takes X as Y will be
-   misled, and so will one who…").
+3. **Metacomentario**: el documento narra su propia retórica o su propia
+   elaboración en lugar de su tema. Firmas: «and we state it as such»,
+   «we state it narrowly», «we note it rather than build on it», y el
+   peor subtipo, la **filtración del historial de redacción**: texto dirigido a «a reader who
+   later meets an earlier draft» en un medio donde solo existe el texto final.
+   Parientes cercanos: los **verbos sin agente** («the findings publish regardless of
+   direction»: los hallazgos no se publican solos; los publicamos nosotros) y las
+   **construcciones que sermonean al lector** («A reader who takes X as Y will be
+   misled, and so will one who…»).
 
-## What is NOT an offense — protect these
+## Lo que NO es una falta: protégelo
 
-- **Earned aphorisms.** A document may keep its two or three best sentences even
-  if they are rhetorical — *"an instrument of this kind does not fail by
-  crashing, it fails by returning a number one would have believed"* survived
-  the first run because it states the paper's central hazard, once, where the
-  incident earned it. The Keep grade exists so over-cleaning is a graded error,
-  not a virtue.
-- **Signposting that carries information.** *"Two conclusions follow, and they
-  are separable"* tells the reader they may accept one without the other. Keep.
-- **Scientific hedging that scopes a claim** ("on these data", "we report it as
-  observations on one model"). Scoping is content, not throat-clearing.
+- **Aforismos ganados.** Un documento puede conservar sus dos o tres mejores frases aunque
+  sean retóricas: «an instrument of this kind does not fail by
+  crashing, it fails by returning a number one would have believed» sobrevivió a
+  la primera ejecución porque enuncia el riesgo central del artículo, una vez, allí donde el
+  incidente se lo había ganado. El grado Keep existe para que limpiar de más sea un error graduado,
+  no una virtud.
+- **Señalización que aporta información.** «Two conclusions follow, and they
+  are separable» le dice al lector que puede aceptar una sin la otra. Se conserva.
+- **Cautelas científicas que acotan una afirmación** («on these data», «we report it as
+  observations on one model»). Acotar es contenido, no carraspeo.
 
-## The pipeline — four steps, applied one at a time
+## La cadena: cuatro pasos, de uno en uno
 
-The review is **staged**. Each step produces a report or a numbered list, the
-principal rules on it, the ruling is applied, and only then does the next step
-begin. **After applying each step, suggest the next step and say in one line
-what it consists of.** Never run two steps in one pass — each step reads
-the document as the previous step left it.
+La revisión va **por etapas**. Cada paso produce un informe o una lista numerada, el
+principal decide sobre ella, se aplica lo decidido, y solo entonces empieza el paso
+siguiente. **Después de aplicar cada paso, sugiere el siguiente y di en una línea
+en qué consiste.** No hagas nunca dos pasos en una misma pasada: cada paso lee
+el documento tal como lo dejó el anterior.
 
-Every step follows the same contract: **report first, edit nothing until the
-principal rules.** Rulings are applied to a new point version (v10.2, v10.3, …) and to the
-release file in the same pass, verified and re-rendered.
+Todos los pasos siguen el mismo contrato: **primero el informe, no se edita nada hasta que el
+principal decide.** Lo decidido se aplica a una nueva versión menor (v10.2, v10.3, …) y al
+fichero de publicación en la misma pasada, se verifica y se vuelve a renderizar.
 
-### Step 1 — Phrasing pass (throat-clearing, ellipsis, meta-commentary)
+### Paso 1: pasada de formulación (carraspeo, elipsis, metacomentario)
 
-The writer reads the document end to end, sequentially — no grep-only pass —
-and reports every finding: **location, full verbatim quote, offense named,
-rewrite in the principal's voice**, to `<stem>-phrasing-report.md` beside the
-source. The reviewer grades each finding in the same file: **Blocker / Major / Minor / Polish /
-Keep**, with a tally and verdict. The Keep grade is mandatory calibration — a
-document keeps its two or three earned aphorisms, and over-cleaning is a graded
-error. The principal edits the report itself to rule (changing a verdict to Keep is a
-ruling); "apply it all" means apply everything not marked Keep.
+El escritor lee el documento de principio a fin, en orden (nada de una pasada solo con grep),
+e informa de cada hallazgo: **ubicación, cita literal completa, falta identificada,
+reescritura con la voz del principal**, en `<stem>-phrasing-report.md`, junto al documento
+fuente. El revisor gradúa cada hallazgo en el mismo fichero: **Blocker / Major / Minor / Polish /
+Keep**, con un recuento y un veredicto. El grado Keep es calibración obligatoria: un
+documento conserva sus dos o tres aforismos ganados, y limpiar de más es un error
+graduado. El principal edita el propio informe para decidir (cambiar un veredicto a Keep es una
+decisión); «aplícalo todo» quiere decir aplicar todo lo que no esté marcado como Keep.
 
-### Step 2 — Paragraph-redundancy pass
+### Paso 2: pasada de párrafos redundantes
 
-Full re-read with one question per paragraph: *if this vanished, would any
-claim, number or caveat vanish with it?* Propose ~10 whole paragraphs whose
-removal loses nothing or improves the paper, **as a numbered chat list with the
-full text of each paragraph** and a one-line rationale (usual causes: a story
-told three times, a signpost pointing at the next paragraph, a caveat answering
-an unasked question, a claim gone stale). The principal rules per number. When a
-deletion orphans an antecedent in a neighbouring sentence, make the minimal
-splice and report it — a splice is part of the deletion, not a rewrite.
+Relectura completa con una pregunta por párrafo: si esto desapareciera, ¿desaparecería
+con él alguna afirmación, algún número o alguna salvedad? Propón unos 10 párrafos enteros cuya
+eliminación no pierda nada o mejore el artículo, **como lista numerada en el chat con el
+texto completo de cada párrafo** y una justificación de una línea (causas habituales: una historia
+contada tres veces, una señal que apunta al párrafo siguiente, una salvedad que responde a
+una pregunta que nadie ha hecho, una afirmación que se ha quedado obsoleta). El principal decide número
+por número. Cuando un borrado deja huérfano un antecedente en una frase vecina, haz el
+empalme mínimo e informa de él: un empalme forma parte del borrado, no es una reescritura.
 
-### Step 3 — Tables and figures clarity (the reviewer)
+### Paso 3: claridad de tablas y figuras (el revisor)
 
-The reviewer reviews **every table and figure**: is each column and dimension defined
-where the reader is looking? Standing checks, learned from the first run:
-aggregate columns that mix models with different per-token prices must say so in
-the caption; every price needs a stated source and capture date **in the
-paper**, not just the repo; caption cross-references must point at sections
-that actually contain the referenced material; counts in captions rot faster
-than counts in tables. Report in chat with severities; no edits until ruled.
+El revisor revisa **cada tabla y cada figura**: ¿está definida cada columna y cada dimensión
+allí donde mira el lector? Comprobaciones fijas, aprendidas en la primera ejecución:
+las columnas agregadas que mezclan modelos con precios por token distintos tienen que decirlo en
+el pie; cada precio necesita una fuente y una fecha de captura declaradas **en el
+artículo**, no solo en el repositorio; las referencias cruzadas de los pies tienen que apuntar a secciones
+que de verdad contengan el material referido; los recuentos de los pies se pudren antes
+que los recuentos de las tablas. Informa en el chat con las gravedades; nada de ediciones hasta que se decida.
 
-### Step 4 — Phrase-level padding pass
+### Paso 4: pasada de relleno dentro de las frases
 
-The finest grain: ~20 intra-paragraph phrases whose **removal adds clarity** —
-empty intensifiers (*remarkably*, *simply*, *duly*), announcer sentences the
-earlier passes missed (*"X deserves a note"*, *"The practical reading is
-direct"*), staged hypotheticals (*"A reviewer may reasonably ask…"*), repeated
-verdicts, hedges that dilute the thing being established (*"is understood to
-be"*), and decorative tails after a complete point. Numbered chat list with each
-phrase in its sentence and what removal leaves. The principal rules; apply.
+El grano más fino: unas 20 expresiones dentro de los párrafos cuya **eliminación aporta claridad**:
+intensificadores vacíos (*remarkably*, *simply*, *duly*), frases de anuncio que
+las pasadas anteriores no vieron («X deserves a note», «The practical reading is
+direct»), hipótesis escenificadas («A reviewer may reasonably ask…»), veredictos
+repetidos, cautelas que diluyen lo que se está estableciendo («is understood to
+be») y colas decorativas después de una idea ya completa. Lista numerada en el chat con cada
+expresión dentro de su frase y lo que queda al quitarla. El principal decide; se aplica.
 
-### Every step is also a bug sweep
+### Cada paso es también un barrido de bugs
 
-Each of the four steps found factual errors on the first run: a wrong
-scaffolding count in the Discussion (step 1), a claim gone false after the data
-changed (step 2), two stale counts and a dangling price reference in captions
-(step 3), broken articles and another stale count (step 4). **Style passes
-catch arithmetic because they force a reread of sentences nobody has looked at
-in weeks.** Report bugs alongside the style findings; they outrank everything.
+Cada uno de los cuatro pasos encontró errores de hecho en la primera ejecución: un recuento
+de andamiaje equivocado en la Discusión (paso 1), una afirmación que se volvió falsa al cambiar
+los datos (paso 2), dos recuentos desfasados y una referencia de precio colgando en los pies
+(paso 3), artículos gramaticales rotos y otro recuento desfasado (paso 4). **Las pasadas de estilo cazan
+errores aritméticos porque obligan a releer frases que nadie ha mirado
+en semanas.** Informa de los bugs junto a los hallazgos de estilo; tienen prioridad sobre todo lo demás.
 
-## Relationship to the existing passes
+## Relación con las pasadas que ya existen
 
-This pipeline is a different layer from `/unslop-text` (the prose-tic sweep).
-The tic sweep catches **vocabulary** — *delve*, *crucial*, *tapestry*. This
-pipeline catches **moves** (step 1), **redundancy** (steps 2 and 4) and
-**undefined dimensions** (step 3), which survive any vocabulary filter because
-every individual word in them is innocent. Run the tic sweep first (it is
-cheap), then this pipeline, on anything release-bound where the prose matters.
+Esta cadena es una capa distinta de `/unslop-text` (el barrido de tics de prosa).
+El barrido de tics caza **vocabulario**: *delve*, *crucial*, *tapestry*. Esta
+cadena caza **movimientos** (paso 1), **redundancia** (pasos 2 y 4) y
+**dimensiones sin definir** (paso 3), que sobreviven a cualquier filtro de vocabulario porque
+cada una de sus palabras, por separado, es inocente. Haz primero el barrido de tics (es
+barato) y luego esta cadena, en todo lo que vaya a publicarse y donde la prosa importe.
 
-## Worked example
+## Ejemplo resuelto
 
-The first full execution ran on a research paper's arXiv draft (2026-08-09): step 1
-produced 25 findings (2 Blockers), step 2 removed nine paragraphs and fixed one
-false claim, step 3 restored the price provenance the dollar columns stood on,
-step 4 removed twenty phrases and four bugs. Net: two pages shorter, no number
-changed, 60 verifier checks green throughout.
+La primera ejecución completa se hizo sobre el borrador para arXiv de un artículo de investigación (2026-08-09): el paso 1
+produjo 25 hallazgos (2 Blockers), el paso 2 quitó nueve párrafos y corrigió una
+afirmación falsa, el paso 3 restauró la procedencia de los precios en la que se apoyaban las columnas en dólares,
+el paso 4 quitó veinte expresiones y cuatro bugs. Resultado: dos páginas menos, ningún número
+cambiado, las 60 comprobaciones del verificador en verde de principio a fin.

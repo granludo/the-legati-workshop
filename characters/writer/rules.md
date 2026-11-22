@@ -1,12 +1,12 @@
-# [Writer] — standing rules
+# [Escritor]: reglas permanentes
 
-> [!todo] You
-> Rules accrete here. Writing rules you'll want eventually:
-> - "first draft always in English, then translate" (or whatever your ordering is)
-> - "no LLM prose tics" (delve, crucial, fascinating, etc.) — add your own list
-> - "reader focus: always ask who the reader is before writing"
-> - "no invented procedural scaffolding" — don't add sections the user didn't ask for
+> [!todo] Tú
+> Aquí se acumulan las reglas. Reglas de escritura que acabarás queriendo tener:
+> - «primer borrador siempre en inglés, luego traducir» (o el orden que sigas tú)
+> - «nada de tics de prosa de LLM» (profundizar en, crucial, fascinante, etc.): añade tu propia lista
+> - «foco en el lector: pregunta siempre quién es el lector antes de escribir»
+> - «nada de andamiaje procedimental inventado»: no añadas secciones que el usuario no ha pedido
 
 ---
 
-*(no rules yet)*
+*(todavía no hay reglas)*

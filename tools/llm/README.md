@@ -1,8 +1,8 @@
-# tools/llm: the `llm` front door
+# tools/llm: `llm`, la puerta de entrada única
 
-Every model call that is **not** the session model (a local model for bulk work, a second frontier model for an independent opinion, embeddings) goes through [Simon Willison's `llm` command](https://llm.datasette.io). One command surface for every provider, and every prompt and response **logged to SQLite** automatically, so you can always see what was asked of which model and what came back. This works the same from Claude Code, from Codex and from your own terminal.
+Toda llamada a un modelo que **no** sea el de la sesión (un modelo local para trabajo masivo, un segundo modelo frontera para una opinión independiente, embeddings) pasa por [el comando `llm` de Simon Willison](https://llm.datasette.io). Una sola interfaz de comandos para todos los proveedores, y cada prompt y cada respuesta **quedan registrados en SQLite** automáticamente, así que siempre puedes ver qué se le pidió a qué modelo y qué devolvió. Funciona igual desde Claude Code, desde Codex y desde tu propio terminal.
 
-## Setup (once per machine)
+## Configuración (una vez por máquina)
 
 ```bash
 uv tool install llm                # or: pipx install llm · brew install llm
@@ -11,16 +11,16 @@ llm keys set openai                # paste your key; stored in llm's keys.json, 
 llm models                         # what you can call now
 ```
 
-Other providers are plugins too (`llm install llm-anthropic`, `llm install llm-gemini`, `llm install llm-mistral` …). A remote Ollama server on your network: `OLLAMA_HOST=http://desk-machine.local:11434` in your shell profile. Record what this machine has in its section of `memory/reference_hosts.md`.
+Los demás proveedores también son plugins (`llm install llm-anthropic`, `llm install llm-gemini`, `llm install llm-mistral` …). Para un servidor Ollama remoto en tu red: `OLLAMA_HOST=http://desk-machine.local:11434` en el perfil de tu shell. Anota lo que tiene esta máquina en su sección de `memory/reference_hosts.md`.
 
-Aliases keep prompts short and make routing explicit:
+Los alias mantienen cortos los prompts y hacen explícito el enrutado:
 
 ```bash
 llm aliases set local qwen3.5:122b # whatever big model your Ollama server runs
 llm aliases set second gpt-5       # a frontier model from another family
 ```
 
-## Use
+## Uso
 
 ```bash
 llm -m local 'Summarise this transcript in five bullet points' < transcript.txt
@@ -28,18 +28,18 @@ cat draft.md | llm -m second -s 'Review this argument. List the three weakest cl
 llm embed -m nomic-embed-text -c 'text to embed'
 ```
 
-Common flags: `-s 'system prompt'` · `-o temperature 0.2` · `-o max_tokens 4000` · `-a image.png` (vision models) · `-t <template>`.
+Flags habituales: `-s 'system prompt'` · `-o temperature 0.2` · `-o max_tokens 4000` · `-a image.png` (modelos de visión) · `-t <template>`.
 
-## Routing rules
+## Reglas de enrutado
 
-- **Interpretive, voice-sensitive and load-bearing work stays on the session model.** That includes anything that must sound like the principal.
-- **Bulk mechanical work** (classification, extraction, summaries for your own use, first-pass translation drafts in languages the model handles well) can go to a large local model. Prefer big models: small ones degrade fast on long contexts and outside English.
-- **Never send generation in a language to a model that writes it badly.** For many local models that means Catalan, Basque, Galician and other smaller languages: those stay on the session model or a frontier model.
-- **Paid calls cost real money:** be deliberate, and say before a batch how many calls it will make.
-- **Long calls follow the progress rule** (`memory/feedback_progress_updates.md`).
-- **Always pass `-m`** so the route is visible in the command and in the log.
+- **El trabajo interpretativo, sensible a la voz y crítico se queda en el modelo de la sesión.** Eso incluye todo lo que tenga que sonar como el principal.
+- **El trabajo mecánico masivo** (clasificación, extracción, resúmenes para uso propio, borradores de traducción de primera pasada en idiomas que el modelo maneja bien) puede ir a un modelo local grande. Prefiere modelos grandes: los pequeños se degradan enseguida con contextos largos y fuera del inglés.
+- **Nunca mandes la generación en un idioma a un modelo que lo escribe mal.** Para muchos modelos locales eso significa el catalán, el euskera, el gallego y otras lenguas con menos hablantes: esas se quedan en el modelo de la sesión o en un modelo frontera.
+- **Las llamadas de pago cuestan dinero de verdad:** hazlas a conciencia y di, antes de un lote, cuántas llamadas va a hacer.
+- **Las llamadas largas siguen la regla de progreso** (`memory/feedback_progress_updates.md`).
+- **Pasa siempre `-m`** para que la ruta se vea en el comando y en el registro.
 
-## The log
+## El registro
 
 ```bash
 llm logs path            # where the SQLite database lives (per machine, outside the repo)
@@ -48,8 +48,8 @@ llm logs -q "search"     # full-text search over prompts and responses
 llm logs -m local -n 10  # filter by model
 ```
 
-The database contains prompt text: treat it like `.env`, local working state that never enters git. Browse it with `uvx datasette "$(llm logs path)"`.
+La base de datos contiene el texto de los prompts: trátala como `.env`, estado de trabajo local que nunca entra en git. Explórala con `uvx datasette "$(llm logs path)"`.
 
-## What this replaces
+## Qué sustituye
 
-`tools/ollama/call.py` and `tools/openai/call.py` stay only for the scripts that already call them (`tools/wiki/`, `skills/image-gen.md` for images). New scripts call the `llm` command or its Python API (`import llm`), so their calls land in the log too. Keys never enter git: they live in `llm keys` or in `.env` (gitignored).
+`tools/ollama/call.py` y `tools/openai/call.py` se quedan solo para los scripts que ya los llaman (`tools/wiki/`, `skills/image-gen.md` para las imágenes). Los scripts nuevos llaman al comando `llm` o a su API de Python (`import llm`), así que sus llamadas también acaban en el registro. Las claves nunca entran en git: viven en `llm keys` o en `.env` (en el gitignore).

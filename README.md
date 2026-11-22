@@ -1,68 +1,68 @@
 # The Legati Workshop
 
-A scaffold for building your own AI-augmented intellectual workspace.
+Un andamiaje para construir tu propio espacio de trabajo intelectual aumentado con IA.
 
-**What this is:** An opinionated starting point for running long-form intellectual work — writing, research, supervision, teaching, thinking — with Claude Code or OpenAI's Codex CLI as a collaborator. It comes with working tooling, a memory system, a skill framework, and a set of named AI personas. You name the personas, give them missions, and fill in your own voice and worldview.
+**Qué es:** un punto de partida con opiniones propias para llevar trabajo intelectual de largo aliento (escribir, investigar, dirigir trabajos, enseñar, pensar) con Claude Code o el Codex CLI de OpenAI como colaborador. Incluye herramientas que funcionan, un sistema de memoria, un marco de skills y un conjunto de personajes de IA con nombre. Tú pones nombre a los personajes, les das misiones y rellenas tu propia voz y tu visión del mundo.
 
-**What this is not:** A blank template. The infrastructure here works on day one. Your job is to personalize it, not to build it from scratch.
+**Qué no es:** una plantilla en blanco. La infraestructura funciona desde el primer día. Tu trabajo es personalizarla, no construirla desde cero.
 
-**Start here:** Read `skills/start-here.md`, then invoke it: tell Claude Code or Codex `"start here"` or `"/start-here"`.
+**Empieza aquí:** lee `skills/start-here.md` y luego invócala: dile a Claude Code o a Codex `"start here"` o `"/start-here"`.
 
-**Read the guide:** `good-practices/` is a guide written by someone who has run a workshop like this for over a year. It covers what works, what doesn't, and why.
-
----
-
-## Quick start
-
-1. Clone the repo: `git clone https://github.com/granludo/the-legati-workshop.git` and `cd the-legati-workshop`.
-2. Start a session as the orchestrator:
-   - **Claude Code:** `./claude_orchestrator.sh`. Claude Code asks you to trust the folder the first time.
-   - **Codex:** once per machine, `codex login` and then `bash tools/legati/install-hooks.sh codex`. After that, `./codex_orchestrator.sh`. The first time, approve the hooks inside Codex with `/hooks`.
-3. Say `start here`. The onboarding skill names your legati and writes your first profile with you.
-4. Give the workshop a home of its own: create a **private** repository and point `origin` at it (`git remote set-url origin <your-url>`). Your workshop will hold drafts, notes and memories, so it should never live in a public repository. Until you do, it works locally and `tools/git/sync.sh` keeps commits on your machine. The onboarding skill walks you through this (step 6).
+**Lee la guía:** `good-practices/` es una guía escrita por alguien que lleva más de un año con un taller como este. Cuenta qué funciona, qué no y por qué.
 
 ---
 
-## Languages
+## Inicio rápido
 
-Branch `main` is in English. Branch `castellano` has every markdown file in Spanish (Spain), and branch `català` has them in Catalan: `git switch castellano` or `git switch català`, or clone straight into one: `git clone -b castellano https://github.com/granludo/the-legati-workshop.git`. Code, commands and file names stay in English on every branch, so a command you read in one language works in all three.
-
----
-
-## On legati
-
-The word used throughout this repo is **legati** (singular: *legatus*). In the Roman Republic, a *legatus* was a delegate — someone who carried the authority and values of a principal into a specific domain, with a clear mandate and clear limits. They represented you; they didn't replace you.
-
-That is the framing this workshop uses for AI personas. Not agents — delegates. The distinction matters.
-
-The word "agent" has colonised AI discourse to mean something that acts autonomously, pursues goals, uses tools on its own initiative. That framing subtly positions the human as a bystander: you set an objective and then watch. The legati framing inverts this: **you are the principal**. Each legatus has a mandate that comes from you, a domain, an anti-mandate (what it must not do), and a standing obligation to hand decisions back when judgment is required. The repo is the durable record of all of this — not the model, not the conversation, not the cloud service.
-
-I find "legati" more honest about what is actually happening. The model has no goals. It has a context, a persona file, and your instructions. Calling it a delegate keeps that visible.
-
-That said: "agent" is everywhere, everyone uses it, and I have lost that battle. This repo uses "legati" because that is what they are. You will find "agent" in tool documentation, in Claude's own vocabulary, in every tutorial on the internet. Both words will appear here. The concept is what matters.
+1. Clona el repositorio: `git clone https://github.com/granludo/the-legati-workshop.git` y `cd the-legati-workshop`.
+2. Inicia una sesión como el orquestador:
+   - **Claude Code:** `./claude_orchestrator.sh`. Claude Code te pide que confíes en la carpeta la primera vez.
+   - **Codex:** una vez por máquina, `codex login` y luego `bash tools/legati/install-hooks.sh codex`. A partir de ahí, `./codex_orchestrator.sh`. La primera vez, aprueba los hooks dentro de Codex con `/hooks`.
+3. Di `start here`. La skill de bienvenida pone nombre a tus legati y escribe contigo tu primer perfil.
+4. Dale al taller una casa propia: crea un repositorio **privado** y apunta `origin` hacia él (`git remote set-url origin <your-url>`). Tu taller guardará borradores, notas y memorias, así que nunca debería vivir en un repositorio público. Mientras no lo hagas, funciona en local y `tools/git/sync.sh` deja los commits en tu máquina. La skill de bienvenida te acompaña en esto (paso 6).
 
 ---
 
-## The idea in one paragraph
+## Idiomas
 
-A writing and research workshop is a long-running collaboration between you and a set of AI personas. The personas have persistent memory, specialized roles, and working tools. You are the principal — the source of values, taste, and judgment. The legati do the mechanical and synthetic work, they remember what you told them, and they hand back decisions that require your judgment. The repo is the durable layer — it outlasts any single conversation, any model version, any tool upgrade. Everything important lives here.
-
----
-
-## Who built this
-
-This scaffold was distilled from a working workshop by Marc Alier (Ludo) (https://wasabi.essi.upc.edu/ludo), a professor at UPC Barcelona who uses it for working on books, academic papers, course materials, student supervision, and institutional work. The good-practices guide is written in his voice. The tooling and conventions are his. The opinions are his. The agents are blank — because your agents should be yours.
-
-Using Obsidian for browsing the documents you and your agents work on is recomended. 
+La rama `main` está en inglés. La rama `castellano` tiene todos los ficheros markdown en castellano (español de España), y la rama `català`, en catalán: `git switch castellano` o `git switch català`, o clona directamente una de ellas: `git clone -b castellano https://github.com/granludo/the-legati-workshop.git`. El código, los comandos y los nombres de fichero siguen en inglés en todas las ramas, así que un comando que leas en un idioma funciona en los tres.
 
 ---
 
-## License
+## Sobre los legati
+
+La palabra que se usa en todo este repositorio es **legati** (en singular, *legatus*). En la República romana, un *legatus* era un delegado: alguien que llevaba la autoridad y los valores de un principal a un ámbito concreto, con un mandato claro y unos límites claros. Te representaba; no te sustituía.
+
+Ese es el marco que usa este taller para los personajes de IA. No agentes: delegados. La distinción importa.
+
+La palabra «agente» ha colonizado el discurso sobre la IA para designar algo que actúa de forma autónoma, persigue objetivos y usa herramientas por iniciativa propia. Ese marco coloca sutilmente al humano en el papel de espectador: fijas un objetivo y luego miras. El marco de los legati lo invierte: **tú eres el principal**. Cada legatus tiene un mandato que viene de ti, un dominio, un antimandato (lo que no debe hacer) y la obligación permanente de devolverte las decisiones cuando hace falta criterio. El repositorio es el registro duradero de todo esto; no lo es el modelo, ni la conversación, ni el servicio en la nube.
+
+A mí «legati» me parece más honesto con lo que pasa de verdad. El modelo no tiene objetivos. Tiene un contexto, un fichero de personaje y tus instrucciones. Llamarlo delegado mantiene eso a la vista.
+
+Dicho esto: «agente» está por todas partes, todo el mundo lo usa, y esa batalla la he perdido. Este repositorio usa «legati» porque es lo que son. Encontrarás «agente» en la documentación de las herramientas, en el propio vocabulario de Claude y en todos los tutoriales de internet. Aquí aparecerán las dos palabras. Lo que importa es el concepto.
+
+---
+
+## La idea en un párrafo
+
+Un taller de escritura e investigación es una colaboración de largo recorrido entre tú y un conjunto de personajes de IA. Los personajes tienen memoria persistente, papeles especializados y herramientas que funcionan. Tú eres el principal: la fuente de los valores, el gusto y el criterio. Los legati hacen el trabajo mecánico y de síntesis, recuerdan lo que les dijiste y te devuelven las decisiones que requieren tu criterio. El repositorio es la capa duradera: sobrevive a cualquier conversación, a cualquier versión del modelo, a cualquier actualización de las herramientas. Todo lo importante vive aquí.
+
+---
+
+## Quién ha construido esto
+
+Este andamiaje se destiló del taller en uso de Marc Alier (Ludo) (https://wasabi.essi.upc.edu/ludo), profesor de la UPC en Barcelona que lo usa para trabajar en libros, artículos académicos, materiales docentes, dirección de estudiantes y trabajo institucional. La guía de buenas prácticas está escrita con su voz. Las herramientas y las convenciones son suyas. Las opiniones son suyas. Los agentes están en blanco, porque tus agentes deberían ser tuyos.
+
+Se recomienda usar Obsidian para navegar por los documentos con los que trabajáis tú y tus agentes.
+
+---
+
+## Licencia
 
 Copyright (c) 2026 Marc Alier Forment (Ludo)
 
-Licensed under **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)**.
+Con licencia **Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)**.
 
-You can share and adapt this material freely, provided you: give attribution to Marc Alier, don't use it for commercial purposes, and distribute any derivative works under the same license.
+Puedes compartir y adaptar libremente este material, siempre que atribuyas la autoría a Marc Alier, no lo uses con fines comerciales y distribuyas las obras derivadas con la misma licencia.
 
-Full license: see `LICENSE` — or https://creativecommons.org/licenses/by-nc-sa/4.0/
+Licencia completa: consulta `LICENSE`, o https://creativecommons.org/licenses/by-nc-sa/4.0/

@@ -1,62 +1,62 @@
-# /playwright — give an agent a real browser
+# /playwright: dale a un agente un navegador de verdad
 
-The standing pattern for any browser task that goes beyond a single read-only fetch. Read this when you (any agent) need to load a JS-rendered page, get past a bot-block, drive a multi-step flow, or capture a screenshot/PDF — and `WebFetch` isn't enough.
+El patrón fijo para cualquier tarea de navegador que vaya más allá de una sola lectura. Léelo cuando tú (cualquier agente) necesites cargar una página renderizada con JS, sortear un bloqueo antibots, recorrer un flujo de varios pasos o capturar una pantalla o un PDF, y `WebFetch` no baste.
 
-This skill is the **how-to-get-a-browser** layer. The governing rule is *code-as-action*: write a script and keep it — the browser is disposable, the script is the durable asset.
+Esta skill es la capa de **cómo conseguir un navegador**. La regla que la gobierna es code-as-action (el código como acción): escribe un script y consérvalo; el navegador es desechable, el script es el activo duradero.
 
-## First decision — do you even need Playwright?
+## Primera decisión: ¿de verdad necesitas Playwright?
 
-| Task shape | Reach for | Why |
+| Tipo de tarea | Recurre a | Por qué |
 |---|---|---|
-| Read a public, static page; extract one thing | **`WebFetch`** | Cheapest, in-context. The default. |
-| GitHub (issues, PRs, releases) | **`gh` CLI** | Never `WebFetch` github.com. |
-| Gmail / Calendar / Drive | **a Workspace CLI** (comms agent's lane) | OAuth-scoped, not a browser. |
-| Moodle / LMS | **the LMS web-services API** | Use the WS endpoint, not a browser. |
-| **JS-rendered / multi-step / stateful / bot-blocked / screenshot-as-deliverable** | **Playwright** (this skill) | When the above can't reach it. |
+| Leer una página pública y estática; extraer una cosa | **`WebFetch`** | Lo más barato, dentro del contexto. La opción por defecto. |
+| GitHub (issues, PR, releases) | **la CLI `gh`** | Nunca uses `WebFetch` con github.com. |
+| Gmail / Calendar / Drive | **una CLI de Workspace** (carril del agente comms) | Con alcance OAuth, no un navegador. |
+| Moodle / LMS | **la API de servicios web del LMS** | Usa el endpoint WS, no un navegador. |
+| **Renderizado con JS / varios pasos / con estado / bloqueado por antibots / captura como entregable** | **Playwright** (esta skill) | Cuando lo anterior no llega. |
 
-If `WebFetch` returns an empty shell, a login wall, or a `403`, that's the signal to escalate to Playwright.
+Si `WebFetch` devuelve una página vacía, un muro de login o un `403`, esa es la señal para pasar a Playwright.
 
-## Two ways to use Playwright here — pick by repeatability
+## Dos maneras de usar Playwright aquí: elige según si se va a repetir
 
-**Mode A — library script (code-as-action). This is the default for anything that will recur.**
-Write a small `.mjs` (or Python) script using the `playwright` library, commit it under `tools/<task-slug>/`, and re-run/fork it next time. The browser is disposable; **the script is the durable asset**.
+**Modo A: script con la librería (code-as-action). Es la opción por defecto para todo lo que vaya a repetirse.**
+Escribe un script pequeño `.mjs` (o en Python) con la librería `playwright`, haz commit en `tools/<task-slug>/` y, la próxima vez, vuelve a ejecutarlo o parte de él. El navegador es desechable; **el script es el activo duradero**.
 
-- Create a `tools/<task-slug>/` dir with the script, a `package.json`, and a short README; gitignore `node_modules/` and any `outputs/`.
-- Fork a working example: [`tools/refs-check/verify-urls.mjs`](../tools/refs-check/verify-urls.mjs) — Node/`.mjs`, loads a list of URLs, records HTTP status + page title, patches a markdown file. A good template for "load N URLs, extract a field each, write results back."
+- Crea un directorio `tools/<task-slug>/` con el script, un `package.json` y un README breve; pon en el gitignore `node_modules/` y cualquier `outputs/`.
+- Parte de un ejemplo que funciona, [`tools/refs-check/verify-urls.mjs`](../tools/refs-check/verify-urls.mjs) (Node/`.mjs`): carga una lista de URL, registra el estado HTTP + el título de la página y modifica un fichero markdown. Una buena plantilla para «cargar N URL, extraer un campo de cada una, escribir los resultados de vuelta».
 
-**Mode B — `@playwright/cli` for one-off interactive exploration.**
-When you just need to poke at one page once (snapshot it, read a value, take a screenshot) and there's nothing worth keeping, the CLI is faster than authoring a script: `npx --yes @playwright/cli@latest <command>`. Token rule: prefer `snapshot` over dumping the DOM with `eval`.
+**Modo B: `@playwright/cli` para exploración interactiva puntual.**
+Cuando solo necesitas tantear una página una vez (sacarle un snapshot, leer un valor, hacer una captura) y no hay nada que merezca conservarse, la CLI es más rápida que escribir un script: `npx --yes @playwright/cli@latest <command>`. Regla de tokens: mejor `snapshot` que volcar el DOM con `eval`.
 
-Do **not** drive the browser turn-by-turn from chat ("now click that, now scroll"). If the task has more than ~2 steps, it's Mode A — write the script.
+**No** manejes el navegador turno a turno desde el chat («ahora haz clic ahí, ahora desplázate»). Si la tarea tiene más de ~2 pasos, es el modo A: escribe el script.
 
-## One-time host setup
+## Configuración única por máquina
 
-For a new tool dir:
+Para un directorio de herramienta nuevo:
 ```bash
 cd tools/<task-slug>/
 npm install playwright                  # local dep; add node_modules/ to .gitignore
 npx playwright install chromium         # ~150 MB, one-time per host, reused after
 ```
-For Mode B: `npx --yes @playwright/cli@latest <command>` — no install, caches on first call.
+Para el modo B: `npx --yes @playwright/cli@latest <command>`, sin instalación; se cachea en la primera llamada.
 
-**Front-load the user on the download.** The first browser provision on a fresh host pulls ~150 MB (Chromium only) to ~500 MB (all engines). Tell the user before kicking it off — same as any long-running install.
+**Avisa al usuario de la descarga por adelantado.** La primera instalación de navegadores en una máquina nueva descarga de ~150 MB (solo Chromium) a ~500 MB (todos los motores). Díselo al usuario antes de lanzarla, como con cualquier instalación larga.
 
-## Gotchas learned in practice
+## Trampas aprendidas en la práctica
 
-- **A real browser still gets bot-blocked sometimes.** Cloudflare-fronted hosts return a `403` interstitial (`"Just a moment…"` / `"Access Denied"`) even to headless Chromium with a proper User-Agent. When that happens the URL is behind a hard challenge — don't treat it as proof the resource is fake; escalate to a human click.
-- **Set a realistic User-Agent + `Accept-Language`.** The default Playwright UA gets refused more often. Use a `newContext({ userAgent, extraHTTPHeaders })` block.
-- **`waitUntil: 'domcontentloaded'`** is usually enough and far faster than `networkidle` for "did this page load and what's its title" checks.
-- **Verification scripts should only ever *upgrade* evidence, never clobber a prior positive.** A browser check that fails (block/timeout) is *indeterminate*, not negative — preserve whatever verdict you already had. Only positive new evidence (page loaded, content matched) should change a verdict.
-- **Auth stays out of git.** Log in only with credentials the user provides for that script (env / `.env`). Never persist cookies/sessions to the repo. 2FA flows hand back to the user.
+- **Un navegador de verdad también sufre bloqueos antibots a veces.** Los servidores detrás de Cloudflare devuelven una página intermedia `403` (`"Just a moment…"` / `"Access Denied"`) incluso a un Chromium headless con un User-Agent correcto. Cuando pasa eso, la URL está detrás de un desafío duro: no lo tomes como prueba de que el recurso es falso; pásaselo a un humano para que haga clic.
+- **Pon un User-Agent realista + `Accept-Language`.** El UA por defecto de Playwright se rechaza más a menudo. Usa un bloque `newContext({ userAgent, extraHTTPHeaders })`.
+- **`waitUntil: 'domcontentloaded'`** suele bastar y es mucho más rápido que `networkidle` para comprobaciones del tipo «¿ha cargado esta página y cuál es su título?».
+- **Los scripts de verificación solo deben mejorar la evidencia, nunca machacar un positivo anterior.** Una comprobación de navegador que falla (bloqueo/timeout) es **indeterminada**, no negativa: conserva el veredicto que ya tuvieras. Solo una evidencia nueva positiva (la página carga, el contenido coincide) debe cambiar un veredicto.
+- **La autenticación se queda fuera de git.** Inicia sesión solo con credenciales que el usuario facilite para ese script (env / `.env`). Nunca guardes cookies ni sesiones en el repositorio. Los flujos con 2FA se devuelven al usuario.
 
-## Portability note
+## Nota sobre portabilidad
 
-This skill is plain markdown and invocable in natural language (*"use Playwright to load…"*) — no scaffolding-specific mechanism. The durable layer is: this skill + the committed scripts + `package.json`. `node_modules/` and browser binaries are host-local and reprovisioned by `npm install`. Any agent scaffolding that can shell out to `node`/`npx` runs these unchanged.
+Esta skill es markdown sin más y se invoca en lenguaje natural («usa Playwright para cargar…»), sin ningún mecanismo propio de un scaffolding concreto. La capa duradera es: esta skill + los scripts versionados + `package.json`. `node_modules/` y los binarios de los navegadores son locales de cada máquina y `npm install` los vuelve a instalar. Cualquier scaffolding de agentes que pueda lanzar `node`/`npx` desde el shell los ejecuta sin cambios.
 
-## Related
+## Relacionado
 
-- [`tools/refs-check/verify-urls.mjs`](../tools/refs-check/verify-urls.mjs) — the worked Mode-A example.
+- [`tools/refs-check/verify-urls.mjs`](../tools/refs-check/verify-urls.mjs): el ejemplo resuelto del modo A.
 
 ---
 
-*Canonical invocation is natural language; `/playwright` is the terse shortcut.*
+*La invocación canónica es en lenguaje natural; `/playwright` es el atajo corto.*

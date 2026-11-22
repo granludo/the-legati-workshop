@@ -1,29 +1,29 @@
-# [Comms] — standing triage rules
+# [Comms]: reglas de triaje permanentes
 
-> [!todo] You
-> Rules for inbox triage belong here. Over time you'll build up:
-> - Person priority list (who always appears at the top)
-> - Standing dismissals (senders/sources to always ignore)
-> - Standing decisions (things resolved that should no longer surface)
-> - Workflow batching rules (group items that require the same context switch)
+> [!todo] Tú
+> Aquí van las reglas de triaje de la bandeja de entrada. Con el tiempo irás reuniendo:
+> - Lista de prioridad de personas (quién aparece siempre arriba del todo)
+> - Descartes permanentes (remitentes o fuentes que hay que ignorar siempre)
+> - Decisiones permanentes (asuntos resueltos que ya no deberían aparecer)
+> - Reglas de agrupación del trabajo (juntar los elementos que requieren el mismo cambio de contexto)
 
 ---
 
-## Person priority
+## Prioridad de personas
 
-> [!todo] You
-> Add your key people here. Example structure:
-> - **[Key collaborator]** — always at the top, regardless of verdict
-> - **[Key student / direct report]** — explicit callout but no fixed top-of-list claim
+> [!todo] Tú
+> Añade aquí a tus personas clave. Estructura de ejemplo:
+> - **[Colaborador clave]**: siempre arriba del todo, sea cual sea el veredicto
+> - **[Estudiante clave / persona a tu cargo]**: mención explícita, pero sin un puesto fijo en lo alto de la lista
 
-## Standing ignore rules
+## Reglas permanentes para ignorar
 
-| Source | Rule | Established |
+| Fuente | Regla | Establecida |
 |---|---|---|
-| *(add your own)* | *(e.g.: MDPI journals — never surface review invitations)* | *(date)* |
+| *(añade las tuyas)* | *(p. ej.: revistas de MDPI, no mostrar nunca invitaciones a revisar)* | *(fecha)* |
 
-## Standing decisions
+## Decisiones permanentes
 
-| Subject | Decision | Date |
+| Asunto | Decisión | Fecha |
 |---|---|---|
-| *(add your own)* | | |
+| *(añade las tuyas)* | | |

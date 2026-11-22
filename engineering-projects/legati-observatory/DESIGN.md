@@ -1,17 +1,17 @@
-# Legati Observatory — DESIGN
+# Observatorio de los legati: DISEÑO
 
-## The one-paragraph picture
+## El cuadro en un párrafo
 
-Three layers, with a hard portability firewall between them. **Capture adapters** (harness-specific, swappable) translate whatever a harness emits into **our event schema** and append it to a plain **event log**. The event log + two tiny state directories (presence, locks) are the **portable core** — they know nothing about any specific harness. **Static renderers** read that core and emit screenshot-ready artifacts (a markdown dashboard, and an interactive single-file HTML). No server, no database, no cloud. Coordination between agents is **stigmergic**: agents write presence/lock traces and read each other's, with no orchestrator.
+Tres capas, con un cortafuegos de portabilidad estricto entre ellas. Los **adaptadores de captura** (específicos de cada harness, intercambiables) traducen lo que emita un harness a **nuestro esquema de eventos** y lo añaden a un simple **registro de eventos**. El registro de eventos + dos diminutos directorios de estado (presencia, bloqueos) forman el **núcleo portable**: no saben nada de ningún harness concreto. Los **renderizadores estáticos** leen ese núcleo y generan artefactos listos para una captura de pantalla (un dashboard en markdown y un HTML interactivo en un solo fichero). Sin servidor, sin base de datos, sin nube. La coordinación entre agentes es **estigmérgica**: los agentes escriben rastros de presencia y de bloqueo y leen los de los demás, sin orquestador.
 
-## Design decisions
+## Decisiones de diseño
 
-1. **Static, not a server.** Append-only event log → render static artifacts on demand. (Why not a webserver: a running process + port + non-portable code + a cloud-DB trust surface. Liveness, if ever wanted, becomes an *optional* `--watch` front-end, never the core.)
-2. **Capture = harness hook adapter + self-report.** A hook adapter for the automatic trail; a small `obs` CLI for the things only the agent knows (current task, locks). `ADAPTERS.md` documents the schema + a worked Claude Code adapter so porting to another harness is mechanical.
-3. **Agent-to-agent scope v0 = presence + advisory locks.** Structured handoffs are deferred until there are concrete use cases.
-4. **Git policy:** the **entire `.observatory/` is gitignored** — events, presence, locks — *and* so are the rendered dashboards. The state is machine-dependent; tracking a shared `dashboard.md` across hosts would be a merge-conflict generator. The renderer writes **per-host `dashboard-<hostname>.md`**. If a teaching snapshot is ever wanted in git, force-add that one file deliberately.
+1. **Estático, no un servidor.** Registro de eventos de solo anexado → artefactos estáticos renderizados a demanda. (Por qué no un servidor web: un proceso en marcha + un puerto + código no portable + una superficie de confianza en una base de datos en la nube. La vista en vivo, si algún día se quiere, será un front-end `--watch` opcional, nunca el núcleo.)
+2. **Captura = adaptador de hooks del harness + autoinforme.** Un adaptador de hooks para el rastro automático; una pequeña CLI `obs` para lo que solo sabe el agente (la tarea actual, los bloqueos). `ADAPTERS.md` documenta el esquema + un adaptador de Claude Code resuelto, para que portarlo a otro harness sea mecánico.
+3. **Alcance de agente a agente en la v0 = presencia + bloqueos consultivos.** Los traspasos estructurados quedan aplazados hasta que haya casos de uso concretos.
+4. **Política de git:** **todo `.observatory/` está en el gitignore** (eventos, presencia, bloqueos), **y también** los dashboards renderizados. El estado depende de la máquina; versionar un `dashboard.md` compartido entre máquinas sería un generador de conflictos de merge. El renderizador escribe **un `dashboard-<hostname>.md` por máquina**. Si algún día se quiere una instantánea docente en git, fuerza el add de ese único fichero a propósito.
 
-## The portability firewall (the heart of it)
+## El cortafuegos de portabilidad (el corazón del asunto)
 
 ```
  [ Claude Code ]        [ Codex / future ]         ← harnesses
@@ -27,11 +27,11 @@ Three layers, with a hard portability firewall between them. **Capture adapters*
               render/dashboard-<host>.md / .html               ← artifacts
 ```
 
-The core CLI (`obs`) and the renderers import **nothing** harness-specific. Swapping harnesses = writing one new adapter that emits the same schema. This is the durable-layer-vs-scaffolding firewall: the scaffolding (a harness's hook config) is disposable; the durable layer (schema + core) never depends on it.
+La CLI del núcleo (`obs`) y los renderizadores no importan **nada** específico de un harness. Cambiar de harness = escribir un adaptador nuevo que emita el mismo esquema. Es el cortafuegos entre la capa duradera y el andamiaje: el andamiaje (la configuración de hooks de un harness) es desechable; la capa duradera (esquema + núcleo) nunca depende de él.
 
-## Event schema (the contract — v0)
+## Esquema de eventos (el contrato, v0)
 
-One JSON object per line, append-only. Minimal on purpose; extend later.
+Un objeto JSON por línea, solo de anexado. Mínimo a propósito; se ampliará más adelante.
 
 ```json
 {
@@ -50,9 +50,9 @@ One JSON object per line, append-only. Minimal on purpose; extend later.
 }
 ```
 
-`agent` + `parent_session_id` give "who is doing what" and "who is orchestrating whom." `project` + `cost_usd` give per-project cost.
+`agent` + `parent_session_id` dan «quién hace qué» y «quién orquesta a quién». `project` + `cost_usd` dan el coste por proyecto.
 
-## File layout
+## Disposición de ficheros
 
 ```
 .observatory/                      # hidden, machine state — gitignored
@@ -67,55 +67,55 @@ engineering-projects/legati-observatory/render/   # visible (Obsidian-friendly),
   # (orchestration graph is an inline Mermaid block inside dashboard-<host>.md)
 ```
 
-Both `.observatory/` and the visible `render/` are gitignored (machine-dependent, per-host). The dashboard lives OUTSIDE the hidden dir because some editors (e.g. Obsidian) don't show dot-directories.
+Tanto `.observatory/` como el `render/` visible están en el gitignore (dependen de la máquina). El dashboard vive FUERA del directorio oculto porque algunos editores (p. ej., Obsidian) no muestran los directorios que empiezan por punto.
 
-## Presence
+## Presencia
 
-Each live session writes/refreshes `sessions/<session_id>.json`:
+Cada sesión activa escribe o actualiza `sessions/<session_id>.json`:
 ```json
 { "agent":"orchestrator","host":"your-host","cwd":"...","started":"...","last_seen":"...","current_task":"scaffolding the observatory" }
 ```
-`last_seen` is bumped on every event (hook) and by `obs heartbeat`. A session with `last_seen` older than `STALE_MINUTES` (default 10) is rendered as **stale/dead**. `current_task` is set by the agent via `obs task "..."` — the human-readable "what am I doing" only the agent knows.
+`last_seen` se actualiza con cada evento (hook) y con `obs heartbeat`. Una sesión cuyo `last_seen` tenga más de `STALE_MINUTES` (10 por defecto) se muestra como **inactiva/muerta**. `current_task` lo fija el agente con `obs task "..."`: el «qué estoy haciendo» legible por humanos que solo sabe el agente.
 
-`obs who` → prints the live sessions (who, where, doing what). **This is the awareness primitive** an agent calls before a risky op.
+`obs who` → imprime las sesiones activas (quién, dónde, haciendo qué). **Es la primitiva de conciencia del entorno** a la que llama un agente antes de una operación arriesgada.
 
-## Advisory locks (the part that kills the race bug)
+## Bloqueos consultivos (la parte que acaba con el fallo de carrera)
 
-The failure this fixes: two instances regenerate the same shared file (a dashboard, an index) at once → "file modified since read" → partial writes.
+El fallo que esto resuelve: dos instancias regeneran a la vez el mismo fichero compartido (un dashboard, un índice) → «file modified since read» → escrituras parciales.
 
-Protocol:
+Protocolo:
 - `obs lock acquire <slug> --task "..." --ttl 15`
-  → **atomically** creates `locks/<slug>.lock` (via `O_CREAT|O_EXCL` — atomic exclusive create *is* the mutex; not a check-then-write). Contents: owner session, agent, ts, ttl, task.
-  → if the file already exists and is **live** (within ttl), acquire **fails** and returns the current owner.
-- `obs lock check <slug>` → live owner or free.
-- `obs lock release <slug>` → removes it (only the owner should).
-- TTL expiry auto-frees a lock whose owner crashed (no deadlock).
+  → crea `locks/<slug>.lock` de forma **atómica** (con `O_CREAT|O_EXCL`: la creación exclusiva atómica **es** el mutex; no es un comprobar y luego escribir). Contenido: sesión propietaria, agent, ts, ttl, task.
+  → si el fichero ya existe y está **vivo** (dentro del ttl), la adquisición **falla** y devuelve el propietario actual.
+- `obs lock check <slug>` → propietario vivo o libre.
+- `obs lock release <slug>` → lo elimina (solo debería hacerlo el propietario).
+- Al vencer el TTL, un bloqueo cuyo propietario se ha caído se libera solo (sin interbloqueo).
 
-**Honest scope:** the lock is *advisory* — the OS doesn't stop a non-cooperating writer; agents honor it by discipline encoded in your agent guide. But because acquire uses atomic exclusive-create, **two cooperating agents cannot both win the same lock** — that closes the actual race. The discipline rule to encode: *before regenerating any shared file, `obs lock acquire` it; if the acquire fails, surface the live owner and stand down.*
+**Alcance honesto:** el bloqueo es **consultivo**: el sistema operativo no detiene a quien escribe sin cooperar; los agentes lo respetan por una disciplina escrita en tu guía de agentes. Pero como la adquisición usa creación exclusiva atómica, **dos agentes que cooperan no pueden ganar los dos el mismo bloqueo**, y eso cierra la carrera real. La regla de disciplina que hay que escribir: «antes de regenerar cualquier fichero compartido, haz `obs lock acquire` sobre él; si la adquisición falla, informa del propietario vivo y retírate».
 
-## Renderers — static
+## Renderizadores: estáticos
 
-`obs render` reads the core and writes `render/dashboard-<host>.md`:
-- **Presence table** — who's live, host, cwd/project, current task, last-seen age.
-- **Active locks** — slug, owner, task, ttl remaining.
-- **Recent activity** — last N events, by session.
-- **Cost by project** — table.
-- **Orchestration** — parent→child session/subagent graph as an **inline Mermaid flowchart** (live/stale node styling).
+`obs render` lee el núcleo y escribe `render/dashboard-<host>.md`:
+- **Tabla de presencia**: quién está activo, máquina, cwd/proyecto, tarea actual, tiempo desde la última señal.
+- **Bloqueos activos**: slug, propietario, tarea, ttl restante.
+- **Actividad reciente**: los últimos N eventos, por sesión.
+- **Coste por proyecto**: tabla.
+- **Orquestación**: grafo padre→hijo de sesiones y subagentes como **diagrama de flujo Mermaid en línea** (estilo de nodo según esté vivo o inactivo).
 
-Regenerated on demand (and optionally by a git pre-commit hook or a file-watcher). Static markdown/HTML = renders in an editor, drops into a screencast, commits cleanly.
+Se regenera a demanda (y, opcionalmente, con un hook pre-commit de git o un vigilante de ficheros). Markdown/HTML estático = se ve en un editor, se mete en un screencast, se hace commit sin problemas.
 
-Two render surfaces:
-- **Markdown** (`render/dashboard-<host>.md`) — the at-a-glance view: live sessions, locks, today's feed/cost, Mermaid orchestration graph.
-- **HTML** (`render/dashboard-<host>.html`, via `--html`) — a self-contained single file: event data embedded as JSON + vanilla JS → **interactive zoom in-browser** (time-range now/today/7d/30d/all, agent/project/search filters, session drill-down, cost bars). Still static, no server, no cloud, no CDN.
+Dos superficies de renderizado:
+- **Markdown** (`render/dashboard-<host>.md`): la vista rápida, con las sesiones activas, los bloqueos, la actividad y el coste del día y el grafo de orquestación en Mermaid.
+- **HTML** (`render/dashboard-<host>.html`, con `--html`): un único fichero autocontenido, con los datos de eventos incrustados como JSON + JS sin frameworks → **zoom interactivo en el navegador** (rango temporal ahora/hoy/7d/30d/todo, filtros de agente/proyecto/búsqueda, detalle por sesión, barras de coste). Sigue siendo estático: sin servidor, sin nube, sin CDN.
 
-Each render also writes a timestamped copy to `render/history/`.
+Cada renderizado escribe además una copia con marca de tiempo en `render/history/`.
 
-## Build scope
+## Alcance de la construcción
 
-1. `.observatory/` layout + `.gitignore`.
-2. `obs` CLI (Python, stdlib only, 3.9+): `emit`, `task`, `heartbeat`, `who`, `agent`, `lock {acquire,check,release}`, `render`.
-3. `adapters/claude-code/` hook handler + `ADAPTERS.md` (schema contract + worked CC config + how-to-port).
-4. Static renderers → `render/dashboard-<host>.md` (+ `--html`).
-5. Discipline rule into your agent guide (lock-before-shared-write).
+1. Disposición de `.observatory/` + `.gitignore`.
+2. CLI `obs` (Python, solo biblioteca estándar, 3.9+): `emit`, `task`, `heartbeat`, `who`, `agent`, `lock {acquire,check,release}`, `render`.
+3. Hook handler de `adapters/claude-code/` + `ADAPTERS.md` (contrato del esquema + configuración de CC resuelta + cómo portarlo).
+4. Renderizadores estáticos → `render/dashboard-<host>.md` (+ `--html`).
+5. Regla de disciplina en tu guía de agentes (bloquear antes de una escritura compartida).
 
-Post-v1: SVG/PNG cost export, an optional `--watch` live view, structured agent-to-agent handoffs.
+Después de la v1: exportación del coste a SVG/PNG, una vista en vivo `--watch` opcional, traspasos estructurados de agente a agente.

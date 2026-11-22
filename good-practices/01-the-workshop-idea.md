@@ -1,41 +1,41 @@
-# 1. The workshop idea
+# 1. La idea del taller
 
-Most people use AI the way they use Google: a question, an answer, next question. The session ends, everything resets. The AI learned nothing about you, and you learned nothing about the AI. It's a vending machine — useful, but not a collaborator.
+Casi todo el mundo usa la IA como usa Google: una pregunta, una respuesta, siguiente pregunta. La sesión termina y todo se reinicia. La IA no ha aprendido nada sobre ti, y tú no has aprendido nada sobre la IA. Es una máquina expendedora: útil, pero no un colaborador.
 
-A workshop is the opposite of that. The session ends and something persists: the memory of what you're working on, the memory of how you think and write, the memory of the decisions you've made and why. The next session starts with context that took real time to build. Over months, the difference compounds.
+Un taller es justo lo contrario. La sesión termina y algo persiste: la memoria de en qué estás trabajando, la memoria de cómo piensas y escribes, la memoria de las decisiones que has tomado y por qué. La siguiente sesión empieza con un contexto que ha costado tiempo de verdad construir. Con los meses, la diferencia se acumula.
 
-What I notice — and this is the thing I try to explain to colleagues who ask about it — is not that I'm more productive. I'm not. I produce roughly the same number of papers. What changes is the depth of the work. Problems that used to sit in a drawer for years because I could never get enough traction on them become tractable. The AI doesn't solve them. But it holds the context while I think, asks better questions than I would ask myself, and forces me to articulate positions I had been carrying around vaguely. That's not productivity. That's intellectual leverage.
+Lo que noto (y es lo que intento explicar a los colegas que me preguntan por ello) no es que sea más productivo. No lo soy. Saco más o menos el mismo número de artículos. Lo que cambia es la profundidad del trabajo. Problemas que se quedaban años en un cajón porque nunca conseguía hincarles el diente se vuelven abordables. La IA no los resuelve. Pero sostiene el contexto mientras pienso, hace mejores preguntas de las que me haría yo y me obliga a articular posiciones que llevaba encima de forma vaga. Eso no es productividad. Es palanca intelectual.
 
-## What the repo does
+## Qué hace el repositorio
 
-The workshop repo is the durable layer. It outlasts any single conversation, any model version, any tool upgrade. The AI that reads it today may be a different model than the one that reads it next year — but the repo remembers what both sessions learned. This is the structural insight: **you are not building a chatbot. You are building a long-running collaborator that accumulates context.**
+El repositorio del taller es la capa duradera. Sobrevive a cualquier conversación, a cualquier versión del modelo, a cualquier actualización de las herramientas. La IA que lo lee hoy puede ser un modelo distinto del que lo lea el año que viene, pero el repositorio recuerda lo que aprendieron las dos sesiones. Esta es la idea estructural: **no estás construyendo un chatbot. Estás construyendo un colaborador de largo recorrido que acumula contexto.**
 
-The repo holds:
-- The memory system — what the agents know about you, your work, and your preferences
-- The skill definitions — what operations the agents can perform
-- The tooling — actual working scripts for PDF generation, transcription, source processing, bibliography verification
-- The agent identities — the characters you've given to each specialized role
+El repositorio contiene:
+- El sistema de memoria: lo que los agentes saben de ti, de tu trabajo y de tus preferencias
+- Las definiciones de las skills: qué operaciones pueden hacer los agentes
+- Las herramientas: scripts que funcionan de verdad para generar PDF, transcribir, procesar fuentes y verificar bibliografía
+- Las identidades de los agentes: los personajes que has dado a cada rol especializado
 
-None of this exists in the AI's weights. It's all here, in plain text, under version control. When the AI reads it at session start, it becomes the agent you designed — not a generic assistant.
+Nada de esto está en los pesos de la IA. Está todo aquí, en texto plano, bajo control de versiones. Cuando la IA lo lee al empezar la sesión, se convierte en el agente que has diseñado, no en un asistente genérico.
 
-## The difference this makes
+## La diferencia que marca
 
-The writing profile is the most concrete example. After running this workshop for a year, I have a document that describes how I write: my rhythm, the phrases I avoid, how I structure arguments, the metaphors I reach for, the register shifts between academic papers and public essays. When I start a session with "load the writing profile," the output stops sounding like AI and starts sounding like me. Not perfectly — the calibration never ends. But the first draft is now usable rather than a demolition project.
+El perfil de escritura es el ejemplo más concreto. Después de un año con este taller, tengo un documento que describe cómo escribo: mi ritmo, las expresiones que evito, cómo estructuro los argumentos, las metáforas a las que recurro, los cambios de registro entre los artículos académicos y los ensayos para el público general. Cuando empiezo una sesión con «carga el perfil de escritura», el resultado deja de sonar a IA y empieza a sonar a mí. No del todo: la calibración no se acaba nunca. Pero ahora el primer borrador es aprovechable, y no una obra de demolición.
 
-That document didn't exist when I started. I built it by noticing when drafts missed, articulating why, and writing the rule. Same with the worldview document — the accumulated intellectual positions that prevent the agents from writing things I'd never say. Same with the memory files that record what happened in past sessions. The system gets better because you invest in it.
+Ese documento no existía cuando empecé. Lo construí fijándome en cuándo fallaban los borradores, articulando por qué y escribiendo la regla. Lo mismo con el documento de visión del mundo: las posiciones intelectuales acumuladas que impiden que los agentes escriban cosas que yo nunca diría. Lo mismo con los ficheros de memoria que registran lo que pasó en sesiones anteriores. El sistema mejora porque inviertes en él.
 
-## The minimum viable investment
+## La inversión mínima viable
 
-You don't need any of this to be perfect on day one. The scaffold ships with templates and stubs. What you need to do in the first month:
+No hace falta que nada de esto sea perfecto el primer día. El andamiaje viene con plantillas y esbozos. Lo que tienes que hacer el primer mes:
 
-1. Write a first draft of your writing profile. It will be thin. That's fine — it grows.
-2. Name your agents and give them at least a one-sentence mission. That's enough to start.
-3. Run a few sessions and notice what goes wrong. Write those corrections into `memory/` as feedback files.
+1. Escribe un primer borrador de tu perfil de escritura. Saldrá escueto. No pasa nada: crece.
+2. Ponles nombre a tus agentes y dales al menos una misión de una frase. Para empezar, basta.
+3. Haz unas cuantas sesiones y fíjate en lo que sale mal. Escribe esas correcciones en `memory/` como ficheros de feedback.
 
-The system becomes useful faster than you think. The first time an agent applies a correction from three weeks ago without you having to say it again, you understand why this is worth the setup.
+El sistema se vuelve útil antes de lo que crees. La primera vez que un agente aplica una corrección de hace tres semanas sin que tengas que repetírsela, entiendes por qué vale la pena montarlo.
 
-## What it doesn't do
+## Lo que no hace
 
-A workshop doesn't make you faster. It doesn't automate your thinking. The agents do not make decisions — you do. They hold context, generate drafts, verify references, surface patterns. The judgment is always yours.
+Un taller no te hace más rápido. No automatiza tu pensamiento. Los agentes no toman decisiones: las tomas tú. Sostienen el contexto, generan borradores, verifican referencias, hacen aflorar patrones. El criterio siempre es tuyo.
 
-This is a feature, not a limitation. The goal is deep work, not delegated work. An agent that made decisions for you would be replacing your intellectual output with its own. What you want is an agent that prepares the ground so your intellectual output can go deeper.
+Esto es una virtud, no una limitación. El objetivo es el trabajo profundo, no el trabajo delegado. Un agente que tomara decisiones por ti estaría sustituyendo tu producción intelectual por la suya. Lo que quieres es un agente que prepare el terreno para que tu producción intelectual pueda ir más hondo.

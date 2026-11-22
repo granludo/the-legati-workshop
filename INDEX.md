@@ -1,18 +1,18 @@
-# The Workshop — repository index
+# El taller: índice del repositorio
 
-**Purpose:** top-level map of the repo. Every folder and root-level file is documented here. Open it when you need to find where something lives (`AGENTS.md` §2).
+**Propósito:** mapa de primer nivel del repositorio. Aquí se documentan todas las carpetas y todos los ficheros de la raíz. Ábrelo cuando necesites saber dónde vive algo (`AGENTS.md` §2).
 
-**Rule:** any change to the filesystem (add, move, rename, delete) requires updating this file in the same commit. Non-optional.
-
----
-
-## What this repo is
-
-A personal intellectual workspace for long-form writing, research, and thinking with AI legati as collaborators, under Claude Code or Codex (or both), from one machine or several. Multiple writing projects may run in parallel. Each project has its own folder under `writting-projects/` and its own `BACKLOG.md`.
+**Regla:** cualquier cambio en el sistema de ficheros (añadir, mover, renombrar, borrar) obliga a actualizar este fichero en el mismo commit. No es opcional.
 
 ---
 
-## Top-level layout
+## Qué es este repositorio
+
+Un espacio de trabajo intelectual personal para escribir textos largos, investigar y pensar con legati de IA como colaboradores, con Claude Code o Codex (o ambos), desde una máquina o desde varias. Puede haber varios proyectos de escritura en paralelo. Cada proyecto tiene su propia carpeta en `writting-projects/` y su propio `BACKLOG.md`.
+
+---
+
+## Estructura de primer nivel
 
 ```
 the-workshop/
@@ -106,19 +106,19 @@ the-workshop/
 
 ---
 
-## Writing projects
+## Proyectos de escritura
 
-*(none yet — add entries here as projects are created)*
+*(ninguno todavía: añade entradas aquí a medida que crees proyectos)*
 
 ---
 
-## Active agents
+## Agentes activos
 
-*(fill in after running `/start-here`)*
+*(rellénalo después de ejecutar `/start-here`)*
 
-| Name | Role | Boot file | Launch |
+| Nombre | Rol | Fichero de arranque | Lanzamiento |
 |---|---|---|---|
-| [Orchestrator] | Default legatus, engineering, coordination | `characters/orchestrator/boot.md` | `./claude_orchestrator.sh` · `./codex_orchestrator.sh` |
-| [Writer] | Drafting, editorial, voice mimicry | `characters/writer/boot.md` | `./claude_writer.sh` · `./codex_writer.sh` |
-| [Comms] | Schedule, inbox (read-only) | `characters/comms/boot.md` | `./claude_comms.sh` · `./codex_comms.sh` |
-| [Reviewer] | Honest feedback on deliverables | `characters/reviewer/boot.md` | `./claude_reviewer.sh` · `./codex_reviewer.sh` |
+| [Orquestador] | Legatus por defecto, ingeniería, coordinación | `characters/orchestrator/boot.md` | `./claude_orchestrator.sh` · `./codex_orchestrator.sh` |
+| [Escritor] | Redacción, edición, imitación de la voz | `characters/writer/boot.md` | `./claude_writer.sh` · `./codex_writer.sh` |
+| [Comms] | Agenda, bandeja de entrada (solo lectura) | `characters/comms/boot.md` | `./claude_comms.sh` · `./codex_comms.sh` |
+| [Revisor] | Valoración honesta de los entregables | `characters/reviewer/boot.md` | `./claude_reviewer.sh` · `./codex_reviewer.sh` |

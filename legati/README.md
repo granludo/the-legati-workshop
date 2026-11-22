@@ -1,66 +1,66 @@
-# legati/ — working together across sessions, machines and harnesses
+# legati/: trabajar juntos entre sesiones, máquinas y harness
 
-Several legati sessions may work on this repo at the same time: two terminal tabs on one machine, a laptop and a desktop, Claude Code next to Codex. Nothing here assumes one harness. The background and the lessons are in [good-practices/08-many-legati-many-harnesses.md](../good-practices/08-many-legati-many-harnesses.md); this file is the operating manual.
+Varias sesiones de legati pueden trabajar a la vez en este repositorio: dos pestañas de terminal en una máquina, un portátil y un ordenador de sobremesa, Claude Code junto a Codex. Nada de lo que hay aquí presupone un único harness. El contexto y las lecciones aprendidas están en [good-practices/08-many-legati-many-harnesses.md](../good-practices/08-many-legati-many-harnesses.md); este fichero es el manual de operaciones.
 
-## The idea in one paragraph
+## La idea en un párrafo
 
-**Git is the bus.** Every commit is a timestamped, attributed event that any session reads after a pull; hand-offs are files carried by commits; a lane claim is a commit to the project's backlog. Different machines have separate working trees; terminals on one machine may share one checkout. Same-machine sessions additionally get the Legati Observatory's live presence, locks and chat (`engineering-projects/legati-observatory/`); those never cross machines and nothing here depends on them.
+**Git es el bus.** Cada commit es un evento fechado y con autoría que cualquier sesión lee después de un pull; los traspasos son ficheros que viajan en commits; reservar un carril es hacer un commit en el backlog del proyecto. Máquinas distintas tienen árboles de trabajo separados; los terminales de una misma máquina pueden compartir un mismo checkout. Las sesiones de una misma máquina tienen además la presencia en vivo, los bloqueos y el chat del Observatorio de los legati (`engineering-projects/legati-observatory/`); todo eso nunca sale de la máquina y nada de lo que hay aquí depende de ello.
 
-## The four rules
+## Las cuatro reglas
 
-1. **All git writes go through `tools/git/sync.sh`.** Path-scoped staging only (never `-A`, never `.`), trailers `Legatus:` / `Harness:` / `Host:` added automatically, rebase onto origin, push at once. A commit that is not pushed does not exist for the others. On macOS the rebase lifts the immutable flag (`uchg`) on files it must rewrite and restores it afterwards.
+1. **Toda escritura en git pasa por `tools/git/sync.sh`.** Solo staging limitado a rutas (nunca `-A`, nunca `.`), trailers `Legatus:` / `Harness:` / `Host:` añadidos automáticamente, rebase sobre origin y push en el acto. Un commit sin push no existe para los demás. En macOS, el rebase quita el indicador de inmutabilidad (`uchg`) de los ficheros que tiene que reescribir y lo restaura después.
    ```bash
    bash tools/git/sync.sh commit -m "Subject line" -- path/one.md path/two.md
    bash tools/git/sync.sh status | pull | push | log | whoami
    ```
-2. **Claim a lane before working on a project.** `python3 tools/legati/lane.py claim <project-dir> "<task>"` puts a `> [!lane]` callout at the top of that project's `BACKLOG.md` and pushes it. `lane.py list` shows every active lane; a claim younger than 24 hours by someone else means stand down or coordinate. `lane.py release <project-dir>` when done.
-3. **Messages are files, one per message.** `python3 tools/legati/handoff.py send --to writer --subject "…" --body "…"` writes `legati/handoffs/<timestamp>_<from>_to_<to>_<slug>.md` and pushes it. Recipients see it with `handoff.py inbox` and archive it with `handoff.py ack <file>` (moved to `legati/handoffs/archive/YYYY-MM/`, committed). `--to all` broadcasts; readers bump a local marker instead of archiving. One file per message is what keeps two senders from ever conflicting on the same line.
-4. **Session start = look before you touch.** `bash tools/legati/host-section.sh` prints this machine's section of `memory/reference_hosts.md`. `tools/legati/session-start.sh` fetches, pulls only when the tree is clean and there is no local commit, and lists the commits since this machine and harness last looked, the active lanes and unread hand-offs. `tools/legati/turn-start.sh` surfaces new hand-offs before each prompt. Both are hooked in Claude Code (tracked `.claude/settings.json`) and in Codex (`install-hooks.sh codex`).
+2. **Reserva el carril antes de trabajar en un proyecto.** `python3 tools/legati/lane.py claim <project-dir> "<task>"` pone un callout `> [!lane]` al principio del `BACKLOG.md` de ese proyecto y hace push. `lane.py list` muestra todos los carriles activos; una reserva de otro con menos de 24 horas significa retirarse o coordinarse. `lane.py release <project-dir>` al terminar.
+3. **Los mensajes son ficheros, uno por mensaje.** `python3 tools/legati/handoff.py send --to writer --subject "…" --body "…"` escribe `legati/handoffs/<timestamp>_<from>_to_<to>_<slug>.md` y hace push. Los destinatarios lo ven con `handoff.py inbox` y lo archivan con `handoff.py ack <file>` (se mueve a `legati/handoffs/archive/YYYY-MM/` y se hace commit). `--to all` lo difunde a todos; los lectores avanzan una marca local en lugar de archivarlo. Un fichero por mensaje es lo que impide que dos remitentes choquen nunca en la misma línea.
+4. **Inicio de sesión = mira antes de tocar.** `bash tools/legati/host-section.sh` imprime la sección de esta máquina en `memory/reference_hosts.md`. `tools/legati/session-start.sh` hace fetch, hace pull solo cuando el árbol está limpio y no hay ningún commit local, y lista los commits desde la última vez que esta máquina y este harness miraron, los carriles activos y los traspasos sin leer. `tools/legati/turn-start.sh` muestra los traspasos nuevos antes de cada prompt. Los dos tienen hook en Claude Code (`.claude/settings.json` versionado) y en Codex (`install-hooks.sh codex`).
 
-## Launching a legatus
+## Lanzar un legatus
 
 | | Claude Code | Codex |
 |---|---|---|
-| One legatus in this tab | `./claude_<name>.sh` | `./codex_<name>.sh` |
-| What it runs | `legati/bin/legatus <name> claude-code` | `legati/bin/legatus <name> codex` |
-| How the boot file arrives | appended to the system prompt | Codex reads `AGENTS.md` natively; the opening prompt names the boot file |
-| One-time setup per machine | trust the folder when asked | `codex login`, `bash tools/legati/install-hooks.sh codex`, approve `/hooks` once |
+| Un legatus en esta pestaña | `./claude_<name>.sh` | `./codex_<name>.sh` |
+| Qué ejecuta | `legati/bin/legatus <name> claude-code` | `legati/bin/legatus <name> codex` |
+| Cómo llega el fichero de arranque | se añade al prompt de sistema | Codex lee `AGENTS.md` de forma nativa; el prompt inicial nombra el fichero de arranque |
+| Configuración única por máquina | confiar en la carpeta cuando lo pida | `codex login`, `bash tools/legati/install-hooks.sh codex`, aprobar `/hooks` una vez |
 
-- The launcher sets `LEGATUS_AGENT` and `LEGATUS_HARNESS`, names the terminal tab, and starts the harness in the repo root. For Codex it also sets a unique `LEGATUS_SESSION`, so two simultaneous Codex tabs never share an identity.
-- **Two legati in one tab:** `legati/bin/legatus comms --with reviewer` (or `comms+reviewer`). `LEGATUS_COMPANIONS` is exported, the tab is titled `COMMS+REVIEWER`, and both boot files are loaded behind a pairing note: the lead answers by default, the companion in its lane, each with its own prefix.
-- **Default harness and model per legatus:** `legati/roster.toml`. The root wrappers name the harness explicitly; `legati/bin/legatus <name>` alone uses the roster.
-- **New or renamed legatus:** `bash tools/legati/make-launchers.sh` regenerates the wrappers from `characters/*/boot.md`.
-- **Dry run:** `LEGATUS_DRY_RUN=1 ./codex_writer.sh` prints the command without launching.
-- Extra arguments go to the harness: `./codex_reviewer.sh -m <model>`, `./claude_writer.sh --model <model>`.
+- El lanzador define `LEGATUS_AGENT` y `LEGATUS_HARNESS`, pone nombre a la pestaña del terminal y arranca el harness en la raíz del repositorio. Para Codex define además un `LEGATUS_SESSION` único, de modo que dos pestañas de Codex simultáneas nunca comparten identidad.
+- **Dos legati en una pestaña:** `legati/bin/legatus comms --with reviewer` (o `comms+reviewer`). Se exporta `LEGATUS_COMPANIONS`, la pestaña se titula `COMMS+REVIEWER` y se cargan los dos ficheros de arranque tras una nota de emparejamiento: el que lidera responde por defecto, el acompañante en su carril, cada uno con su propio prefijo.
+- **Harness y modelo por defecto de cada legatus:** `legati/roster.toml`. Los envoltorios de la raíz nombran el harness de forma explícita; `legati/bin/legatus <name>` a secas usa el roster.
+- **Legatus nuevo o renombrado:** `bash tools/legati/make-launchers.sh` regenera los envoltorios a partir de `characters/*/boot.md`.
+- **Ensayo en seco:** `LEGATUS_DRY_RUN=1 ./codex_writer.sh` imprime el comando sin lanzarlo.
+- Los argumentos adicionales pasan al harness: `./codex_reviewer.sh -m <model>`, `./claude_writer.sh --model <model>`.
 
-## Identity
+## Identidad
 
-`Legatus` comes from the Observatory's per-session marker (`obs.py agent <name>` writes it on a persona switch), else from `LEGATUS_AGENT` (the launcher default), else `unknown`. `Harness` is detected from the environment (`LEGATUS_HARNESS` overrides). `Host` is the short hostname.
+`Legatus` sale de la marca por sesión del Observatorio (`obs.py agent <name>` la escribe en un cambio de personaje); si no la hay, de `LEGATUS_AGENT` (el valor por defecto del lanzador); y si tampoco, `unknown`. `Harness` se detecta a partir del entorno (`LEGATUS_HARNESS` tiene prioridad). `Host` es el nombre corto de la máquina.
 
-Session ids resolve in this order: `LEGATUS_SESSION`, `CLAUDE_CODE_SESSION_ID`, `CLAUDE_SESSION_ID`, `CODEX_THREAD_ID`. The Observatory, the git trailers and the hand-offs use the same marker for that id, so a persona switch inside a session is attributed correctly everywhere. A plain `codex` or `claude` start (no launcher) asks which legatus; after the answer, `obs.py agent <name>` pins it.
+Los ids de sesión se resuelven en este orden: `LEGATUS_SESSION`, `CLAUDE_CODE_SESSION_ID`, `CLAUDE_SESSION_ID`, `CODEX_THREAD_ID`. El Observatorio, los trailers de git y los traspasos usan la misma marca para ese id, así que un cambio de personaje dentro de una sesión se atribuye bien en todas partes. Un arranque simple con `codex` o `claude` (sin lanzador) pregunta qué legatus; tras la respuesta, `obs.py agent <name>` lo fija.
 
-Offline checks (no harness, no model, no network, no git writes): `python3 -B tools/legati/test_identity.py` and `python3 -B tools/legati/test_state.py`.
+Comprobaciones sin conexión (sin harness, sin modelo, sin red, sin escrituras en git): `python3 -B tools/legati/test_identity.py` y `python3 -B tools/legati/test_state.py`.
 
-## What lives where
+## Qué vive dónde
 
-| | in git (crosses machines) | per machine (never committed) |
+| | en git (viaja entre máquinas) | por máquina (nunca va en un commit) |
 |---|---|---|
-| Commits with trailers | ✓ | |
-| `legati/handoffs/*.md` and `archive/` | ✓ | |
-| Lane callouts in `BACKLOG.md` files | ✓ | |
-| "Since last looked", inbox and chat read markers | | `.legati-state/` |
-| Observatory events, presence, locks, chat | | `.observatory/` |
-| Codex hook wiring and project config | | `.codex/` |
-| Claude Code per-machine additions | | `.claude/settings.local.json` |
+| Commits con trailers | ✓ | |
+| `legati/handoffs/*.md` y `archive/` | ✓ | |
+| Callouts de carril en los ficheros `BACKLOG.md` | ✓ | |
+| Marcas de lectura de «desde la última vez», de la bandeja y del chat | | `.legati-state/` |
+| Eventos, presencia, bloqueos y chat del Observatorio | | `.observatory/` |
+| Conexión de los hooks de Codex y configuración de proyecto | | `.codex/` |
+| Añadidos por máquina de Claude Code | | `.claude/settings.local.json` |
 
-## When a pull conflicts
+## Cuando un pull da conflicto
 
-It will, occasionally, on shared index files (`MEMORY.md`, `INDEX.md`, a `BACKLOG.md`). Resolution rule: **keep both sides' lines**, then `git add <file> && git rebase --continue && bash tools/git/sync.sh push`. Lanes keep this rare. If in doubt, `git rebase --abort` and ask the principal.
+Pasará de vez en cuando con los ficheros de índice compartidos (`MEMORY.md`, `INDEX.md`, un `BACKLOG.md`). Regla de resolución: **conserva las líneas de los dos lados** y después `git add <file> && git rebase --continue && bash tools/git/sync.sh push`. Los carriles hacen que esto sea raro. En caso de duda, `git rebase --abort` y pregunta al principal.
 
-## Your remote
+## Tu remoto
 
-The workshop needs a **private** remote of your own for any of this to cross machines. A fresh clone of the public scaffold still points at it: the session start then skips the pull and `sync.sh push` refuses, until you point `origin` at your own repository (`skills/start-here.md`, step 6).
+Para que algo de esto viaje entre máquinas, el taller necesita un remoto **privado** propio. Un clon recién hecho del andamiaje público sigue apuntando a él: el inicio de sesión se salta entonces el pull y `sync.sh push` se niega, hasta que apuntes `origin` a tu propio repositorio (`skills/start-here.md`, paso 6).
 
-## Codex inside its sandbox
+## Codex dentro de su sandbox
 
-Codex runs shell commands in a sandbox that may not write `.git` from a hook. The start hook then prints a local briefing and says "Git refresh deferred"; the legatus completes it with `bash tools/legati/session-start.sh --refresh` through Codex's approval flow (the `AGENTS.md` Codex appendix says how). `--local` forces the local briefing in any harness. The generated `.codex/config.toml` keeps `workspace-write` with network and `on-request` approvals; do not widen it.
+Codex ejecuta los comandos de shell en un sandbox que quizá no pueda escribir en `.git` desde un hook. El hook de inicio imprime entonces un resumen local y dice «Git refresh deferred»; el legatus lo completa con `bash tools/legati/session-start.sh --refresh` mediante el flujo de aprobación de Codex (el apéndice de Codex de `AGENTS.md` explica cómo). `--local` fuerza el resumen local en cualquier harness. El `.codex/config.toml` generado mantiene `workspace-write` con red y aprobaciones `on-request`; no lo amplíes.

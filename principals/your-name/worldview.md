@@ -1,38 +1,38 @@
-# [Your Name] — worldview and intellectual positions
+# [Tu nombre]: visión del mundo y posiciones intelectuales
 
-> [!todo] You
-> This document teaches agents your values, intellectual positions, and recurring arguments. It's what prevents agents from writing things that contradict what you actually believe, and what allows them to extend your arguments coherently rather than in generic directions.
+> [!todo] Tú
+> Este documento enseña a los agentes tus valores, tus posiciones intelectuales y tus argumentos recurrentes. Es lo que impide que los agentes escriban cosas que contradicen lo que de verdad piensas, y lo que les permite prolongar tus argumentos con coherencia en lugar de llevarlos hacia direcciones genéricas.
 >
-> You don't have to fill this in all at once. Start with the positions you hold most strongly and that are most relevant to your work. Refine over time.
+> No tienes que rellenarlo todo de una vez. Empieza por las posiciones que defiendes con más fuerza y que más tienen que ver con tu trabajo. Ve afinándolo con el tiempo.
 >
-> See `good-practices/03-memory.md` for the philosophy.
+> La filosofía está en `good-practices/03-memory.md`.
 
 ---
 
-## How to use this document
+## Cómo usar este documento
 
-Each section is a numbered intellectual position. Agents reference positions by number (e.g., "§4" or "worldview §12") when making claims or design decisions that flow from your values. This makes it easy to trace *why* an agent made a choice.
+Cada sección es una posición intelectual numerada. Los agentes citan las posiciones por número (por ejemplo, «§4» o «worldview §12») cuando hacen afirmaciones o toman decisiones de diseño que se derivan de tus valores. Así es fácil rastrear *por qué* un agente tomó una decisión.
 
-Start with 5-10 positions. Let the number grow as your sessions teach you what's missing.
-
----
-
-## §1 [Your first position]
-
-[State the position clearly in 1-3 sentences. Be specific. "I believe technology should serve humans" is not a position — it's a platitude. "I believe educational technology systematically serves institutional interests over learner interests, and that the design choices that produce this are rarely malicious" is a position.]
+Empieza con 5-10 posiciones. Deja que el número crezca a medida que las sesiones te enseñen lo que falta.
 
 ---
 
-## §2 [Your second position]
+## §1 [Tu primera posición]
+
+[Enuncia la posición con claridad en 1-3 frases. Sé concreto. «Creo que la tecnología debería estar al servicio de las personas» no es una posición: es un tópico. «Creo que la tecnología educativa sirve sistemáticamente a los intereses institucionales por encima de los de quien aprende, y que las decisiones de diseño que lo provocan rara vez son malintencionadas» sí es una posición.]
 
 ---
 
-## §3 [Your third position]
+## §2 [Tu segunda posición]
 
 ---
 
-> [!todo] You
-> Keep adding positions as you discover what you believe. The best moments to add a new §N are:
-> - When an agent writes something that misses your point in a revealing way
-> - When you're explaining to someone (or to the agent) why you disagree with a mainstream position
-> - When you write something you're proud of and want to anchor the reasoning behind it
+## §3 [Tu tercera posición]
+
+---
+
+> [!todo] Tú
+> Sigue añadiendo posiciones a medida que descubras lo que piensas. Los mejores momentos para añadir un nuevo §N son:
+> - Cuando un agente escribe algo que no capta tu idea de una forma reveladora
+> - Cuando le explicas a alguien (o al agente) por qué no estás de acuerdo con una posición mayoritaria
+> - Cuando escribes algo de lo que estás orgulloso y quieres fijar el razonamiento que hay detrás

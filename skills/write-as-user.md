@@ -1,37 +1,37 @@
-# /write-as-[you] — load your writing profile
+# /write-as-[you]: carga tu perfil de escritura
 
-**When to invoke:** before any writing task. The Writer agent loads your writing profile so output sounds like you, not like a generic AI.
+**Cuándo invocarla:** antes de cualquier tarea de escritura. El agente escritor carga tu perfil de escritura para que el resultado suene a ti y no a una IA genérica.
 
-**Who runs it:** the Writer agent.
+**Quién la ejecuta:** el agente escritor (`writer`).
 
-> [!todo] You
-> This skill file is a template. Before using it:
-> 1. Write `principals/[your-name]/writing-profile.md` — the document that teaches agents your voice.
-> 2. Rename this file to `write-as-[your-name].md` (e.g., `write-as-alice.md`).
-> 3. Update the path in step 1 below to match your file.
-> 4. Update the skill table in `skills/README.md` and the writer's `boot.md` to point at the renamed file.
+> [!todo] Tú
+> Este fichero de skill es una plantilla. Antes de usarlo:
+> 1. Escribe `principals/[your-name]/writing-profile.md`, el documento que enseña tu voz a los agentes.
+> 2. Renombra este fichero a `write-as-[your-name].md` (por ejemplo, `write-as-alice.md`).
+> 3. Actualiza la ruta del paso 1 de más abajo para que coincida con tu fichero.
+> 4. Actualiza la tabla de skills de `skills/README.md` y el `boot.md` del escritor para que apunten al fichero renombrado.
 
 ---
 
-## What to do
+## Qué hacer
 
-1. Read `principals/[your-name]/writing-profile.md` in full.
-2. Confirm to the user: "Writing profile loaded — ready to write as [your name]."
-3. Apply the profile to everything you write this session until told otherwise.
+1. Lee `principals/[your-name]/writing-profile.md` entero.
+2. Confírmale al usuario: «Perfil de escritura cargado: listo para escribir como [tu nombre].»
+3. Aplica el perfil a todo lo que escribas en esta sesión hasta que te digan lo contrario.
 
-## What this means in practice
+## Qué quiere decir esto en la práctica
 
-- Match the voice, tone, and rhythm described in the profile.
-- Use the domain-specific register for the domain you're working in.
-- Apply the structural patterns (how the user opens, closes, structures arguments).
-- Avoid the explicit "what to avoid" list.
-- Do not add features, caveats, or sections the user did not ask for.
-- If the profile says first-draft-in-English, do that regardless of the target language.
+- Ajústate a la voz, el tono y el ritmo que describe el perfil.
+- Usa el registro propio del dominio en el que estés trabajando.
+- Aplica los patrones de estructura (cómo abre el usuario, cómo cierra, cómo estructura los argumentos).
+- Evita lo que figura explícitamente en la lista de «qué evitar».
+- No añadas elementos, salvedades ni secciones que el usuario no haya pedido.
+- Si el perfil dice primer borrador en inglés, hazlo así, sea cual sea la lengua de destino.
 
-## When the profile is thin or new
+## Cuando el perfil es escueto o nuevo
 
-The profile grows over time. If it's sparse, write the best approximation you can and flag to the user what you guessed — so they can add to the profile.
+El perfil crece con el tiempo. Si todavía es escaso, escribe la mejor aproximación que puedas y avisa al usuario de lo que has supuesto, para que pueda añadirlo al perfil.
 
-## The profile is not a cage
+## El perfil no es una jaula
 
-The profile captures patterns, not rules. If a specific piece calls for a departure from the usual register (e.g., a formal grant proposal when the user usually writes colloquially), note the departure and ask before proceeding.
+El perfil recoge patrones, no reglas. Si un texto concreto pide apartarse del registro habitual (por ejemplo, una solicitud formal de financiación cuando el usuario suele escribir en tono coloquial), señala el cambio y pregunta antes de seguir.

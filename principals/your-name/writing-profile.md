@@ -1,67 +1,67 @@
-# [Your Name] — writing profile
+# [Tu nombre]: perfil de escritura
 
-> [!todo] You
-> This is the most important document for your Writer agent. It teaches the agent your voice. Without it, the agent writes competently but generically. With it, the agent writes *as you*.
+> [!todo] Tú
+> Este es el documento más importante para tu agente Escritor. Le enseña tu voz. Sin él, el agente escribe con competencia pero de forma genérica. Con él, el agente escribe *como tú*.
 >
-> Fill in each section. Don't aim for perfection — start with what you know now and refine as sessions teach you what's missing. The profile grows best when you read a draft that sounds wrong and can articulate why.
+> Rellena cada sección. No busques la perfección: empieza por lo que sabes ahora y ve afinando a medida que las sesiones te enseñen lo que falta. El perfil crece mejor cuando lees un borrador que suena mal y sabes explicar por qué.
 >
-> See `good-practices/05-writing-workflow.md` for guidance on building this document.
+> En `good-practices/05-writing-workflow.md` tienes orientaciones para construir este documento.
 
 ---
 
-## Part 1: Voice and style
+## Parte 1: voz y estilo
 
-**Register:** [How do you write? Formal academic? Essayistic? Conversational? Technical? Which register for which context?]
+**Registro:** [¿Cómo escribes? ¿Académico formal? ¿Ensayístico? ¿Conversacional? ¿Técnico? ¿Qué registro para qué contexto?]
 
-**Rhythm:** [Sentence length? Do you vary rhythm deliberately? Short declarative sentences? Long subordinate clauses? Both?]
+**Ritmo:** [¿Longitud de las frases? ¿Varías el ritmo a propósito? ¿Frases declarativas cortas? ¿Subordinadas largas? ¿Las dos cosas?]
 
-**Tone:** [Serious? Ironic? Warm? Critical? How does it shift across contexts?]
+**Tono:** [¿Serio? ¿Irónico? ¿Cálido? ¿Crítico? ¿Cómo cambia según el contexto?]
 
-**What you avoid:** [Filler phrases, hedging, passive voice, specific words you hate, structural patterns you find lazy.]
+**Lo que evitas:** [Frases de relleno, rodeos para no comprometerte, voz pasiva, palabras concretas que odias, patrones estructurales que te parecen perezosos.]
 
-**Metaphors and examples:** [Do you use metaphors? What kind? What's your example-giving style?]
+**Metáforas y ejemplos:** [¿Usas metáforas? ¿De qué tipo? ¿Cómo sueles poner ejemplos?]
 
-**Humor:** [Do you use humor in your writing? When? What kind? What's the anti-pattern?]
+**Humor:** [¿Usas el humor cuando escribes? ¿Cuándo? ¿De qué tipo? ¿Cuál es el antipatrón?]
 
 ---
 
-## Part 2: Topic domains
+## Parte 2: dominios temáticos
 
-[List the domains you write in. For each, note the audience, the register, and any domain-specific conventions.]
+[Enumera los dominios en los que escribes. Para cada uno, anota el público, el registro y las convenciones propias del dominio.]
 
-- **Domain A:** [e.g., technology criticism] — audience: [who?], register: [how?]
-- **Domain B:** [e.g., technical documentation] — audience: [who?], register: [how?]
+- **Dominio A:** [p. ej., crítica de la tecnología]; público: [¿quién?], registro: [¿cómo?]
+- **Dominio B:** [p. ej., documentación técnica]; público: [¿quién?], registro: [¿cómo?]
 
 > [!note]
-> Domain separation matters: *writing style* applies everywhere, but *topic content and references* should not mix unless the connection is genuinely organic to the argument. Writing about AI education should not suddenly import your software engineering war stories unless they serve the point.
+> La separación de dominios importa: el *estilo de escritura* vale en todas partes, pero el *contenido temático y las referencias* no deberían mezclarse salvo que la conexión surja de verdad del propio argumento. Un texto sobre IA en la educación no debería importar de repente tus batallitas de ingeniería del software, salvo que sirvan al argumento.
 
 ---
 
-## Part 3: Structural patterns
+## Parte 3: patrones estructurales
 
-[How do you structure arguments? How do you open pieces? How do you close them? What's your relationship to outlines?]
+[¿Cómo estructuras los argumentos? ¿Cómo abres los textos? ¿Cómo los cierras? ¿Qué relación tienes con los esquemas?]
 
-**Argument structure:** [inductive? deductive? narrative arc? historical arc?]
+**Estructura argumental:** [¿inductiva? ¿deductiva? ¿arco narrativo? ¿arco histórico?]
 
-**Openings:** [How do you like to open essays, chapters, papers?]
+**Comienzos:** [¿Cómo te gusta abrir ensayos, capítulos, artículos?]
 
-**Closings:** [How do you like to close? Summary? Open question? Provocation?]
+**Cierres:** [¿Cómo te gusta cerrar? ¿Resumen? ¿Pregunta abierta? ¿Provocación?]
 
-**Section length:** [How long are your sections typically?]
-
----
-
-## Part 4: Markers convention
-
-When agents flag something for your attention inside a document, they use Obsidian callouts:
-- `> [!todo] You` — action items
-- `> [!question] You` — open questions
-- `> [!note]` — commentary
-
-Never `<NOTE>` or `<!-- NOTE -->`.
+**Longitud de las secciones:** [¿Qué extensión suelen tener tus secciones?]
 
 ---
 
-## Part 5: Language-specific notes
+## Parte 4: convención de marcas
 
-[If you write in multiple languages, note any language-specific conventions, model routing preferences, or voice differences.]
+Cuando los agentes te señalan algo dentro de un documento, usan callouts de Obsidian:
+- `> [!todo] Tú`: acciones pendientes
+- `> [!question] Tú`: preguntas abiertas
+- `> [!note]`: comentarios
+
+Nunca `<NOTE>` ni `<!-- NOTE -->`.
+
+---
+
+## Parte 5: notas por idioma
+
+[Si escribes en varios idiomas, anota las convenciones propias de cada idioma, tus preferencias sobre a qué modelo enviar cada uno o las diferencias de voz.]

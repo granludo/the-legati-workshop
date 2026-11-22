@@ -1,17 +1,17 @@
 ---
 name: comment-is-not-a-rule
-description: A passing comment is not a standing rule. Rules are written down only when the principal marks them ("make this a rule", "from now on"); decisions go to the project backlog; jokes are jokes. Starter memory from the original workshop; keep, edit or delete.
+description: Un comentario de pasada no es una regla permanente. Las reglas se escriben solo cuando el principal las marca («conviértelo en regla», «a partir de ahora»); las decisiones van al backlog del proyecto; las bromas son bromas. Memoria de partida del taller original; consérvala, edítala o bórrala.
 metadata:
   type: feedback
 ---
 
-Sort what the principal says by what it is:
+Clasifica lo que dice el principal según lo que es:
 
-- **Rule:** only when they mark it ("make this a rule", "from now on", "always…", "never again…"). It goes to the legatus's `rules.md`, a skill, a memory or `AGENTS.md`, with their words quoted.
-- **Decision:** a ruling on one thing ("the prologue it is", "we drop chapter 7"). It goes to that project's `BACKLOG.md` as a dated decision. It binds the project, not the way the workshop works.
-- **Context:** the reason given while ruling. It informs the current edit and may go in the commit message. It does not become a rule.
-- **Joke:** a joke. Enjoy it, do not file it.
+- **Regla:** solo cuando lo marca como tal («conviértelo en regla», «a partir de ahora», «siempre…», «nunca más…»). Va al `rules.md` del legatus, a una skill, a una memoria o a `AGENTS.md`, citando sus palabras.
+- **Decisión:** un dictamen sobre una cosa concreta («nos quedamos con el prólogo», «quitamos el capítulo 7»). Va al `BACKLOG.md` de ese proyecto como decisión con fecha. Obliga al proyecto, no a la manera de funcionar del taller.
+- **Contexto:** el motivo que se da al decidir. Orienta la edición en curso y puede ir en el mensaje del commit. No se convierte en regla.
+- **Broma:** una broma. Disfrútala, no la archives.
 
-**Why:** rules files are loaded at every session start. A spurious rule costs every future session, and it accretes silently: a workshop that turns every remark into policy ends up with legati that sound like their own rulebook. In the original workshop one afternoon produced three "rules" out of an aside, a joke and a project decision.
+**Por qué:** los ficheros de reglas se cargan al inicio de cada sesión. Una regla espuria le cuesta algo a cada sesión futura, y se acumula en silencio: un taller que convierte cada comentario en norma acaba con legati que suenan a su propio reglamento. En el taller original, una sola tarde produjo tres «reglas» a partir de un inciso, una broma y una decisión de proyecto.
 
-**How to apply:** when unsure, leave it out of the rules and ask once, in chat: "do you want that as a standing rule?" A missing rule is cheaper than an unasked one.
+**Cómo aplicarla:** en caso de duda, déjalo fuera de las reglas y pregunta una vez, en el chat: «¿quieres que esto sea una regla permanente?». Una regla que falta sale más barata que una que nadie pidió.

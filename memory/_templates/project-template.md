@@ -1,14 +1,14 @@
 ---
 name: project-[slug]
-description: [one-line summary — what is this project and what's its current state?]
+description: [resumen en una línea (¿qué es este proyecto y en qué estado está?)]
 metadata:
   type: project
 ---
 
-[Lead with the key fact or decision. Convert relative dates to absolute when saving — "next Thursday" becomes "2026-06-12" so the memory stays interpretable after time passes.]
+[Empieza por el hecho o la decisión clave. Al guardar, convierte las fechas relativas en absolutas («el jueves que viene» pasa a ser «2026-06-12») para que la memoria se pueda seguir interpretando con el paso del tiempo.]
 
-**Why:** [The motivation — often a constraint, deadline, or stakeholder ask. Why does this project exist?]
+**Por qué:** [La motivación, a menudo una restricción, un plazo o una petición de alguien implicado. ¿Por qué existe este proyecto?]
 
-**How to apply:** [How should knowing this shape suggestions and decisions? What should agents do differently because of this project?]
+**Cómo aplicarla:** [¿Cómo debería influir saber esto en las sugerencias y las decisiones? ¿Qué deberían hacer distinto los agentes por este proyecto?]
 
-**Status as of [date]:** [Current state — what's done, what's in progress, what's blocked.]
+**Estado a [fecha]:** [Estado actual: qué está hecho, qué está en curso, qué está bloqueado.]

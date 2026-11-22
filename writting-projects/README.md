@@ -1,23 +1,23 @@
-# Writing projects
+# Proyectos de escritura
 
-Active writing projects live here. Each project gets its own folder with a `BACKLOG.md` tracking discrete tasks (recently done / active / up next / postponed).
+Aquí viven los proyectos de escritura activos. Cada proyecto tiene su propia carpeta con un `BACKLOG.md` que hace el seguimiento de tareas concretas (hechas recientemente / activas / siguientes / aplazadas).
 
-## Conventions
+## Convenciones
 
-- One folder per project.
-- Every project folder has a `BACKLOG.md`. Maintaining it is part of "done" — any change to a project's files must update the backlog in the same commit.
-- Projects that are complete or inactive move to `archive/`.
-- Domain separation: projects in different topic domains should not borrow references or anecdotes from each other unless the connection is genuinely organic.
+- Una carpeta por proyecto.
+- Cada carpeta de proyecto tiene un `BACKLOG.md`. Mantenerlo forma parte de «hecho»: cualquier cambio en los ficheros de un proyecto debe actualizar el backlog en el mismo commit.
+- Los proyectos terminados o inactivos pasan a `archive/`.
+- Separación de dominios: los proyectos de dominios temáticos distintos no deberían tomarse prestadas referencias ni anécdotas salvo que la conexión surja de verdad por sí sola.
 
-## Currently active
+## Activos ahora
 
-*(none yet — add your first project and document it in INDEX.md)*
+*(ninguno todavía: añade tu primer proyecto y documéntalo en INDEX.md)*
 
 ---
 
-> [!todo] You
-> When you start your first writing project:
-> 1. Create `writting-projects/[project-slug]/`
-> 2. Create `writting-projects/[project-slug]/BACKLOG.md`
-> 3. Add a line to `INDEX.md` pointing at it
-> 4. Add a memory file at `memory/project-[slug].md` with the project brief
+> [!todo] Tú
+> Cuando empieces tu primer proyecto de escritura:
+> 1. Crea `writting-projects/[project-slug]/`
+> 2. Crea `writting-projects/[project-slug]/BACKLOG.md`
+> 3. Añade a `INDEX.md` una línea que apunte a él
+> 4. Añade un fichero de memoria en `memory/project-[slug].md` con la ficha del proyecto

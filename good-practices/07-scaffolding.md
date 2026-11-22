@@ -1,47 +1,47 @@
-# 7. The scaffold
+# 7. El andamiaje
 
-The workshop repo is a scaffold for a long-running collaboration. Understanding what that means structurally is worth the ten minutes it takes to read this.
+El repositorio del taller es el andamiaje de una colaboración de largo recorrido. Entender qué quiere decir eso en términos de estructura vale los diez minutos que se tarda en leer esto.
 
-## AGENTS.md is the contract
+## AGENTS.md es el contrato
 
-`AGENTS.md` is the first thing any agent reads at session start, under any harness: Codex reads it natively, and Claude Code loads it through the one-line `@AGENTS.md` import at the top of `CLAUDE.md`. It's not documentation — it's operating instructions. It defines, or points to:
-- Who the agents are and what their lanes are
-- What skills are available and how to invoke them
-- What compute tiers exist and when to use them
-- What the non-negotiable rules are
+`AGENTS.md` es lo primero que lee cualquier agente al empezar la sesión, con cualquier harness: Codex lo lee de forma nativa, y Claude Code lo carga mediante la importación de una línea, `@AGENTS.md`, que hay al principio de `CLAUDE.md`. No es documentación: son instrucciones de funcionamiento. Define, o señala:
+- Quiénes son los agentes y cuáles son sus carriles
+- Qué skills hay y cómo se invocan
+- Qué niveles de cómputo existen y cuándo usarlos
+- Cuáles son las reglas innegociables
 
-When you change a behavior — add an agent, deprecate a skill, change a routing rule — `AGENTS.md` is where the change lives. Not in a memory file, not in a comment in a script. The contract. If the change only concerns one harness, it goes in that harness's appendix (Claude Code's is in `CLAUDE.md`, Codex's at the end of `AGENTS.md`).
+Cuando cambias un comportamiento (añadir un agente, retirar una skill, cambiar una regla de enrutado), el cambio vive en `AGENTS.md`. No en un fichero de memoria, no en un comentario dentro de un script. En el contrato. Si el cambio solo afecta a un harness, va en el apéndice de ese harness (el de Claude Code está en `CLAUDE.md`; el de Codex, al final de `AGENTS.md`).
 
-## The portability discipline
+## La disciplina de la portabilidad
 
-The workshop scaffold should not depend on any specific AI tool, platform, or provider. The skills are plain markdown files. The memory is plain markdown. The tools are plain Python scripts. The agent identities are plain markdown. None of it requires Claude Code specifically, or any particular version of Claude, or any particular plugin.
+El andamiaje del taller no debería depender de ninguna herramienta, plataforma o proveedor de IA concretos. Las skills son ficheros markdown planos. La memoria es markdown plano. Las herramientas son scripts de Python sin más. Las identidades de los agentes son markdown plano. Nada de esto requiere Claude Code en particular, ni ninguna versión concreta de Claude, ni ningún plugin concreto.
 
-This is not an accident. The repo is the durable layer precisely because it's provider-agnostic. When Claude Code adds a new hook system, or changes its command format, or gets replaced by a better tool — the workshop survives. The durable layer is the skills and memories and identities in this repo. The AI is the engine that rotates underneath.
+No es casualidad. El repositorio es la capa duradera precisamente porque no depende del proveedor. Cuando Claude Code añada un sistema de hooks nuevo, o cambie el formato de sus comandos, o lo sustituya una herramienta mejor, el taller sobrevivirá. La capa duradera son las skills, las memorias y las identidades de este repositorio. La IA es el motor que va rotando por debajo.
 
-The practical implication: when you're building a new skill or tool, don't tie it to a Claude Code-specific mechanism unless there's no alternative. Natural language invocation ("run the status skill") is more portable than a slash command, which depends on the shell parsing it correctly.
+La consecuencia práctica: cuando construyas una skill o una herramienta nueva, no la ates a un mecanismo propio de Claude Code a menos que no haya alternativa. Invocar en lenguaje natural («ejecuta la skill de status») es más portable que un comando de barra, que depende de que la shell lo interprete bien.
 
-## INDEX.md maintenance — the non-optional rule
+## El mantenimiento de INDEX.md: la regla que no es opcional
 
-Every change to the filesystem — every file added, renamed, moved, or deleted — requires updating `INDEX.md` in the same commit. No exceptions.
+Cada cambio en el sistema de ficheros (cada fichero que se añade, se renombra, se mueve o se borra) exige actualizar `INDEX.md` en el mismo commit. Sin excepciones.
 
-This sounds like unnecessary overhead. It's the opposite. The INDEX is what allows any session — any agent, any model, any future tool — to orient in the repo without reading every file. When the INDEX is stale, the repo becomes opaque. Opaque repos accumulate dead code, superseded drafts, and orphaned references that no one wants to clean up because no one knows what's safe to remove.
+Parece una carga innecesaria. Es lo contrario. El INDEX es lo que permite a cualquier sesión (cualquier agente, cualquier modelo, cualquier herramienta futura) orientarse en el repositorio sin leer todos los ficheros. Cuando el INDEX está desfasado, el repositorio se vuelve opaco. Los repositorios opacos acumulan código muerto, borradores superados y referencias huérfanas que nadie quiere limpiar porque nadie sabe qué se puede quitar sin peligro.
 
-The discipline is: "done" means the INDEX is updated.
+La disciplina es esta: «terminado» quiere decir que el INDEX está actualizado.
 
-## The archive-not-delete rule
+## La regla de archivar, no borrar
 
-Never delete anything from the workshop. Old drafts, superseded notes, orphaned scripts, failed experiments — they all go to `archive/`, with a brief note about what they were and why they were set aside. The archive is preservation for future mining, not a trash can you have to empty.
+No borres nunca nada del taller. Borradores viejos, notas superadas, scripts huérfanos, experimentos fallidos: todo va a `archive/`, con una nota breve sobre qué era y por qué se apartó. El archivo es conservación para excavar en el futuro, no una papelera que haya que vaciar.
 
-The reason is partly practical — you'll want that draft back more often than you think — and partly intellectual. The history of what you tried and abandoned is part of the intellectual record of a project. A year from now you may not remember why you discarded an approach. The archive entry tells you.
+El motivo es en parte práctico (querrás recuperar ese borrador más a menudo de lo que crees) y en parte intelectual. La historia de lo que probaste y abandonaste forma parte del registro intelectual de un proyecto. Dentro de un año puede que no recuerdes por qué descartaste un enfoque. La entrada del archivo te lo dice.
 
-## Multiple sessions, same repo
+## Varias sesiones, un mismo repositorio
 
-When you're deep in a project, it's common to run multiple sessions simultaneously, under Claude Code, Codex or both — one for writing, one for engineering, one handling background tooling. This is fine, but it requires coordination. The coordination mechanism is the per-project `BACKLOG.md`. Before any session starts work in a project folder, it checks the BACKLOG for what's in flight. Before it commits, it updates the BACKLOG.
+Cuando estás metido a fondo en un proyecto, es habitual tener varias sesiones a la vez, con Claude Code, con Codex o con los dos: una para escribir, otra para ingeniería, otra con las herramientas en segundo plano. No pasa nada, pero exige coordinación. El mecanismo de coordinación es el `BACKLOG.md` de cada proyecto. Antes de que una sesión empiece a trabajar en la carpeta de un proyecto, mira en el BACKLOG qué hay en curso. Antes de hacer commit, actualiza el BACKLOG.
 
-The corollary: don't run two sessions that regenerate the same dashboard or shared file simultaneously. Race conditions in a plain-text repo look like "File has been modified since read" errors and partial commits. The BACKLOG convention prevents most of them. Chapter 8 covers the rest: lanes, hand-offs, and the commit discipline that keeps several legati working across machines and harnesses.
+El corolario: no tengas dos sesiones regenerando a la vez el mismo panel o el mismo fichero compartido. Las condiciones de carrera en un repositorio de texto plano se manifiestan como errores de «File has been modified since read» y commits a medias. La convención del BACKLOG evita la mayoría. El capítulo 8 cubre el resto: los carriles, los traspasos y la disciplina de commits que mantiene a varios legati trabajando en varias máquinas y con varios harness.
 
-## When to add a skill
+## Cuándo añadir una skill
 
-Add a skill when you find yourself explaining the same multi-step operation to an agent more than twice. If you're writing "read the writing profile, check the domain, use the three-document chain, run a prose-tic sweep before output" in every writing session, that's a skill. Write it once; invoke it forever.
+Añade una skill cuando te descubras explicándole a un agente la misma operación de varios pasos más de dos veces. Si en cada sesión de escritura tecleas «lee el perfil de escritura, comprueba el dominio, usa la cadena de tres documentos, haz un barrido de tics de prosa antes de entregar», eso es una skill. Escríbela una vez; invócala siempre.
 
-The skill file is not a procedure. It's a briefing — what the operation is, why it matters, and what the agent needs to check before, during, and after. A good skill file is short: under 200 lines. If it's longer, you're documenting edge cases that belong in `memory/` or in the agent's `rules.md`.
+El fichero de la skill no es un procedimiento. Es un briefing: qué es la operación, por qué importa y qué tiene que comprobar el agente antes, durante y después. Un buen fichero de skill es corto: menos de 200 líneas. Si es más largo, estás documentando casos límite que van en `memory/` o en el `rules.md` del agente.
