@@ -27,7 +27,7 @@ Delete a word or construction unless removing it loses **information or an argum
 
 ## Family (d): mannered prose — the test the blacklists generalise
 
-Added 2026-09-02 from Anthropic's prompting guidance on prose style. The blacklists above catch words we have already met; this family catches the mechanism, so it works on words we have not met and in every language.
+Added 2026-09-02 from Anthropic's prompting guidance on prose style. The blacklists below catch words we have already met; this family catches the mechanism, so it works on words we have not met and in every language.
 
 **Definition.** Mannered prose substitutes metaphor and flourish for direct statement. "A dial worth turning" for "a parameter worth varying"; "earns its keep" for "still matters"; "the ledger will empty on its own" for "the backlog will drain". The phrase exists to display the writer, not to convey the idea. It is also imprecise: the metaphor drags in connotations the writer did not choose.
 

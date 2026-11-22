@@ -55,5 +55,5 @@ After any re-run, run `python3 tools/wiki/validate.py` to catch broken links and
 
 The bootstrap is a *first pass*. Steady-state maintenance:
 - **On-touch** — when a content file under in-scope folders is added / edited / moved, the wiki entries that reference it should also be touched in the same commit. Pre-commit hook at `tools/git-hooks/pre-commit-wiki-check.sh` warns when this discipline slips.
-- **Weekly Mycroft sweep** — periodic `validate.py` run, propose updates for entries whose `last-touched` lags.
-- **Filling the long tail** — bootstrap leaves many entries as scaffolds (auto-generated frontmatter + sources + timeline; placeholder Summary/Evolution). Mycroft and Agatha fill summaries/evolution incrementally as work touches the underlying files. High-value entries (top projects, named persons, key-ideas) get priority.
+- **Weekly orchestrator sweep** — periodic `validate.py` run, propose updates for entries whose `last-touched` lags.
+- **Filling the long tail** — bootstrap leaves many entries as scaffolds (auto-generated frontmatter + sources + timeline; placeholder Summary/Evolution). The orchestrator and the writer fill summaries/evolution incrementally as work touches the underlying files. High-value entries (top projects, named persons, key-ideas) get priority.
