@@ -1,29 +1,29 @@
-# [Comms] — standing triage rules
+# [Comunicacions]: regles de triatge permanents
 
-> [!todo] You
-> Rules for inbox triage belong here. Over time you'll build up:
-> - Person priority list (who always appears at the top)
-> - Standing dismissals (senders/sources to always ignore)
-> - Standing decisions (things resolved that should no longer surface)
-> - Workflow batching rules (group items that require the same context switch)
+> [!todo] Tu
+> Aquí hi van les regles de triatge de la safata d'entrada. Amb el temps n'aniràs construint:
+> - Llista de prioritat de persones (qui surt sempre a dalt de tot)
+> - Descarts permanents (remitents o fonts que cal ignorar sempre)
+> - Decisions permanents (coses resoltes que ja no haurien d'aflorar)
+> - Regles d'agrupament de feina (agrupar els elements que demanen el mateix canvi de context)
 
 ---
 
-## Person priority
+## Prioritat de persones
 
-> [!todo] You
-> Add your key people here. Example structure:
-> - **[Key collaborator]** — always at the top, regardless of verdict
-> - **[Key student / direct report]** — explicit callout but no fixed top-of-list claim
+> [!todo] Tu
+> Afegeix-hi les teves persones clau. Estructura d'exemple:
+> - **[Col·laborador clau]**: sempre a dalt de tot, sigui quin sigui el veredicte
+> - **[Estudiant clau / subordinat directe]**: menció explícita, però sense un lloc fix a dalt de la llista
 
-## Standing ignore rules
+## Regles permanents per ignorar
 
-| Source | Rule | Established |
+| Font | Regla | Establerta |
 |---|---|---|
-| *(add your own)* | *(e.g.: MDPI journals — never surface review invitations)* | *(date)* |
+| *(afegeix-hi les teves)* | *(p. ex., revistes MDPI: no fer aflorar mai les invitacions a revisar)* | *(data)* |
 
-## Standing decisions
+## Decisions permanents
 
-| Subject | Decision | Date |
+| Assumpte | Decisió | Data |
 |---|---|---|
-| *(add your own)* | | |
+| *(afegeix-hi les teves)* | | |

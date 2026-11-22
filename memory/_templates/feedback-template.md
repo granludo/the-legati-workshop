@@ -1,12 +1,12 @@
 ---
 name: feedback-[slug]
-description: [one-line summary — what behavior does this correct or confirm?]
+description: [resum en una línia. Quin comportament corregeix o confirma?]
 metadata:
   type: feedback
 ---
 
-[Lead with the rule itself. Be specific enough that a future agent can apply it without asking you again.]
+[Comença per la regla mateixa. Sigues prou concret perquè un agent futur la pugui aplicar sense haver-te de tornar a preguntar.]
 
-**Why:** [The reason — often a past incident, a strong preference, or a downstream consequence you discovered. Knowing why helps agents judge edge cases rather than blindly following the rule.]
+**Per què:** [El motiu: sovint un incident passat, una preferència forta o una conseqüència que vas descobrir més tard. Saber el perquè ajuda els agents a jutjar els casos límit en lloc de seguir la regla a cegues.]
 
-**How to apply:** [When does this rule kick in? What triggers it? Are there exceptions?]
+**Com aplicar-ho:** [Quan entra en joc aquesta regla? Què la desencadena? Hi ha excepcions?]

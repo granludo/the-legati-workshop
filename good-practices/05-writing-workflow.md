@@ -1,43 +1,43 @@
-# 5. The writing workflow
+# 5. El flux d'escriptura
 
-The single most important improvement in my writing workflow over the past year has been focusing on the reader. Not on what I want to say — on what the reader needs to receive. When I start a session by asking "who is reading this and what do they need?" instead of "what should I write?", the output improves immediately and substantially.
+La millora més important en la meva manera d'escriure d'aquest darrer any ha estat centrar-me en el lector. No en el que jo vull dir, sinó en el que el lector necessita rebre. Quan començo una sessió preguntant «qui llegirà això i què necessita?» en lloc de «què hauria d'escriure?», el resultat millora a l'acte, i molt.
 
-This sounds obvious. It is not. The temptation with AI-assisted writing is to prompt for content — "write me a section about X" — and then try to improve what comes back. The result is always generic, because the prompt was generic. The reader was nowhere in the room.
+Sembla obvi. No ho és. La temptació, quan escrius amb ajuda de la IA, és demanar contingut («escriu-me una secció sobre X») i després intentar millorar el que et torna. El resultat sempre és genèric, perquè el prompt era genèric. El lector no era a la sala.
 
-The discipline is to establish the reader before writing anything. Who are they? What do they already know? What do they need to understand or decide or feel by the end? What will they push back against? Once you have a clear reader, the agent can do real work.
+La disciplina és fixar el lector abans d'escriure res. Qui és? Què sap ja? Què ha d'entendre, decidir o sentir quan acabi? Què li costarà d'acceptar? Un cop tens clar el lector, l'agent pot fer feina de debò.
 
-## The three-document chain
+## La cadena de tres documents
 
-For any piece of substance — a paper, a chapter, a long article — I have found the following workflow reliable:
+Per a qualsevol text de pes (un article acadèmic, un capítol, un article llarg), aquest flux de treball m'ha resultat fiable:
 
-1. **The dense reference document.** This is for you, not the reader. It contains everything you know about the subject: the argument structure, the evidence, the counterarguments, the claims you're confident in and the ones you're uncertain about. The agent helps you build it, but it's your thinking. Dense, bullet-pointed, cross-referenced, annotated. This document never ships.
+1. **El document de referència dens.** És per a tu, no per al lector. Conté tot el que saps del tema: l'estructura de l'argument, les proves, els contraarguments, les afirmacions de què estàs segur i les que et fan dubtar. L'agent t'ajuda a construir-lo, però el pensament és teu. Dens, en punts, amb referències creuades, anotat. Aquest document no surt mai del taller.
 
-2. **The draft.** The agent writes this *from the reference document, not from scratch*. This is the key discipline: the draft is an engineering operation on the reference document. It translates dense notes into readable prose for the specific reader you've identified. The agent doesn't need to know what to say — you've already said it in the reference. It needs to know how to say it for this reader.
+2. **L'esborrany.** L'escriu l'agent *a partir del document de referència, no del no-res*. Aquesta és la disciplina clau: l'esborrany és una operació d'enginyeria sobre el document de referència. Converteix notes denses en prosa llegible per al lector concret que has identificat. L'agent no necessita saber què ha de dir: ja ho has dit tu a la referència. Necessita saber com dir-ho per a aquest lector.
 
-3. **Your editing pass.** The draft is not the output. It's the starting point for your editing. The agent produces fluent sentences but not your sentences. Your job is to cut what's generic, intensify what's specific, and enforce your voice throughout. The editing pass is where the work becomes yours.
+3. **La teva passada d'edició.** L'esborrany no és el resultat. És el punt de partida de la teva edició. L'agent produeix frases fluides, però no són les teves frases. La teva feina és retallar el que és genèric, reforçar el que és concret i imposar la teva veu de cap a cap. És a la passada d'edició on la feina es torna teva.
 
-This workflow seems inefficient — three documents instead of one. In practice it's faster, because each stage has a clear input and a clear constraint. The agent knows exactly what it's doing at each step. You're never looking at a blank page.
+Aquest flux sembla ineficient: tres documents en lloc d'un. A la pràctica és més ràpid, perquè cada etapa té una entrada clara i una restricció clara. L'agent sap exactament què fa a cada pas. No et trobes mai davant d'una pàgina en blanc.
 
-## First draft in English, then translate
+## Primer esborrany en anglès, i després traduir
 
-If you write in a language other than English, write the first draft in English and then translate. This sounds counterintuitive if English is not your primary language. But AI systems generate sharper, more idiomatic, more structurally sound prose in English. A Catalan text generated cold from a Catalan prompt will have different weaknesses than a Catalan text translated from a well-crafted English original. The translation step is not a burden — it's quality control.
+Si escrius en una llengua que no és l'anglès, fes el primer esborrany en anglès i després tradueix-lo. Sembla contraintuïtiu si l'anglès no és la teva llengua principal. Però els sistemes d'IA generen en anglès una prosa més precisa, més idiomàtica i més ben estructurada. Un text català generat en fred a partir d'un prompt en català tindrà febleses diferents de les d'un text català traduït d'un bon original anglès. El pas de la traducció no és una càrrega: és control de qualitat.
 
-The exception: if the specific register or argumentation style is culturally specific to another language (certain kinds of irony, certain rhetorical traditions), write the draft in that language and have a bilingual review pass catch what was lost.
+L'excepció: si el registre o l'estil d'argumentació és propi de la cultura d'una altra llengua (certes menes d'ironia, certes tradicions retòriques), escriu l'esborrany en aquella llengua i fes una passada de revisió bilingüe que reculli el que s'hagi perdut.
 
-## The writing profile is a living document
+## El perfil d'escriptura és un document viu
 
-The writing profile is not finished. It's never finished. Every time a draft misses your voice and you can articulate why, you have new material for the profile. Every time an agent produces something that sounds exactly like you and you notice it, record what made that work — so you can reproduce it.
+El perfil d'escriptura no està acabat. No ho està mai. Cada vegada que un esborrany no encerta la teva veu i saps explicar per què, tens material nou per al perfil. Cada vegada que un agent produeix una cosa que sona exactament com tu i te n'adones, apunta què l'ha fet funcionar, per poder-ho reproduir.
 
-I update my writing profile two or three times a month. Not wholesale rewrites — small additions. "I noticed I was correcting every instance of X — add it to the avoid list." "The agent nailed the opening of this piece — it did Y, which is what I do. Add that as a pattern." The profile becomes richer over time, and the first drafts get progressively better.
+Actualitzo el meu perfil d'escriptura dues o tres vegades al mes. No són reescriptures senceres: són petites addicions. «M'he adonat que corregia cada aparició de X: afegeix-ho a la llista de coses a evitar.» «L'agent ha clavat l'inici d'aquest text: ha fet Y, que és el que faig jo. Afegeix-ho com a patró.» El perfil s'enriqueix amb el temps, i els primers esborranys són cada cop millors.
 
-## Domain separation
+## La separació de dominis
 
-If you write across multiple topic domains, keep them separated. Writing style applies everywhere — tone, rhythm, metaphor rules, the way you structure arguments. But topic content and references stay domain-specific. An essay about AI in education should not suddenly import your software engineering war stories unless the connection is genuinely organic to the argument. The risk of collapse is real when an agent is asked to work across domains: it will start importing patterns from the adjacent domain because they're in the same session context.
+Si escrius sobre diversos dominis temàtics, mantén-los separats. L'estil d'escriptura s'aplica a tot arreu: el to, el ritme, les regles sobre metàfores, la manera d'estructurar els arguments. Però el contingut i les referències es queden dins de cada domini. Un assaig sobre la IA a l'educació no hauria d'importar de sobte les teves batalletes d'enginyeria del programari, tret que la connexió neixi de debò de l'argument. El risc que tot es barregi és real quan demanes a un agent que treballi entre dominis: començarà a importar patrons del domini veí perquè són al mateix context de sessió.
 
-The discipline: maintain separate folders for separate domains, maintain separate source collections for separate domains, and be explicit with the agent about which domain you're working in at the start of each session.
+La disciplina: carpetes separades per a dominis separats, col·leccions de fonts separades per a dominis separats, i dir-li clarament a l'agent, a l'inici de cada sessió, en quin domini treballes.
 
-## On LLM prose tics
+## Sobre els tics de prosa dels LLM
 
-AI-generated text has characteristic patterns that mark it as AI-generated. Readers notice them even if they can't name them. The common ones: "delve," "crucial," "fascinating," "intricate," "in today's world," "navigate the landscape," "embark on," "seamlessly," "tapestry." These are not wrong, exactly — they're just weirdly frequent in AI output and weirdly absent from good human writing.
+El text generat per IA té patrons característics que el delaten. Els lectors els noten encara que no els sàpiguen anomenar. Els més comuns: «delve», «crucial», «fascinating», «intricate», «in today's world», «navigate the landscape», «embark on», «seamlessly», «tapestry». No és que siguin incorrectes, exactament: és que són estranyament freqüents en el que escriu la IA i estranyament absents de la bona escriptura humana.
 
-Before any document leaves the workshop, run a sweep for these. The reviewer agent can do this. The writing agent should know to avoid them. Neither is a substitute for reading the document yourself. The writer you are is the final quality control.
+Abans que cap document surti del taller, fes-hi una escombrada per treure'ls. Ho pot fer l'agent revisor. L'agent d'escriptura hauria de saber evitar-los. Cap dels dos no substitueix llegir-te el document tu mateix. L'escriptor que ets tu és el control de qualitat final.

@@ -1,85 +1,85 @@
-# 8. Many legati, many harnesses
+# 8. Molts legati, molts harness
 
-For its first year my workshop ran under one harness, Claude Code. (A harness is the program that wraps the model in your terminal, reads your files and runs commands.) Several sessions could be open at once, but all of them were Claude Code, and all of them read the same long instruction file at start.
+Durant el primer any, el meu taller funcionava amb un sol harness, Claude Code. (Un harness és el programa que embolcalla el model al teu terminal, et llegeix els fitxers i executa ordres.) Podia tenir diverses sessions obertes alhora, però totes eren Claude Code, i totes llegien en arrencar el mateix fitxer d'instruccions llarg.
 
-In September 2026 I added OpenAI's Codex CLI and started running legati on two Macs at the same time. The first live Codex session recorded its events as `unknown`: my scripts looked for the session id where Claude Code keeps it, and Codex keeps it somewhere else. The other hidden assumptions showed up over the next days: instructions that only made sense to Claude Code, a sandbox that cannot write to `.git`, a built-in memory that keeps its notes outside the repo. This chapter is what I changed between September and November.
+El setembre del 2026 vaig afegir el Codex CLI d'OpenAI i vaig començar a fer anar legati en dos Mac alhora. La primera sessió de Codex de veritat va registrar els seus esdeveniments com a `unknown`: els meus scripts buscaven l'identificador de sessió on el guarda Claude Code, i Codex el guarda en un altre lloc. La resta de suposicions amagades van anar sortint els dies següents: instruccions que només tenien sentit per a Claude Code, un sandbox que no pot escriure a `.git`, una memòria integrada que guarda les notes fora del repositori. Aquest capítol explica què vaig canviar entre setembre i novembre.
 
-## One core, one appendix per harness
+## Un nucli, un apèndix per harness
 
-The instruction file had to split. `AGENTS.md` is now the harness-neutral core: who the legati are, how a session orients, the rules every session follows. Codex reads it natively. Claude Code reads `CLAUDE.md`, which starts with a one-line import, `@AGENTS.md`, so both harnesses load the same core.
+El fitxer d'instruccions es va haver de partir. Ara `AGENTS.md` és el nucli neutral respecte del harness: qui són els legati, com s'orienta una sessió, les regles que segueix tota sessió. Codex el llegeix de manera nativa. Claude Code llegeix `CLAUDE.md`, que comença amb una importació d'una línia, `@AGENTS.md`, i així tots dos harness carreguen el mateix nucli.
 
-Each harness gets a short appendix with only what is specific to it: its hooks, how it invokes skills, what its sandbox allows. The test for a new line: if it names a harness, it goes in that harness's appendix.
+Cada harness té un apèndix curt amb només el que li és propi: els seus hooks, com invoca les skills, què permet el seu sandbox. La prova per a una línia nova: si anomena un harness, va a l'apèndix d'aquell harness.
 
-## One legatus per session
+## Un legatus per sessió
 
-A session is one legatus, not the whole workshop. The launcher, `legati/bin/legatus <name> [claude-code|codex]`, sets `LEGATUS_AGENT`, names the terminal tab and hands the harness that legatus's boot file. `bash tools/legati/make-launchers.sh` writes one wrapper per legatus at the root, so in practice you type `./claude_writer.sh` or `./codex_reviewer.sh`. Run it again when you add or rename a legatus.
+Una sessió és un legatus, no tot el taller. El llançador, `legati/bin/legatus <name> [claude-code|codex]`, defineix `LEGATUS_AGENT`, posa nom a la pestanya del terminal i passa al harness el fitxer d'arrencada d'aquell legatus. `bash tools/legati/make-launchers.sh` escriu un embolcall per legatus a l'arrel, de manera que a la pràctica escrius `./claude_writer.sh` o `./codex_reviewer.sh`. Torna'l a executar quan afegeixis o reanomenis un legatus.
 
-The reason is context. A session that carries every legatus carries every legatus's rules, and the writer has no use for the comms agent's inbox rules.
+El motiu és el context. Una sessió que porta tots els legati porta les regles de tots, i a l'escriptor no li serveixen de res les regles de la safata d'entrada de l'agent de comunicacions.
 
-Without a launcher, the session asks which legatus it should be before doing anything else, even if your first message already looks like work.
+Sense llançador, la sessió pregunta quin legatus ha de ser abans de fer res més, encara que el teu primer missatge ja sembli feina.
 
-Two legati can share a tab: `legatus comms --with reviewer`. The lead answers by default, the companion answers when the work reaches its lane, and each keeps its own reply prefix. The voices never merge. My own workshop has eight legati, and two of them share a tab most days, because what one collects is what the other works on.
+Dos legati poden compartir pestanya: `legatus comms --with reviewer`. Per defecte respon el titular; el company respon quan la feina arriba al seu carril, i cadascun manté el seu propi prefix de resposta. Les veus no es barregen mai. El meu taller té vuit legati, i dos d'ells comparteixen pestanya gairebé cada dia, perquè el que l'un recull és el que l'altre treballa.
 
-## Boot files and cheap orientation
+## Fitxers d'arrencada i orientació barata
 
-Each legatus has a boot file, `characters/<name>/boot.md`, about a page long: its lanes, the skills it runs, the memories it opens only when a trigger fires, who it hands work to, and its voice. Each memory line says when to open it, for example "before drafting".
+Cada legatus té un fitxer d'arrencada, `characters/<name>/boot.md`, d'una pàgina més o menys: els seus carrils, les skills que executa, les memòries que només obre quan salta un disparador, a qui passa la feina i la seva veu. Cada línia de memòria diu quan s'ha d'obrir, per exemple «abans de redactar».
 
-At start a legatus reads its boot file and this machine's section of the host profile (`memory/reference_hosts.md`, printed by `tools/legati/host-section.sh`). Everything else opens on trigger. In my workshop, reading everything at boot had grown to about 250 KB before the first useful action.
+En arrencar, un legatus llegeix el seu fitxer d'arrencada i la secció d'aquesta màquina al perfil de màquines (`memory/reference_hosts.md`, que imprimeix `tools/legati/host-section.sh`). Tota la resta s'obre quan salta el disparador. Al meu taller, llegir-ho tot en arrencar havia arribat a uns 250 KB abans de la primera acció útil.
 
-## Git is the bus
+## Git és el bus
 
-Sessions on different machines and harnesses talk through git. Every git write goes through one script:
+Les sessions de màquines i harness diferents es parlen a través de git. Tota escriptura a git passa per un sol script:
 
 ```bash
 bash tools/git/sync.sh commit -m "Subject" -- path/one.md path/two.md
 ```
 
-It stages only the paths you name (never `git add -A`), adds `Legatus:`, `Harness:` and `Host:` trailers, rebases onto origin and pushes at once. The push matters most: a commit that is not pushed does not exist for the others. The trailers let `git log` tell you which legatus, under which harness, on which machine, made each change.
+Només prepara per al commit els camins que anomenes (mai `git add -A`), hi afegeix els trailers `Legatus:`, `Harness:` i `Host:`, fa rebase sobre origin i fa push tot seguit. El push és el que més importa: un commit sense push no existeix per als altres. Els trailers permeten que `git log` et digui quin legatus, amb quin harness i en quina màquina, ha fet cada canvi.
 
-The first full day with two Macs and two harnesses produced 30 commits, in a linear history, without a single conflict.
+El primer dia sencer amb dos Mac i dos harness va produir 30 commits, en un historial lineal, sense ni un sol conflicte.
 
-## Lanes
+## Carrils
 
-Before working on a project, a session claims its lane with `python3 tools/legati/lane.py claim <project-dir> "<task>"`. The claim is a callout at the top of that project's `BACKLOG.md`, committed and pushed like everything else. Another session that sees a fresh claim stands down or coordinates. A claim older than 24 hours counts as stale. `lane.py release` when you are done.
+Abans de treballar en un projecte, una sessió en reserva el carril amb `python3 tools/legati/lane.py claim <project-dir> "<task>"`. La reserva és un callout a dalt de tot del `BACKLOG.md` d'aquell projecte, amb commit i push com tota la resta. Una altra sessió que veu una reserva recent es fa enrere o s'hi coordina. Una reserva de més de 24 hores es considera caducada. Quan acabes, `lane.py release`.
 
-Lanes only work if the legati use them. On that first clean day only one legatus claimed any, so `sync.sh commit` now warns when a session commits into a project without holding its lane.
+Els carrils només funcionen si els legati els fan servir. Aquell primer dia net només un legatus en va reservar algun, i per això ara `sync.sh commit` avisa quan una sessió fa commit dins d'un projecte sense tenir-ne el carril.
 
-## Hand-offs are files
+## Els traspassos són fitxers
 
-Messages between legati are files, one per message, in `legati/handoffs/`. `handoff.py send` writes and pushes one, `inbox` lists what is waiting for you, `ack` archives it. Because each message is its own file, two senders never edit the same line, and pulls never conflict on the messages.
+Els missatges entre legati són fitxers, un per missatge, a `legati/handoffs/`. `handoff.py send` n'escriu un i en fa push, `inbox` llista el que t'espera, `ack` l'arxiva. Com que cada missatge és un fitxer propi, dos remitents no editen mai la mateixa línia, i els pull no topen mai per culpa dels missatges.
 
-Sessions on the same machine also have the Observatory chat (`obs.py say`, `obs.py chat`). It never leaves the machine, which is why the git hand-offs exist.
+Les sessions d'una mateixa màquina també tenen el xat de l'Observatori (`obs.py say`, `obs.py chat`). No surt mai de la màquina, i per això existeixen els traspassos per git.
 
-Hooks connect all this to the session. At start, a hook prints who and where you are, pulls when the working tree is clean and nothing local is waiting to be pushed, and lists the commits since this machine and harness last looked, the active lanes and the unread hand-offs. A per-turn hook shows new hand-offs as they arrive.
+Els hooks connecten tot això amb la sessió. En arrencar, un hook imprimeix qui ets i on ets, fa pull si l'arbre de treball està net i no hi ha res local pendent de push, i llista els commits des de l'última vegada que aquesta màquina i aquest harness van mirar, els carrils actius i els traspassos sense llegir. Un hook per torn mostra els traspassos nous a mesura que arriben.
 
-## Codex, concretely
+## Codex, en concret
 
-Run `codex login` once. Then `bash tools/legati/install-hooks.sh codex` writes `.codex/hooks.json` and `.codex/config.toml` and marks the repo as trusted. Start Codex in the repo, approve the hooks with `/hooks`, and from then on launch with `./codex_<name>.sh`.
+Executa `codex login` un cop. Després, `bash tools/legati/install-hooks.sh codex` escriu `.codex/hooks.json` i `.codex/config.toml` i marca el repositori com a fiable. Engega Codex al repositori, aprova els hooks amb `/hooks` i, a partir d'aquí, llança'l amb `./codex_<name>.sh`.
 
-The config sets a workspace-write sandbox with network access, approvals on request, and Codex's own memories off. The repo's `memory/` is the only memory: a second one, invisible to the other harnesses, would split what the workshop knows.
+La configuració estableix un sandbox workspace-write amb accés a la xarxa, aprovacions a petició i les memòries pròpies de Codex desactivades. La `memory/` del repositori és l'única memòria: una segona, invisible per als altres harness, partiria en dos el que sap el taller.
 
-Inside the sandbox the start hook cannot write to `.git`, so it cannot pull. It prints a local briefing instead, and the agent finishes the refresh with a command you approve. That is the sandbox doing its job: leave it as it is.
+Dins del sandbox, el hook d'arrencada no pot escriure a `.git`, i per tant no pot fer pull. En lloc d'això imprimeix un resum local, i l'agent acaba l'actualització amb una ordre que aproves tu. Això és el sandbox fent la seva feina: deixa'l com està.
 
-## A model per legatus
+## Un model per legatus
 
-`legati/roster.toml` pins a harness and a model per legatus. The use I care about is review. A reviewer running on a different model family from the writer gives a second opinion that is actually independent. A model reviewing its own kind of prose tends to approve what it would have written.
+`legati/roster.toml` fixa un harness i un model per a cada legatus. L'ús que m'interessa és la revisió. Un revisor que corre amb una família de models diferent de la de l'escriptor dona una segona opinió independent de debò. Un model que revisa prosa de la seva mena tendeix a aprovar el que ell mateix hauria escrit.
 
-## The durable layer stays neutral
+## La capa duradora es manté neutral
 
-Skills are plain markdown files, invoked in natural language: "Reviewer, look at chapter 3". Slash commands are a convenience on the harnesses that have them, never the only path. Hooks and configs are harness-specific, so they live in `.claude/` and `.codex/`, per machine.
+Les skills són fitxers markdown plans, invocats en llenguatge natural: «Revisor, mira't el capítol 3». Les ordres de barra són una comoditat als harness que en tenen, mai l'únic camí. Els hooks i les configuracions són propis de cada harness, i per això viuen a `.claude/` i `.codex/`, per màquina.
 
-Chapter 7 argued for portability. A second harness is where that argument gets tested, and since then my workshop has taken on two more. Each took an appendix and a launcher, one of them a hook adapter, and the skills and memories stayed as they were.
+El capítol 7 defensava la portabilitat. Un segon harness és on aquest argument es posa a prova, i des d'aleshores el meu taller n'ha incorporat dos més. Cadascun va necessitar un apèndix i un llançador, un d'ells també un adaptador de hooks, i les skills i les memòries es van quedar com estaven.
 
-## What I say, and what the legati hear
+## El que dic, i el que entenen els legati
 
-Two lessons about my own words became visible only with several legati.
+Dues lliçons sobre les meves pròpies paraules només es van fer visibles amb diversos legati.
 
-Acknowledgment is not authorization. I start many replies with "ok", meaning "I heard you, keep talking". One legatus asked whether it could deploy a new version of a service, I answered "ok, explain...", and it deployed. In my idiom "ok" never means "go ahead", and I am not changing my idiom. Authorization comes from the substantive instruction, never from the "ok" in front of it.
+Donar-se per assabentat no és autoritzar. Començo moltes respostes amb «ok», que vol dir «t'he sentit, continua». Un legatus em va preguntar si podia desplegar una versió nova d'un servei, li vaig contestar «ok, explica'm...», i la va desplegar. En la meva manera de parlar, «ok» no vol dir mai «endavant», i no penso canviar la meva manera de parlar. L'autorització ve de la instrucció de fons, mai de l'«ok» que hi ha al davant.
 
-A passing comment is not a standing rule. In one afternoon my writer legatus turned three remarks into rules: an aside explaining one cut, a joke, and a decision about where a passage would go. A rule gets written down only when the principal marks it as one. A decision goes to the project's backlog, and a joke is a joke.
+Un comentari de passada no és una regla permanent. En una sola tarda, el meu legatus escriptor va convertir tres observacions en regles: un incís que explicava una retallada, una broma i una decisió sobre on aniria un passatge. Una regla només s'escriu quan el principal la marca com a regla. Una decisió va al backlog del projecte, i una broma és una broma.
 
-Both misreadings are easy to correct in one conversation. With several legati, a correction given in one tab reaches none of the others, and the same misreading comes back from a different legatus. That is why both rules now live in `AGENTS.md`, where every legatus reads them under every harness.
+Tots dos malentesos són fàcils de corregir en una conversa. Amb diversos legati, una correcció feta en una pestanya no arriba a cap de les altres, i el mateix malentès torna des d'un altre legatus. Per això ara totes dues regles viuen a `AGENTS.md`, on les llegeix cada legatus amb qualsevol harness.
 
-## What still needs you
+## El que encara depèn de tu
 
-A few steps stay with you. Claude Code asks you to trust the folder the first time. Codex asks you to approve its hooks once, and again after they change. Each machine needs its own logins. And you decide which legatus runs where, on which harness and with which model. Those are the principal's decisions, and no script should make them for you.
+Uns quants passos continuen sent cosa teva. Claude Code et demana que confiïs en la carpeta la primera vegada. Codex et demana que n'aprovis els hooks un cop, i un altre cop quan canvien. Cada màquina necessita els seus propis inicis de sessió. I ets tu qui decideix quin legatus corre on, amb quin harness i amb quin model. Són decisions del principal, i cap script no les hauria de prendre per tu.

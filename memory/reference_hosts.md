@@ -1,16 +1,16 @@
-# Host profiles: one section per machine
+# Perfils de màquina: una secció per màquina
 
-Every legatus reads **only this machine's section** at boot: `bash tools/legati/host-section.sh` prints the `## <hostname>` section that matches `hostname -s` (case-insensitive), up to the next `## ` heading. A machine without a section → the legatus tells you and does not assume a toolchain.
+Cada legatus llegeix **només la secció d'aquesta màquina** en arrencar: `bash tools/legati/host-section.sh` imprimeix la secció `## <hostname>` que coincideix amb `hostname -s` (sense distingir majúscules i minúscules), fins al següent encapçalament `## `. Una màquina sense secció → el legatus t'ho diu i no dona per fet cap conjunt d'eines.
 
-> [!todo] You
-> Add one section per machine you work from (`/start-here`, step 6, writes the first one with you). Keep each section short: it is read at every session start. Delete the example below once you have your own.
+> [!todo] Tu
+> Afegeix-hi una secció per cada màquina des de la qual treballes (`/start-here`, pas 6, escriu la primera amb tu). Mantén cada secció curta: es llegeix a cada inici de sessió. Esborra l'exemple de sota quan tinguis el teu.
 
 ## example-laptop
 
-- **What it is:** laptop, macOS, Apple Silicon, 16 GB. Daily driver; travels.
-- **Harnesses:** Claude Code (logged in); Codex (`codex login` done, `install-hooks.sh codex` run on 2026-11-22, hooks approved).
-- **Repo path:** `~/Code/my-workshop`.
-- **Toolchain:** `pandoc`, `typst`, `python3` 3.12, `uv`, `node`, `llm` (with the `llm-ollama` plugin).
-- **Models:** no local models here; `llm -m gpt-…` with a key in `llm keys`; a local Ollama server on the desk machine when on the home network.
-- **External repos:** none.
-- **Notes:** on battery most of the day: no long local-model batches here.
+- **Què és:** portàtil, macOS, Apple Silicon, 16 GB. Màquina de cada dia; viatja.
+- **Harness:** Claude Code (amb sessió iniciada); Codex (`codex login` fet, `install-hooks.sh codex` executat el 2026-11-22, hooks aprovats).
+- **Camí del repositori:** `~/Code/my-workshop`.
+- **Eines:** `pandoc`, `typst`, `python3` 3.12, `uv`, `node`, `llm` (amb el plugin `llm-ollama`).
+- **Models:** cap model local aquí; `llm -m gpt-…` amb una clau a `llm keys`; un servidor Ollama local a la màquina de taula quan és a la xarxa de casa.
+- **Repositoris externs:** cap.
+- **Notes:** amb bateria la major part del dia: res de lots llargs amb models locals aquí.

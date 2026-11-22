@@ -1,45 +1,45 @@
-# /unslop-text — strip AI giveaways from a text
+# /unslop-text: treu d'un text els indicis d'IA
 
-**Invoke:** `/unslop-text <file>` · *"Writer, unslop `<file>`"* · *"passa l'unslop a `<file>`"* · *"pásale el unslop a `<file>`"*
-**Legatus:** the writer by default (it is a prose pass). Any legatus may run it on its own output before delivering.
-**Origin:** the original workshop, 2026-08-30, during a book-chapter pass. A 12-item English list from the author is the seed; the per-language lists grow by accretion. Add your own words as you meet them.
+**Invocació:** `/unslop-text <file>` · *"Writer, unslop `<file>`"* · *"passa l'unslop a `<file>`"* · *"pásale el unslop a `<file>`"*
+**Legatus:** l'escriptor (`writer`) per defecte (és una passada de prosa). Qualsevol legatus la pot executar sobre el seu propi text abans de lliurar-lo.
+**Origen:** el taller original, 2026-08-30, durant una passada sobre un capítol de llibre. La llavor és una llista de 12 elements en anglès de l'autor; les llistes de cada llengua creixen per acumulació. Afegeix-hi les teves paraules a mesura que te les trobis.
 
-## What it does
+## Què fa
 
-One pass over a text that removes the lexical fingerprints of AI-generated prose: unnecessary adverbs, throat-clearing, corporate filler, and the formulaic constructions every LLM overuses. It is a **subtractive** pass: it deletes and simplifies, it never adds content, never reorders paragraphs, never changes facts, numbers, quotes or verify marks.
+Una passada sobre un text que n'elimina les empremtes lèxiques de la prosa generada per IA: adverbis innecessaris, escurades de gola, farciment corporatiu i les construccions formulàries que tots els LLM fan servir massa. És una passada **subtractiva**: esborra i simplifica, no afegeix mai contingut, no reordena mai paràgrafs, no canvia mai fets, xifres, cites ni marques de verificació.
 
-Scope note: this is the *lexical* layer. The staged *structural* tightening pipeline (redundant paragraphs, tables, padding) is `/throat-clearing-review` — the two compose, unslop usually last.
+Nota d'abast: aquesta és la capa *lèxica*. El circuit per etapes d'ajustament *estructural* (paràgrafs redundants, taules, farciment) és `/throat-clearing-review`. Totes dues es combinen, i l'unslop sol anar al final.
 
-## Procedure
+## Procediment
 
-1. Detect the text's language; load the matching blacklist section below. If the language has no section yet, say so and build the list with the principal before editing (then add the section here — that is how "one for each language" grows).
-2. Sweep for the four families: (a) blacklisted words/phrases, (b) adverb audit, (c) formulaic constructions, (d) mannered prose (below; language-agnostic, catches what the blacklists have not learned yet).
-3. For each hit, apply the **load-bearing test** (below). Delete or simplify what fails it; keep what passes, and be ready to defend each keep.
-4. Apply mechanically with per-replacement asserts (python heredoc, `assert old in s` and uniqueness) so a stale anchor fails loudly instead of silently skipping.
-5. Report in chat: count of removals by family, plus the deliberate keeps and why. Commit with the change families in the message.
+1. Detecta la llengua del text i carrega la secció de llista negra corresponent de més avall. Si la llengua encara no en té, digues-ho i construeix la llista amb el principal abans d'editar (després afegeix-ne la secció aquí: així és com creix «una per a cada llengua»).
+2. Fes l'escombrada de les quatre famílies: (a) paraules o expressions de la llista negra, (b) auditoria d'adverbis, (c) construccions formulàries, (d) prosa amanerada (més avall; independent de la llengua, caça el que les llistes negres encara no han après).
+3. Per a cada coincidència, aplica la **prova de càrrega** (més avall). Esborra o simplifica el que no la passa; conserva el que la passa, i estigues a punt per defensar cada cosa que conserves.
+4. Aplica-ho de manera mecànica, amb un assert per substitució (heredoc de Python, `assert old in s` i unicitat), perquè una àncora desfasada falli fent soroll en lloc de saltar-se en silenci.
+5. Informa al xat: nombre d'eliminacions per família, més el que has conservat a consciència i per què. Fes commit amb les famílies de canvis al missatge.
 
-## The load-bearing test
+## La prova de càrrega
 
-Delete a word or construction unless removing it loses **information or an argument**, not just emphasis. Worked examples from a Catalan book chapter (2026-08-30):
+Esborra una paraula o una construcció tret que treure-la faci perdre **informació o un argument**, no només èmfasi. Exemples resolts d'un capítol de llibre en català (2026-08-30):
 
-- **Kept:** «ignorarà *racionalment*» (the wordplay IS Christensen's thesis) · «ignorant *convenientment*» (the adverb is the accusation) · «dissenyat *deliberadament*» (design intent is the claim) · «es compartien *lliurement*» (thematic: software lliure) · «per raons estructurals, *no ideològiques*» (the contrast is the argument).
-- **Cut:** «*genuïnament* descentralitzat» · «*notablement* consistent» · «va créixer *ràpidament*» (the next sentence gives the number) · «participaven *activament*» · «Era, *en essència*, …» · «*simplement* no tenien» · «*per cert*» mid-argument.
+- **Conservats:** «ignorarà *racionalment*» (el joc de paraules ÉS la tesi de Christensen) · «ignorant *convenientment*» (l'adverbi és l'acusació) · «dissenyat *deliberadament*» (la intenció de disseny és l'afirmació) · «es compartien *lliurement*» (temàtic: software lliure) · «per raons estructurals, *no ideològiques*» (el contrast és l'argument).
+- **Tallats:** «*genuïnament* descentralitzat» · «*notablement* consistent» · «va créixer *ràpidament*» (la frase següent dona la xifra) · «participaven *activament*» · «Era, *en essència*, …» · «*simplement* no tenien» · «*per cert*» enmig de l'argument.
 
-## Family (d): mannered prose — the test the blacklists generalise
+## Família (d): prosa amanerada, la prova que generalitza les llistes negres
 
-Added 2026-09-02 from Anthropic's prompting guidance on prose style. The blacklists below catch words we have already met; this family catches the mechanism, so it works on words we have not met and in every language.
+Afegida el 2026-09-02 a partir de la guia de prompting d'Anthropic sobre l'estil de la prosa. Les llistes negres de més avall cacen paraules que ja hem trobat; aquesta família caça el mecanisme, i per això funciona amb paraules que encara no hem trobat i en qualsevol llengua.
 
-**Definition.** Mannered prose substitutes metaphor and flourish for direct statement. "A dial worth turning" for "a parameter worth varying"; "earns its keep" for "still matters"; "the ledger will empty on its own" for "the backlog will drain". The phrase exists to display the writer, not to convey the idea. It is also imprecise: the metaphor drags in connotations the writer did not choose.
+**Definició.** La prosa amanerada substitueix l'afirmació directa per la metàfora i la floritura. "A dial worth turning" en lloc de "a parameter worth varying"; "earns its keep" en lloc de "still matters"; "the ledger will empty on its own" en lloc de "the backlog will drain". L'expressió hi és per lluir l'escriptor, no per transmetre la idea. A més, és imprecisa: la metàfora arrossega connotacions que l'escriptor no ha triat.
 
-**The test, per hit.** *Is a literal phrase available that says the same thing?* If yes, the metaphor is mannered: replace it with the literal phrase. If no literal phrase does the job in roughly the same space, the metaphor is doing analytical work and stays (this is the same load-bearing test, applied to micro-metaphors instead of adverbs). A calibration from a Catalan chapter: *"va saltar pels aires"* → *"va entrar en crisi"* (mannered, cut); *"tot per al poble, però sense el poble"* (no literal phrase carries the irony, kept).
+**La prova, per a cada coincidència.** *Hi ha una expressió literal que digui el mateix?* Si n'hi ha, la metàfora és amanerada: substitueix-la per l'expressió literal. Si cap expressió literal no fa la feina en un espai semblant, la metàfora fa feina analítica i es queda (és la mateixa prova de càrrega, aplicada a micrometàfores en lloc d'adverbis). Un calibratge d'un capítol en català: *"va saltar pels aires"* → *"va entrar en crisi"* (amanerada, tallada); *"tot per al poble, però sense el poble"* (cap expressió literal no porta la ironia, conservada).
 
-**Exemption: the author's own metaphors stay.** The test applies to generated prose. A figure the principal wrote is not a hit: report it in the diff summary if it looks mannered, do not replace it. They rule. When provenance is unclear, `git blame` or `git log -p` on the paragraph settles it before the pass touches it.
+**Excepció: les metàfores de l'autor es queden.** La prova s'aplica a la prosa generada. Una figura que ha escrit el principal no és una coincidència: si sembla amanerada, esmenta-la al resum del diff, però no la substitueixis. Decideix el principal. Quan l'origen no és clar, un `git blame` o un `git log -p` sobre el paràgraf ho resol abans que la passada el toqui.
 
-**Where to look.** Verbs first (the heightened verb is the commonest form: *soar, shatter, unravel, bleed, carve out, weather*, and the CA/ES *saltar pels aires, fer miques, teixir, navegar*), then sentence closers (the flourish clusters where a paragraph ends), then anything that would sound like a keynote line if read aloud.
+**On mirar.** Primer els verbs (el verb inflat és la forma més comuna: *soar, shatter, unravel, bleed, carve out, weather*, i els CA/ES *saltar pels aires, fer miques, teixir, navegar*), després els finals de frase (la floritura s'acumula on acaba un paràgraf) i després qualsevol cosa que, llegida en veu alta, sonaria com una frase de conferència inaugural.
 
-**Prompt use.** When asking any model for a rewrite, the definition paragraph above pasted into the user message works better than a blacklist, and the short form *"remove all mannered prose"* also works.
+**Ús en un prompt.** Quan demanis una reescriptura a qualsevol model, enganxar el paràgraf de definició de més amunt al missatge de l'usuari funciona millor que una llista negra, i la forma curta *"remove all mannered prose"* també funciona.
 
-## Language: English (the seed list — the original 12)
+## Llengua: anglès (la llista llavor, els 12 originals)
 
 1. **"Delve."** You've never said it out loud. Once.
 2. **"Crucial / pivotal."** Nothing is that pivotal.
@@ -54,33 +54,33 @@ Added 2026-09-02 from Anthropic's prompting guidance on prose style. The blackli
 11. **"It's not X, it's Y."** The famous AI sentence, alive.
 12. **"This isn't a budget. It's a statement of intent."** No.
 
-Additions by accretion: "leverage" (verb), "landscape" (metaphorical), "navigate" (metaphorical), "unpack", "foster", "underscore", "testament to", "a rich …", "in today's …", "It's worth noting that", "Interestingly,", "dive deep", "game-changer", "at the end of the day", "moreover/furthermore" chains, triads-for-rhythm ("clear, concise, and compelling").
+Afegits per acumulació: "leverage" (verb), "landscape" (metaphorical), "navigate" (metaphorical), "unpack", "foster", "underscore", "testament to", "a rich …", "in today's …", "It's worth noting that", "Interestingly,", "dive deep", "game-changer", "at the end of the day", "moreover/furthermore" chains, triads-for-rhythm ("clear, concise, and compelling").
 
-## Language: Catalan
+## Llengua: català
 
-**Throat-clearing / filler:** «cal destacar que», «val a dir que», «és important assenyalar», «en aquest sentit», «per cert» (mid-argument), «en essència», «en molts sentits», «en certa mesura», «en definitiva» (as paragraph opener), «dit d'una altra manera» (when nothing is re-said), «com veurem» (call-forwards).
+**Escurada de gola / farciment:** «cal destacar que», «val a dir que», «és important assenyalar», «en aquest sentit», «per cert» (enmig de l'argument), «en essència», «en molts sentits», «en certa mesura», «en definitiva» (per obrir paràgraf), «dit d'una altra manera» (quan no es torna a dir res), «com veurem» (anuncis del que vindrà).
 
-**Inflated vocabulary (the «delve» family):** «aprofundir en» / «endinsar-nos en» (as topic-opener), «crucial», «cabdal» (when everything is cabdal), «pivotal», «tapís», «teixit» (metaphorical), «paisatge» (metaphorical), «navegar» (metaphorical), «robust» (outside engineering), «fluid/seamless», «àmbit/reialme» chains, «posar en relleu», «palanquejar».
+**Vocabulari inflat (la família de «delve»):** «aprofundir en» / «endinsar-nos en» (per obrir un tema), «crucial», «cabdal» (quan tot és cabdal), «pivotal», «tapís», «teixit» (metafòric), «paisatge» (metafòric), «navegar» (metafòric), «robust» (fora de l'enginyeria), «fluid/seamless», cadenes «àmbit/reialme», «posar en relleu», «palanquejar».
 
-**Adverb audit (the -ment sweep):** grep `[a-zà-ú]ment\b` and test each: «genuïnament», «notablement», «ràpidament», «activament», «massivament», «silenciosament», «radicalment», «simplement», «literalment», «òbviament», «certament», «precisament/exactament» when decorative (they often ARE load-bearing in a paradox — test, don't purge). Ration «simultàniament» to the one place simultaneity is the claim; elsewhere «alhora».
+**Auditoria d'adverbis (l'escombrada de -ment):** fes grep de `[a-zà-ú]ment\b` i prova'ls un per un: «genuïnament», «notablement», «ràpidament», «activament», «massivament», «silenciosament», «radicalment», «simplement», «literalment», «òbviament», «certament», «precisament/exactament» quan són decoratius (en una paradoxa sovint SÍ que aguanten pes: prova'ls, no els purguis). Raciona «simultàniament» a l'únic lloc on la simultaneïtat és l'afirmació; a la resta, «alhora».
 
-**Formulaic constructions:** «No és X, és Y» / «no era X: era Y» — *careful*: paradox-then-resolution can be an author's own tool, so the rule is **ration, and the contrast must carry information, not drama**. One per section is seasoning; three per page is slop. Also: false ranges («des de X fins a Y» listing everything), triads-for-rhythm, «tant… com…» chains, «una mena de» hedging.
+**Construccions formulàries:** «No és X, és Y» / «no era X: era Y». *Compte*: la paradoxa seguida de resolució pot ser una eina pròpia de l'autor, així que la regla és **racionar, i el contrast ha de portar informació, no dramatisme**. Una per secció és condiment; tres per pàgina és slop. També: falsos intervals («des de X fins a Y» per enumerar-ho tot), tríades per fer ritme, cadenes «tant… com…», «una mena de» com a cautela.
 
-**Known false friend:** «eventualment» → «amb el temps» (in Catalan «eventualment» means «per casualitat», not «finalment»).
+**Fals amic conegut:** «eventualment» → «amb el temps» (en català «eventualment» vol dir «per casualitat», no «finalment»).
 
-## Language: Spanish
+## Llengua: castellà
 
-**Throat-clearing / filler:** «cabe destacar que», «es importante señalar», «en este sentido», «dicho esto», «en esencia», «en cierta medida», «a fin de cuentas» (opener), «como veremos».
+**Escurada de gola / farciment:** «cabe destacar que», «es importante señalar», «en este sentido», «dicho esto», «en esencia», «en cierta medida», «a fin de cuentas» (per obrir), «como veremos».
 
-**Inflated vocabulary:** «profundizar en» / «adentrarnos en» (topic-opener), «crucial», «fundamental» (when serial), «tapiz», «tejido» (metaphorical), «paisaje» (metaphorical), «navegar» (metaphorical), «robusto» (outside engineering), «fluido/sin fisuras», «poner de relieve», «apalancar».
+**Vocabulari inflat:** «profundizar en» / «adentrarnos en» (per obrir un tema), «crucial», «fundamental» (en sèrie), «tapiz», «tejido» (metafòric), «paisaje» (metafòric), «navegar» (metafòric), «robusto» (fora de l'enginyeria), «fluido/sin fisuras», «poner de relieve», «apalancar».
 
-**Adverb audit:** the -mente sweep: «genuinamente», «notablemente», «rápidamente», «activamente», «masivamente», «silenciosamente», «radicalmente», «simplemente», «literalmente», «obviamente», «ciertamente», «precisamente/exactamente» when decorative. Spanish tolerates -mente chains even worse than Catalan: never two in one sentence.
+**Auditoria d'adverbis:** l'escombrada de -mente: «genuinamente», «notablemente», «rápidamente», «activamente», «masivamente», «silenciosamente», «radicalmente», «simplemente», «literalmente», «obviamente», «ciertamente», «precisamente/exactamente» quan són decoratius. El castellà tolera les cadenes de -mente encara pitjor que el català: mai dos en una frase.
 
-**Formulaic constructions:** «No es X, es Y» — same rationing rule as Catalan. «no solo… sino también» chains, triads-for-rhythm, «una suerte de» hedging.
+**Construccions formulàries:** «No es X, es Y», amb la mateixa regla de racionament que en català. Cadenes «no solo… sino también», tríades per fer ritme, «una suerte de» com a cautela.
 
-## Hard limits
+## Límits estrictes
 
-- Never touch quotes, verify marks `==(...)==`, callouts' content semantics, code spans, or figure captions' factual text.
-- Never "fix" the author's voice markers: if the principal wrote it, flag it in the report instead of editing (their call).
-- Editorial rules of the active project still bind (for example: no em-dashes, no call-forwards, notes to the author as callouts).
-- The pass is per-file and committed separately, so the diff IS the report.
+- No toquis mai les cites, les marques de verificació `==(...)==`, la semàntica del contingut dels callouts, els fragments de codi ni el text factual dels peus de figura.
+- No «arreglis» mai les marques de veu de l'autor: si ho ha escrit el principal, assenyala-ho a l'informe en lloc d'editar-ho (la decisió és seva).
+- Les regles editorials del projecte actiu continuen vigents (per exemple: cap guió llarg, cap anunci del que vindrà, notes a l'autor com a callouts).
+- La passada es fa fitxer per fitxer i amb commits separats, de manera que el diff ÉS l'informe.

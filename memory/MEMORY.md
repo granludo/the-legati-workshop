@@ -1,35 +1,35 @@
-## Repo entry points
-- [../INDEX.md](../INDEX.md) — top-level map. Read first after any break.
-- [../AGENTS.md](../AGENTS.md) — operating instructions shared by every harness. The core contract.
-- [reference_hosts.md](reference_hosts.md) — one section per machine; `bash tools/legati/host-section.sh` prints this machine's.
+## Punts d'entrada del repositori
+- [../INDEX.md](../INDEX.md): mapa general. Llegeix-lo primer després de qualsevol pausa.
+- [../AGENTS.md](../AGENTS.md): instruccions de funcionament compartides per tots els harness. El contracte central.
+- [reference_hosts.md](reference_hosts.md): una secció per màquina; `bash tools/legati/host-section.sh` imprimeix la d'aquesta màquina.
 
-## Your profile
-*(Add pointers here as you write memory files. Example:)*
-*(- [Your role and goals](user_role.md) — who you are and what this workshop is for)*
+## El teu perfil
+*(Afegeix-hi punters a mesura que escriguis fitxers de memòria. Exemple:)*
+*(- [El teu rol i els teus objectius](user_role.md): qui ets i per a què serveix aquest taller)*
 
-## Feedback
-*(Corrections and confirmations that should persist across sessions.)*
+## Retorn (feedback)
+*(Correccions i confirmacions que han de persistir d'una sessió a l'altra.)*
 
-Starter memories from the original workshop (process rules that survived many sessions; keep, edit or delete them):
-- [Index and backlog maintenance](feedback_index_maintenance.md) — maps and backlogs updated in the same commit as the change.
-- [Acknowledgment is not authorization](feedback_ack_is_not_authorization.md) — "ok" means "heard", never "go ahead".
-- [A comment is not a rule](feedback_comment_is_not_a_rule.md) — rules only when marked; decisions go to the backlog.
-- [Scaffolding portability](feedback_scaffolding_portability.md) — the durable layer stays harness-neutral.
-- [Progress updates](feedback_progress_updates.md) — long jobs are never silent.
-- [Unpack every reference](feedback_unpack_every_reference.md) — never a bare number, code or path.
-- [Push back](feedback_push_back.md) — honest critical feedback, with reasons.
+Memòries inicials del taller original (regles de procés que han sobreviscut a moltes sessions; conserva-les, edita-les o esborra-les):
+- [Manteniment de l'índex i del backlog](feedback_index_maintenance.md): els mapes i els backlogs s'actualitzen en el mateix commit que el canvi.
+- [Donar-se per assabentat no és autoritzar](feedback_ack_is_not_authorization.md): «ok» vol dir «entesos», mai «endavant».
+- [Un comentari no és una regla](feedback_comment_is_not_a_rule.md): regles només quan es marquen com a tals; les decisions van al backlog.
+- [Portabilitat de la bastida](feedback_scaffolding_portability.md): la capa duradora es manté neutral respecte del harness.
+- [Avisos de progrés](feedback_progress_updates.md): les feines llargues no són mai silencioses.
+- [Explica cada referència](feedback_unpack_every_reference.md): mai un número, un codi o un camí nus.
+- [Discrepa quan calgui](feedback_push_back.md): crítica honesta, amb arguments.
 
-## Projects
-*(Active project state — what's in flight, what's next.)*
+## Projectes
+*(Estat dels projectes actius: què hi ha en marxa, què ve després.)*
 
-## References
-*(External systems, resources, where to find things.)*
-- [Host profiles](reference_hosts.md) — one section per machine, read at boot via `tools/legati/host-section.sh`.
+## Referències
+*(Sistemes externs, recursos, on trobar les coses.)*
+- [Perfils de màquina](reference_hosts.md): una secció per màquina, llegida en arrencar amb `tools/legati/host-section.sh`.
 
 ---
 
-> [!todo] You
-> This file is an index, not a content store. Each entry is one line pointing to a memory file in this folder. Content lives in the files; the index lives here. Keep it under 200 lines — it's loaded into every session context.
+> [!todo] Tu
+> Aquest fitxer és un índex, no un magatzem de continguts. Cada entrada és una línia que apunta a un fitxer de memòria d'aquesta carpeta. El contingut viu als fitxers; l'índex viu aquí. Mantén-lo per sota de 200 línies: es carrega al context de cada sessió.
 >
-> See `memory/_templates/` for how to write each memory type.
-> See `good-practices/03-memory.md` for the philosophy behind the memory system.
+> Consulta `memory/_templates/` per saber com s'escriu cada tipus de memòria.
+> Consulta `good-practices/03-memory.md` per a la filosofia que hi ha darrere del sistema de memòria.

@@ -1,38 +1,38 @@
-# [Your Name] — worldview and intellectual positions
+# [El teu nom]: visió del món i posicions intel·lectuals
 
-> [!todo] You
-> This document teaches agents your values, intellectual positions, and recurring arguments. It's what prevents agents from writing things that contradict what you actually believe, and what allows them to extend your arguments coherently rather than in generic directions.
+> [!todo] Tu
+> Aquest document ensenya als agents els teus valors, les teves posicions intel·lectuals i els teus arguments recurrents. És el que impedeix que els agents escriguin coses que contradiuen el que penses de debò, i el que els permet estendre els teus arguments de manera coherent en lloc de portar-los cap a direccions genèriques.
 >
-> You don't have to fill this in all at once. Start with the positions you hold most strongly and that are most relevant to your work. Refine over time.
+> No cal que l'omplis tot de cop. Comença per les posicions que defenses amb més convicció i que són més rellevants per a la teva feina. Afina-ho amb el temps.
 >
-> See `good-practices/03-memory.md` for the philosophy.
+> Consulta `good-practices/03-memory.md` per a la filosofia.
 
 ---
 
-## How to use this document
+## Com fer servir aquest document
 
-Each section is a numbered intellectual position. Agents reference positions by number (e.g., "§4" or "worldview §12") when making claims or design decisions that flow from your values. This makes it easy to trace *why* an agent made a choice.
+Cada secció és una posició intel·lectual numerada. Els agents fan referència a les posicions pel número (p. ex., «§4» o «visió del món §12») quan fan afirmacions o prenen decisions de disseny que deriven dels teus valors. Així és fàcil rastrejar *per què* un agent ha pres una decisió.
 
-Start with 5-10 positions. Let the number grow as your sessions teach you what's missing.
-
----
-
-## §1 [Your first position]
-
-[State the position clearly in 1-3 sentences. Be specific. "I believe technology should serve humans" is not a position — it's a platitude. "I believe educational technology systematically serves institutional interests over learner interests, and that the design choices that produce this are rarely malicious" is a position.]
+Comença amb 5-10 posicions. Deixa que el nombre creixi a mesura que les sessions t'ensenyin què hi falta.
 
 ---
 
-## §2 [Your second position]
+## §1 [La teva primera posició]
+
+[Formula la posició amb claredat en 1-3 frases. Sigues concret. «Crec que la tecnologia ha d'estar al servei de les persones» no és una posició: és un tòpic. «Crec que la tecnologia educativa serveix de manera sistemàtica els interessos institucionals per sobre dels interessos dels aprenents, i que les decisions de disseny que ho provoquen poques vegades són malicioses» és una posició.]
 
 ---
 
-## §3 [Your third position]
+## §2 [La teva segona posició]
 
 ---
 
-> [!todo] You
-> Keep adding positions as you discover what you believe. The best moments to add a new §N are:
-> - When an agent writes something that misses your point in a revealing way
-> - When you're explaining to someone (or to the agent) why you disagree with a mainstream position
-> - When you write something you're proud of and want to anchor the reasoning behind it
+## §3 [La teva tercera posició]
+
+---
+
+> [!todo] Tu
+> Continua afegint posicions a mesura que descobreixis què creus. Els millors moments per afegir un nou §N són:
+> - Quan un agent escriu alguna cosa que no capta la teva idea d'una manera reveladora
+> - Quan expliques a algú (o a l'agent) per què no estàs d'acord amb una posició majoritària
+> - Quan escrius alguna cosa de què estàs orgullós i en vols fixar el raonament de fons

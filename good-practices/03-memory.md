@@ -1,35 +1,35 @@
-# 3. The memory system
+# 3. El sistema de memòria
 
-The memory system is what turns a series of sessions into a continuous collaboration. Without it, every session starts from zero: the agent doesn't know who you are, what you're working on, what corrections you've already given, or what decisions you've already made. With it, the first five minutes of every session can be spent doing actual work instead of re-establishing context.
+El sistema de memòria és el que converteix una sèrie de sessions en una col·laboració contínua. Sense ell, cada sessió comença de zero: l'agent no sap qui ets, en què treballes, quines correccions ja li has fet ni quines decisions ja has pres. Amb ell, els cinc primers minuts de cada sessió es poden dedicar a fer feina de veritat en lloc de tornar a establir el context.
 
-The key insight is the distinction between a memory file and a note. A note is something you wrote. A memory file is something the agent reads at session start. The discipline of writing memory files is the discipline of asking: "what would a new agent — reading only this repo — need to know to serve me well?"
+La idea clau és la distinció entre un fitxer de memòria i una nota. Una nota és una cosa que has escrit tu. Un fitxer de memòria és una cosa que l'agent llegeix en començar la sessió. La disciplina d'escriure fitxers de memòria és la disciplina de preguntar-se: «què necessitaria saber un agent nou, que només llegeix aquest repositori, per servir-me bé?»
 
-## The four memory types
+## Els quatre tipus de memòria
 
-**User memories** are about you — your role, your expertise, how you prefer to work, what frustrates you. A good user memory isn't a biography; it's a briefing. "I have twenty years of software engineering experience but this is my first serious engagement with academic writing" is useful. "I like to work in the morning and prefer short responses" is marginally useful. "I am a thoughtful person who values good work" is noise.
+**Les memòries d'usuari** parlen de tu: el teu rol, la teva experiència, com prefereixes treballar, què et treu de polleguera. Una bona memòria d'usuari no és una biografia: és una posada en antecedents. «Tinc vint anys d'experiència en enginyeria del programari, però és la primera vegada que em poso seriosament amb l'escriptura acadèmica» és útil. «M'agrada treballar al matí i prefereixo respostes curtes» és només una mica útil. «Soc una persona reflexiva que valora la feina ben feta» és soroll.
 
-**Feedback memories** capture corrections and confirmations. When you say "don't do that" to an agent, that's a feedback memory. When you say "yes, exactly — keep doing that," that's also a feedback memory (people forget to write these down, but they're just as important — if you only save corrections, the agents will grow over-cautious). The rule: lead with the rule, add the reason. A correction without a reason will be misapplied.
+**Les memòries de feedback** recullen correccions i confirmacions. Quan dius «no facis això» a un agent, això és una memòria de feedback. Quan dius «sí, exacte, continua fent-ho així», també ho és (la gent s'oblida d'apuntar aquestes, però són igual d'importants: si només guardes les correccions, els agents es tornaran massa prudents). La norma: primer la regla, després el motiu. Una correcció sense motiu s'aplicarà malament.
 
-**Project memories** track the state of active work — what's in flight, what's decided, what's blocked. These decay fast: a project memory from three months ago may be stale. Always include the date and a note on when the memory is no longer relevant.
+**Les memòries de projecte** segueixen l'estat de la feina activa: què està en marxa, què s'ha decidit, què està encallat. Envelleixen de pressa: una memòria de projecte de fa tres mesos pot estar desfasada. Posa-hi sempre la data i una nota que digui quan deixarà de ser rellevant.
 
-**Reference memories** point to external resources — where bugs are tracked, which calendar is authoritative, where to find the normativa for a particular process. These are pointers, not content.
+**Les memòries de referència** apunten a recursos externs: on es fa el seguiment dels errors, quin calendari mana, on trobar la normativa d'un procediment concret. Són punters, no contingut.
 
-## What not to save
+## Què no cal guardar
 
-This is where people go wrong. The temptation is to save everything — every conversation, every decision, every piece of context. Don't.
+Aquí és on la gent s'equivoca. La temptació és guardar-ho tot: cada conversa, cada decisió, cada bocí de context. No ho facis.
 
-Don't save things you can derive from the code or the git history. If the architecture is visible in the files, you don't need a memory file about it. Don't save debugging solutions or fix recipes — the fix is in the code; the commit message has the context. Don't save ephemeral task details — what you're doing right now belongs in a task tracker, not in memory.
+No guardis allò que es pot deduir del codi o de l'historial de git. Si l'arquitectura es veu als fitxers, no et cal cap fitxer de memòria que en parli. No guardis solucions de depuració ni receptes d'arranjaments: l'arranjament és al codi, i el missatge del commit té el context. No guardis detalls efímers de tasques: el que estàs fent ara mateix va a un gestor de tasques, no a la memòria.
 
-Memory is for things that are non-obvious from the current state of the repo and that a new agent reading the repo would need to serve you well. If a future agent could figure it out by reading the files, it's not a memory.
+La memòria és per a les coses que no són evidents a partir de l'estat actual del repositori i que un agent nou que el llegís necessitaria per servir-te bé. Si un agent futur ho pot deduir llegint els fitxers, no és una memòria.
 
-## The MEMORY.md index
+## L'índex MEMORY.md
 
-`memory/MEMORY.md` is an index, not a content store. It's loaded into every session context. Keep it under 200 lines — it's not a dashboard, it's a pointer file. Each entry is one line: a link to the memory file and a one-line description specific enough that a future agent can decide whether to open the file.
+`memory/MEMORY.md` és un índex, no un magatzem de contingut. Es carrega al context de cada sessió. Mantén-lo per sota de 200 línies: no és un tauler, és un fitxer de punters. Cada entrada és una línia: un enllaç al fitxer de memòria i una descripció d'una línia prou concreta perquè un agent futur pugui decidir si l'obre.
 
-"User profile" is a bad index entry. "User is a civil engineer with ten years of bridge design experience, new to academic writing" is a good index entry — the agent can decide without opening the file whether this is relevant to the current task.
+«Perfil d'usuari» és una mala entrada d'índex. «L'usuari és enginyer de camins amb deu anys d'experiència en disseny de ponts, nou en l'escriptura acadèmica» és una bona entrada: l'agent pot decidir sense obrir el fitxer si és rellevant per a la tasca que té entre mans.
 
-## The archive-not-delete rule
+## La regla d'arxivar, no esborrar
 
-Old memory files that are no longer accurate don't get deleted. They go to `archive/`. The reasons are practical: first, a discarded memory sometimes turns out to be relevant again. Second, the history of what you believed at different points is itself informative. Third, the archive costs nothing — the agent won't read archived files unless you ask it to.
+Els fitxers de memòria antics que ja no són exactes no s'esborren. Van a `archive/`. Els motius són pràctics: primer, de vegades una memòria descartada torna a ser rellevant. Segon, la història del que creies en cada moment ja és informativa per si mateixa. Tercer, l'arxiu no costa res: l'agent no llegirà els fitxers arxivats tret que l'hi demanis.
 
-This rule extends to everything in the workshop. Delete nothing. Archive instead.
+Aquesta regla s'estén a tot el taller. No esborris res. Arxiva-ho.

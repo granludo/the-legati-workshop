@@ -1,16 +1,16 @@
-# Good practices — a guide by Marc Alier
+# Bones pràctiques: una guia de Marc Alier
 
-This is a guide written by someone who has run a workshop like this for over a year, for someone starting from scratch. It's not documentation. It's the advice I wish I'd had.
+Aquesta guia l'ha escrita algú que fa més d'un any que porta un taller com aquest, per a algú que comença de zero. No és documentació. Són els consells que m'hauria agradat tenir.
 
-The pieces:
+Les peces:
 
-1. [The workshop idea](01-the-workshop-idea.md) — what this is and why it works differently from what you've tried before
-2. [The legati](02-the-legati.md) — how to design your AI agents (the naming, the lanes, the anti-patterns)
-3. [The memory system](03-memory.md) — what to remember, what not to, and the difference between a memory and a note
-4. [Source management](04-sources.md) — how to process raw material into something that can actually feed your thinking
-5. [The writing workflow](05-writing-workflow.md) — how writing and AI collaboration actually work when they work
-6. [Tooling](06-tooling.md) — compute routing, the local-vs-cloud decision, what each tier is for
-7. [The scaffold](07-scaffolding.md) — what AGENTS.md and CLAUDE.md do, why portability matters, how the system survives tool changes
-8. [Many legati, many harnesses](08-many-legati-many-harnesses.md): running several legati at once, under Claude Code and Codex, on more than one machine
+1. [La idea del taller](01-the-workshop-idea.md): què és això i per què funciona diferent de tot el que has provat fins ara
+2. [Els legati](02-the-legati.md): com dissenyar els teus agents d'IA (els noms, els carrils, els antipatrons)
+3. [El sistema de memòria](03-memory.md): què cal recordar, què no, i la diferència entre una memòria i una nota
+4. [La gestió de fonts](04-sources.md): com convertir el material en brut en alguna cosa que alimenti de debò el teu pensament
+5. [El flux d'escriptura](05-writing-workflow.md): com funcionen de veritat l'escriptura i la col·laboració amb la IA quan funcionen
+6. [Les eines](06-tooling.md): l'encaminament del còmput, la decisió entre local i núvol, per a què serveix cada nivell
+7. [La bastida](07-scaffolding.md): què fan AGENTS.md i CLAUDE.md, per què importa la portabilitat, com sobreviu el sistema als canvis d'eines
+8. [Molts legati, molts harness](08-many-legati-many-harnesses.md): fer anar diversos legati alhora, amb Claude Code i Codex, en més d'una màquina
 
-Read them in order the first time. After that, treat them as reference.
+La primera vegada, llegeix-los en ordre. Després, fes-los servir de consulta.

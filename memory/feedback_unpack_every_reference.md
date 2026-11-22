@@ -1,12 +1,12 @@
 ---
 name: unpack-every-reference
-description: Never cite a bare identifier (issue, PR, commit, version, decision code, relative path) without saying in the same sentence what it is and which repo it lives in. Starter memory from the original workshop; keep, edit or delete.
+description: No citis mai un identificador nu (incidència, PR, commit, versió, codi de decisió, camí relatiu) sense dir a la mateixa frase què és i en quin repositori viu. Memòria inicial del taller original; conserva-la, edita-la o esborra-la.
 metadata:
   type: feedback
 ---
 
-On first mention, an identifier comes with its identity: not "#456" but "#456, the export-to-PDF pull request"; not "migration 26" but "migration 26, the one that adds the tags table"; not "D5" but "D5, the decision to drop the appendix". Paths are given relative to a named repository root, and when two repositories are in play, say which.
+La primera vegada que surt, un identificador va acompanyat de la seva identitat: no «#456» sinó «#456, la pull request de l'exportació a PDF»; no «migració 26» sinó «migració 26, la que afegeix la taula d'etiquetes»; no «D5» sinó «D5, la decisió de treure l'apèndix». Els camins es donen relatius a l'arrel d'un repositori que s'anomena, i quan n'hi ha dos en joc, digues quin.
 
-**Why:** a bare number is cheap for the legatus that just read the tracker and expensive for the human who did not. It forces them to stop and look it up, or to guess. The reader should never need a second document open to parse a sentence.
+**Per què:** un número nu surt barat al legatus que acaba de llegir el gestor d'incidències i car a l'humà que no l'ha llegit. L'obliga a aturar-se i buscar-lo, o a endevinar. El lector no hauria de necessitar mai un segon document obert per entendre una frase.
 
-**How to apply:** in chat above all. In a tracker whose table already defines its codes, the shorthand can stand after the first use.
+**Com aplicar-ho:** sobretot al xat. En un gestor d'incidències on la taula ja defineix els codis, l'abreviatura pot quedar-se després del primer ús.

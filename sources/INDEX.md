@@ -1,8 +1,8 @@
-# Sources index
+# Índex de fonts
 
-All source material lives under `sources/`. Sources are raw inputs — things you read, watch, or listen to that feed your thinking and writing. They are distinct from your writing projects, which are outputs.
+Tot el material de fonts viu a `sources/`. Les fonts són entrades en brut: coses que llegeixes, mires o escoltes i que alimenten el teu pensament i la teva escriptura. Són diferents dels teus projectes d'escriptura, que en són les sortides.
 
-## Structure
+## Estructura
 
 ```
 sources/
@@ -14,17 +14,17 @@ sources/
 └── [project-slug]/  ← sources scoped to a single project
 ```
 
-## How to add a source
+## Com afegir una font
 
-Use the `/add-source` skill. It handles:
-- **YouTube / video:** transcript extraction → processing → placement
-- **PDF:** metadata extraction → text extract → placement
-- **Audio:** transcription via mlx-whisper → processing → placement
-- **Web article:** fetch → clean → placement
-- **Text / paste:** direct placement
+Fes servir la skill `/add-source`. S'encarrega de:
+- **YouTube / vídeo:** extracció de la transcripció → processament → col·locació
+- **PDF:** extracció de metadades → extracció del text → col·locació
+- **Àudio:** transcripció amb mlx-whisper → processament → col·locació
+- **Article web:** descàrrega → neteja → col·locació
+- **Text / enganxat:** col·locació directa
 
-Every source gets a `README.md` documenting what it is, where it came from, and what it's for.
+Cada font té un `README.md` que documenta què és, d'on ve i per a què serveix.
 
-## Sources currently indexed
+## Fonts indexades actualment
 
-*(none yet — they accrete as you work)*
+*(encara cap: s'aniran acumulant a mesura que treballis)*

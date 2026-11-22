@@ -1,12 +1,12 @@
-# [Reviewer] — standing rules
+# [Revisor]: regles permanents
 
-> [!todo] You
-> Calibration rules accrete here. You'll want:
-> - Venue-specific norms (conference vs journal; word counts; format)
-> - Domain conventions (what's standard in your field that might look wrong out of context)
-> - Severity calibration anchors (examples of what Minor vs Major looks like in your domain)
-> - The prose-tic sweep rule: before release, check for AI prose tics
+> [!todo] Tu
+> Les regles de calibratge s'acumulen aquí. Voldràs tenir:
+> - Normes específiques de cada destinació (congrés o revista; nombre de paraules; format)
+> - Convencions del camp (el que és habitual en el teu camp i que fora de context podria semblar incorrecte)
+> - Àncores de calibratge de la severitat (exemples de com és un «Canvis menors» i un «Canvis majors» al teu camp)
+> - La regla de la passada de tics: abans de publicar, comprova si hi ha tics de prosa d'IA
 
 ---
 
-*(no rules yet)*
+*(encara no hi ha regles)*

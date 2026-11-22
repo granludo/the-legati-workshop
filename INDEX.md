@@ -1,18 +1,18 @@
-# The Workshop — repository index
+# El taller: índex del repositori
 
-**Purpose:** top-level map of the repo. Every folder and root-level file is documented here. Open it when you need to find where something lives (`AGENTS.md` §2).
+**Finalitat:** mapa general del repositori. Aquí hi ha documentades totes les carpetes i tots els fitxers de l'arrel. Obre'l quan necessitis trobar on és alguna cosa (`AGENTS.md` §2).
 
-**Rule:** any change to the filesystem (add, move, rename, delete) requires updating this file in the same commit. Non-optional.
-
----
-
-## What this repo is
-
-A personal intellectual workspace for long-form writing, research, and thinking with AI legati as collaborators, under Claude Code or Codex (or both), from one machine or several. Multiple writing projects may run in parallel. Each project has its own folder under `writting-projects/` and its own `BACKLOG.md`.
+**Regla:** qualsevol canvi al sistema de fitxers (afegir, moure, reanomenar, esborrar) obliga a actualitzar aquest fitxer en el mateix commit. No és opcional.
 
 ---
 
-## Top-level layout
+## Què és aquest repositori
+
+Un espai de treball intel·lectual personal per a l'escriptura de llarg recorregut, la recerca i el pensament, amb legati d'IA com a col·laboradors, amb Claude Code o Codex (o tots dos), des d'una màquina o des de diverses. Hi pot haver diversos projectes d'escriptura en paral·lel. Cada projecte té la seva carpeta a `writting-projects/` i el seu `BACKLOG.md`.
+
+---
+
+## Estructura de primer nivell
 
 ```
 the-workshop/
@@ -106,19 +106,19 @@ the-workshop/
 
 ---
 
-## Writing projects
+## Projectes d'escriptura
 
-*(none yet — add entries here as projects are created)*
+*(encara cap: afegeix-hi entrades a mesura que es creïn projectes)*
 
 ---
 
-## Active agents
+## Agents actius
 
-*(fill in after running `/start-here`)*
+*(omple-ho després d'executar `/start-here`)*
 
-| Name | Role | Boot file | Launch |
+| Nom | Rol | Fitxer d'arrencada | Llançament |
 |---|---|---|---|
-| [Orchestrator] | Default legatus, engineering, coordination | `characters/orchestrator/boot.md` | `./claude_orchestrator.sh` · `./codex_orchestrator.sh` |
-| [Writer] | Drafting, editorial, voice mimicry | `characters/writer/boot.md` | `./claude_writer.sh` · `./codex_writer.sh` |
-| [Comms] | Schedule, inbox (read-only) | `characters/comms/boot.md` | `./claude_comms.sh` · `./codex_comms.sh` |
-| [Reviewer] | Honest feedback on deliverables | `characters/reviewer/boot.md` | `./claude_reviewer.sh` · `./codex_reviewer.sh` |
+| [Orquestrador] | Legatus per defecte, enginyeria, coordinació | `characters/orchestrator/boot.md` | `./claude_orchestrator.sh` · `./codex_orchestrator.sh` |
+| [Escriptor] | Redacció, edició, imitació de la veu | `characters/writer/boot.md` | `./claude_writer.sh` · `./codex_writer.sh` |
+| [Comunicacions] | Agenda, safata d'entrada (només lectura) | `characters/comms/boot.md` | `./claude_comms.sh` · `./codex_comms.sh` |
+| [Revisor] | Opinió honesta sobre els lliuraments | `characters/reviewer/boot.md` | `./claude_reviewer.sh` · `./codex_reviewer.sh` |

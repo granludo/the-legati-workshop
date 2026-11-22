@@ -1,67 +1,67 @@
-# [Your Name] — writing profile
+# [El teu nom]: perfil d'escriptura
 
-> [!todo] You
-> This is the most important document for your Writer agent. It teaches the agent your voice. Without it, the agent writes competently but generically. With it, the agent writes *as you*.
+> [!todo] Tu
+> Aquest és el document més important per al teu agent Escriptor. Li ensenya la teva veu. Sense ell, l'agent escriu amb competència però de manera genèrica. Amb ell, l'agent escriu *com tu*.
 >
-> Fill in each section. Don't aim for perfection — start with what you know now and refine as sessions teach you what's missing. The profile grows best when you read a draft that sounds wrong and can articulate why.
+> Omple cada secció. No busquis la perfecció: comença pel que ja saps i afina-ho a mesura que les sessions t'ensenyin què hi falta. El perfil creix millor quan llegeixes un esborrany que sona malament i ets capaç d'explicar per què.
 >
-> See `good-practices/05-writing-workflow.md` for guidance on building this document.
+> Consulta `good-practices/05-writing-workflow.md` per orientar-te sobre com construir aquest document.
 
 ---
 
-## Part 1: Voice and style
+## Part 1: veu i estil
 
-**Register:** [How do you write? Formal academic? Essayistic? Conversational? Technical? Which register for which context?]
+**Registre:** [Com escrius? Acadèmic formal? Assagístic? Col·loquial? Tècnic? Quin registre per a quin context?]
 
-**Rhythm:** [Sentence length? Do you vary rhythm deliberately? Short declarative sentences? Long subordinate clauses? Both?]
+**Ritme:** [Llargada de les frases? Varies el ritme deliberadament? Frases declaratives curtes? Subordinades llargues? Totes dues coses?]
 
-**Tone:** [Serious? Ironic? Warm? Critical? How does it shift across contexts?]
+**To:** [Seriós? Irònic? Càlid? Crític? Com canvia segons el context?]
 
-**What you avoid:** [Filler phrases, hedging, passive voice, specific words you hate, structural patterns you find lazy.]
+**El que evites:** [Falques, excés de matisos, veu passiva, paraules concretes que no suportes, patrons estructurals que et semblen mandrosos.]
 
-**Metaphors and examples:** [Do you use metaphors? What kind? What's your example-giving style?]
+**Metàfores i exemples:** [Fas servir metàfores? De quin tipus? Com poses els exemples?]
 
-**Humor:** [Do you use humor in your writing? When? What kind? What's the anti-pattern?]
+**Humor:** [Fas servir l'humor quan escrius? Quan? De quin tipus? Quin és l'antipatró?]
 
 ---
 
-## Part 2: Topic domains
+## Part 2: dominis temàtics
 
-[List the domains you write in. For each, note the audience, the register, and any domain-specific conventions.]
+[Llista els dominis en què escrius. Per a cadascun, anota el públic, el registre i qualsevol convenció pròpia del domini.]
 
-- **Domain A:** [e.g., technology criticism] — audience: [who?], register: [how?]
-- **Domain B:** [e.g., technical documentation] — audience: [who?], register: [how?]
+- **Domini A:** [p. ex., crítica de la tecnologia], públic: [qui?], registre: [com?]
+- **Domini B:** [p. ex., documentació tècnica], públic: [qui?], registre: [com?]
 
 > [!note]
-> Domain separation matters: *writing style* applies everywhere, but *topic content and references* should not mix unless the connection is genuinely organic to the argument. Writing about AI education should not suddenly import your software engineering war stories unless they serve the point.
+> La separació de dominis importa: l'*estil d'escriptura* s'aplica a tot arreu, però el *contingut temàtic i les referències* no s'haurien de barrejar tret que la connexió sigui genuïnament orgànica per a l'argument. Quan escrius sobre IA i educació no hauries d'importar de cop les teves batalletes d'enginyeria del programari, tret que facin servei a l'argument.
 
 ---
 
-## Part 3: Structural patterns
+## Part 3: patrons estructurals
 
-[How do you structure arguments? How do you open pieces? How do you close them? What's your relationship to outlines?]
+[Com estructures els arguments? Com obres els textos? Com els tanques? Quina relació tens amb els esquemes previs?]
 
-**Argument structure:** [inductive? deductive? narrative arc? historical arc?]
+**Estructura de l'argument:** [inductiva? deductiva? arc narratiu? arc històric?]
 
-**Openings:** [How do you like to open essays, chapters, papers?]
+**Obertures:** [Com t'agrada obrir els assajos, els capítols, els articles?]
 
-**Closings:** [How do you like to close? Summary? Open question? Provocation?]
+**Tancaments:** [Com t'agrada tancar? Resum? Pregunta oberta? Provocació?]
 
-**Section length:** [How long are your sections typically?]
-
----
-
-## Part 4: Markers convention
-
-When agents flag something for your attention inside a document, they use Obsidian callouts:
-- `> [!todo] You` — action items
-- `> [!question] You` — open questions
-- `> [!note]` — commentary
-
-Never `<NOTE>` or `<!-- NOTE -->`.
+**Llargada de les seccions:** [Quina llargada solen tenir les teves seccions?]
 
 ---
 
-## Part 5: Language-specific notes
+## Part 4: convenció de marques
 
-[If you write in multiple languages, note any language-specific conventions, model routing preferences, or voice differences.]
+Quan els agents assenyalen alguna cosa per a la teva atenció dins d'un document, fan servir callouts d'Obsidian:
+- `> [!todo] Tu`: tasques pendents
+- `> [!question] Tu`: preguntes obertes
+- `> [!note]`: comentaris
+
+Mai `<NOTE>` ni `<!-- NOTE -->`.
+
+---
+
+## Part 5: notes específiques de cada llengua
+
+[Si escrius en diverses llengües, anota les convencions específiques de cada llengua, les preferències d'encaminament de models o les diferències de veu.]

@@ -1,48 +1,48 @@
-Generate an image via OpenAI's `gpt-image-*` family using `tools/openai/call.py image` and save it to disk. Use this when a writing project or slide deck needs a designed image element — a mock screenshot, a stylised diagram with text burned in, a title card, an illustration — that would be tedious to compose in native shapes and is small enough to be worth a one-shot paid API call.
+Genera una imatge amb la família `gpt-image-*` d'OpenAI fent servir `tools/openai/call.py image` i desa-la al disc. Fes-la servir quan un projecte d'escriptura o una presentació necessiti un element d'imatge dissenyat (una captura de pantalla simulada, un diagrama estilitzat amb text incrustat, una portadeta, una il·lustració) que costaria compondre amb formes natives i que és prou petit perquè valgui la pena una sola crida de pagament a l'API.
 
-## When to use this skill
+## Quan fer servir aquesta skill
 
-- A slide needs a *designed* visual mixing text and shape (a mock LLM response with a fabricated paper citation, an annotated illustration, a stylised concept diagram).
-- A document needs a header image or a one-off illustration.
-- A figure that would take more time to compose in PowerPoint / python-pptx / Excalidraw than to specify in a prompt.
+- Una diapositiva necessita un element visual dissenyat que barregi text i forma (una resposta simulada d'un LLM amb una cita d'article inventada, una il·lustració anotada, un diagrama conceptual estilitzat).
+- Un document necessita una imatge de capçalera o una il·lustració puntual.
+- Una figura que costaria més de compondre en PowerPoint / python-pptx / Excalidraw que d'especificar en un prompt.
 
-## When NOT to use this skill
+## Quan NO fer servir aquesta skill
 
-- **Tables, 2×2 grids, bullet lists, simple shapes** — build these as native PowerPoint elements (python-pptx, Keynote, Excalidraw). They stay editable that way. The unex Día 4 deck (`writting-projects/BSC-AGENTS-COURSE/sources-unex-2026/build_slides_2026-05-13.py`) is the in-repo precedent: simple diagrams native, conceptual diagrams as pre-rendered PNGs.
-- **Anything the principal needs to tweak after the fact** — a generated image is a binary; a typo cannot be fixed without regenerating. Native shapes survive editing; images are frozen.
-- **Photographs of real people, real places, real products** — use a real photo, not a generation.
-- **Anything where the ~$0.16 per high-quality image does not buy enough quality over a 5-minute native composition.**
+- **Taules, graelles 2×2, llistes de vinyetes, formes simples**: construeix-les com a elements natius de PowerPoint (python-pptx, Keynote, Excalidraw). Així continuen sent editables. La presentació del Día 4 de la unex (`writting-projects/BSC-AGENTS-COURSE/sources-unex-2026/build_slides_2026-05-13.py`) és el precedent dins el repositori: diagrames simples natius, diagrames conceptuals com a PNG generats prèviament.
+- **Qualsevol cosa que el principal hagi de retocar després**: una imatge generada és un binari; una errada tipogràfica no es pot corregir sense tornar-la a generar. Les formes natives sobreviuen a l'edició; les imatges queden congelades.
+- **Fotografies de persones, llocs o productes reals**: fes servir una foto real, no una generació.
+- **Qualsevol cas en què els ~0,16 $ per imatge d'alta qualitat no comprin prou qualitat respecte d'una composició nativa de 5 minuts.**
 
-## Instructions
+## Instruccions
 
-### 1. Confirm the model is available
+### 1. Confirma que el model està disponible
 
-The OpenAI image-model lineup moves. Always list first — `list` is free, it just hits `/v1/models`.
+La gamma de models d'imatge d'OpenAI canvia. Fes sempre primer un llistat: `list` és gratuït, només consulta `/v1/models`.
 
 ```bash
 python3 tools/openai/call.py list --filter image
 ```
 
-Default to `gpt-image-2`. Fall back to whatever is current if it has been deprecated.
+Per defecte, `gpt-image-2`. Si ha quedat obsolet, recorre al que sigui vigent.
 
-### 2. Pick the size
+### 2. Tria la mida
 
-| Size | Aspect | Use for |
+| Mida | Proporció | Per a |
 |---|---|---|
-| `1536x1024` | 3:2 landscape | Slide body image (fits 16:9 with margin) |
-| `1024x1024` | 1:1 | Square illustration, icon-style |
-| `1024x1536` | 2:3 portrait | Book page figure, half-page illustration |
-| `auto` | — | When unsure; the model picks |
+| `1536x1024` | 3:2 horitzontal | Imatge del cos d'una diapositiva (cap en 16:9 amb marge) |
+| `1024x1024` | 1:1 | Il·lustració quadrada, estil icona |
+| `1024x1536` | 2:3 vertical | Figura de pàgina de llibre, il·lustració de mitja pàgina |
+| `auto` | (cap) | Quan dubtis; tria el model |
 
-### 3. Pick the quality
+### 3. Tria la qualitat
 
-`high` is the default — appropriate for slides and document figures. Drop to `medium` only for exploratory iteration. `low` is for throwaway tests.
+`high` és l'opció per defecte, adequada per a diapositives i figures de documents. Baixa a `medium` només per a iteracions exploratòries. `low` és per a proves d'un sol ús.
 
-### 4. Write the prompt as a single self-contained paragraph
+### 4. Escriu el prompt en un sol paràgraf autònom
 
-The model takes a single string. Lead with the medium ("Clean academic slide. Title '…' in dark navy Palatino serif…"). Specify fonts, colours as hex or named, aspect, what NOT to include. See `writting-projects/BSC-AGENTS-COURSE/week-01/session-1-slides.md` for an in-repo prompt library.
+El model rep una sola cadena. Comença pel mitjà («Clean academic slide. Title '…' in dark navy Palatino serif…»). Especifica les fonts, els colors en hexadecimal o pel nom, la proporció i què NO s'ha d'incloure. Vegeu `writting-projects/BSC-AGENTS-COURSE/week-01/session-1-slides.md` per a una biblioteca de prompts dins el repositori.
 
-### 5. Run the generation
+### 5. Executa la generació
 
 ```bash
 # Inline prompt
@@ -61,17 +61,17 @@ python3 tools/openai/call.py image \
     --size 1536x1024
 ```
 
-`--n 4` generates four variants at once (cheaper per image than four separate calls — the prompt tokens are amortised). Files get `-1.png`, `-2.png`, … suffixes when `--n > 1`.
+`--n 4` genera quatre variants alhora (més barat per imatge que quatre crides separades: els tokens del prompt s'amortitzen). Els fitxers reben els sufixos `-1.png`, `-2.png`, … quan `--n > 1`.
 
-### 6. Inspect the result
+### 6. Revisa el resultat
 
-- Did the text render legibly? gpt-image models still occasionally garble small text — re-run with a tighter prompt or larger size if so.
-- Does the aesthetic match the rest of the deck / document?
-- If wrong: refine the prompt and regenerate. Do not accept a bad image because the call was already paid.
+- El text s'ha generat llegible? Els models gpt-image encara de tant en tant desfiguren el text petit; si passa, torna-ho a executar amb un prompt més precís o una mida més gran.
+- L'estètica encaixa amb la resta de la presentació o del document?
+- Si no és bona: afina el prompt i torna-la a generar. No acceptis una imatge dolenta perquè la crida ja està pagada.
 
-### 7. Surface the cost
+### 7. Fes visible el cost
 
-Token usage is logged to stderr after every call:
+L'ús de tokens es registra a stderr després de cada crida:
 
 ```
 [using gpt-image-2, size=1536x1024, quality=high]
@@ -79,25 +79,25 @@ Token usage is logged to stderr after every call:
 [wrote 1834 KB to /path/to/image.png]
 ```
 
-Tell the principal the cost in your summary (a high-quality 1536×1024 image is roughly **$0.15–$0.20** as of early 2026).
+Digues-ne el cost al principal al teu resum (una imatge d'alta qualitat de 1536×1024 costa aproximadament **0,15–0,20 $** a principis del 2026).
 
-## Prompt patterns that work
+## Patrons de prompt que funcionen
 
-- **Lead with the medium.** *"Clean academic slide. Title '…' in dark navy Palatino serif. Below, …"*
-- **Specify font family even if the model cannot honour it exactly.** Names like "Palatino serif", "Helvetica sans-serif", "Consolas monospace" anchor the aesthetic.
-- **Spell out colour as hex or named.** *"navy #1F2454 on white background"*.
-- **Specify aspect and decoration explicitly.** *"16:9. No decoration. Thin navy lines only."*
-- **Be explicit about what NOT to include.** *"No drop shadows. No gradients. No emoji."*
+- **Comença pel mitjà.** «Clean academic slide. Title '…' in dark navy Palatino serif. Below, …»
+- **Especifica la família tipogràfica encara que el model no la pugui respectar exactament.** Noms com «Palatino serif», «Helvetica sans-serif», «Consolas monospace» fixen l'estètica.
+- **Indica el color en hexadecimal o pel nom.** «navy #1F2454 on white background».
+- **Especifica explícitament la proporció i la decoració.** «16:9. No decoration. Thin navy lines only.»
+- **Digues explícitament què NO s'ha d'incloure.** «No drop shadows. No gradients. No emoji.»
 
-## Failure modes
+## Modes de fallada
 
-- **`404 model not found`** — `gpt-image-2` has been renamed / deprecated. Re-run `list --filter image` and pick the current id.
-- **Garbled text in the output** — common with small fonts / long titles. Increase size, shorten the text-burned-in portion, or split: keep editable text native and put only the genuinely-illustrative portion in the image.
-- **`429` rate limit** — retry once with backoff, then tell the principal.
+- **`404 model not found`**: `gpt-image-2` ha canviat de nom o ha quedat obsolet. Torna a executar `list --filter image` i tria l'identificador vigent.
+- **Text desfigurat a la sortida**: habitual amb fonts petites o títols llargs. Augmenta la mida, escurça la part de text incrustat, o separa-ho: deixa el text editable com a element natiu i posa a la imatge només la part realment il·lustrativa.
+- **Límit de freqüència `429`**: torna-ho a provar una vegada amb espera progressiva, i després digues-ho al principal.
 
-## Cross-references
+## Referències creuades
 
-- Helper (the `image` subcommand): [`tools/openai/call.py`](../tools/openai/call.py)
-- Helper README: [`tools/openai/README.md`](../tools/openai/README.md)
-- Infrastructure reference: [`memory/reference_openai_api.md`](../memory/reference_openai_api.md)
-- Compute routing in [`AGENTS.md`](../AGENTS.md) §6 and [`tools/llm/README.md`](../tools/llm/README.md)
+- Eina auxiliar (la subordre `image`): [`tools/openai/call.py`](../tools/openai/call.py)
+- README de l'eina auxiliar: [`tools/openai/README.md`](../tools/openai/README.md)
+- Referència d'infraestructura: [`memory/reference_openai_api.md`](../memory/reference_openai_api.md)
+- Encaminament de còmput a [`AGENTS.md`](../AGENTS.md) §6 i [`tools/llm/README.md`](../tools/llm/README.md)

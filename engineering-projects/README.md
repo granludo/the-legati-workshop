@@ -1,8 +1,8 @@
-# Engineering projects
+# Projectes d'enginyeria
 
-This folder holds engineering work that isn't a writing project: tool development, architectural notes, PR reviews, design conversations, scripts.
+Aquesta carpeta conté la feina d'enginyeria que no és un projecte d'escriptura: desenvolupament d'eines, notes d'arquitectura, revisions de PR, converses de disseny, scripts.
 
-Each project gets its own subfolder with a `README.md` describing what it is.
+Cada projecte té la seva subcarpeta amb un `README.md` que descriu què és.
 
-> [!todo] You
-> Add subfolders here as engineering needs emerge. Examples: a scraper for a data source, a custom enrichment script, a Playwright automation for a specific workflow.
+> [!todo] Tu
+> Afegeix-hi subcarpetes a mesura que sorgeixin necessitats d'enginyeria. Exemples: un scraper per a una font de dades, un script d'enriquiment a mida, una automatització amb Playwright per a un flux de treball concret.

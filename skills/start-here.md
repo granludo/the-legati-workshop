@@ -1,111 +1,111 @@
-# /start-here — workshop setup guide
+# /start-here: guia de posada en marxa del taller
 
-**Who runs this:** the orchestrator legatus, under Claude Code or Codex (launch it with `./claude_orchestrator.sh` or `./codex_orchestrator.sh`).
+**Qui l'executa:** el legatus orquestrador (`orchestrator`), amb Claude Code o Codex (llança'l amb `./claude_orchestrator.sh` o `./codex_orchestrator.sh`).
 
-**When to invoke:** once, at the beginning, when the repo is fresh and you haven't personalized anything. Can also be re-invoked for any setup step you've skipped.
+**Quan s'invoca:** un cop, al principi, quan el repositori és nou i encara no has personalitzat res. També es pot tornar a invocar per a qualsevol pas de configuració que t'hagis saltat.
 
-**What this does:** walks the user through the minimum setup to have a working, personalized workshop. The steps are ordered by payoff — the things that matter most come first.
+**Què fa:** guia l'usuari per la configuració mínima per tenir un taller personalitzat i que funcioni. Els passos estan ordenats pel que aporten: el que importa més va primer.
 
 ---
 
-## Before you begin
+## Abans de començar
 
-Tell the user this:
+Digues això a l'usuari:
 
-> Welcome. This scaffold is set up but not personalized. You're going to name your agents, write a first draft of your writing profile, and configure the tooling. None of this needs to be perfect on day one — the system gets better as you use it.
+> Et dono la benvinguda. Aquesta bastida està muntada, però no personalitzada. Posaràs nom als teus agents, escriuràs un primer esborrany del teu perfil d'escriptura i configuraràs les eines. Res d'això no ha de ser perfecte el primer dia: el sistema millora a mesura que el fas servir.
 >
-> The setup has seven steps. The first three take about an hour total and give you most of the value. The rest can happen over the following week. Tell me if you want to skip a step or come back to it later.
+> La configuració té set passos. Els tres primers duren més o menys una hora en total i et donen la major part del valor. La resta pot anar venint durant la setmana següent. Digues-me si vols saltar-te algun pas o tornar-hi més endavant.
 
 ---
 
-## Step 1: Name your agents (15 minutes)
+## Pas 1: Posa nom als teus agents (15 minuts)
 
-**What to do:**
+**Què cal fer:**
 
-Ask the user the following questions, one at a time:
+Fes a l'usuari les preguntes següents, d'una en una:
 
-1. "What should we call your default orchestrator agent — the one that handles engineering and coordination? It's the agent you'll talk to in most sessions. Pick a name from fiction, history, or anywhere else. It can be serious or playful — what matters is that you'll want to say it."
+1. «Com vols que es digui el teu agent orquestrador per defecte, el que s'encarrega de l'enginyeria i la coordinació? És l'agent amb qui parlaràs en la majoria de sessions. Tria un nom de la ficció, de la història o d'on vulguis. Pot ser seriós o juganer: el que importa és que et vingui de gust dir-lo.»
 
-2. "What should we call your writing agent? This is the one that drafts, edits, and writes in your voice. Same rule — a name that resonates."
+2. «Com vols que es digui el teu agent d'escriptura? És el que redacta, edita i escriu amb la teva veu. La mateixa regla: un nom que et digui alguna cosa.»
 
-3. "Do you want a comms agent — one that reads your calendar and inbox? If so, what do you want to call it?" *(If yes, note that Google Workspace OAuth setup will be needed — Step 6 handles that.)*
+3. «Vols un agent de comunicacions, que et llegeixi el calendari i la safata d'entrada? Si és que sí, com vols que es digui?» *(Si diu que sí, avisa que caldrà configurar l'OAuth de Google Workspace: se n'ocupa el pas 6.)*
 
-4. "Do you want a reviewer — an agent that gives you terse, honest feedback on drafts and deliverables? What do you want to call it?"
+4. «Vols un revisor, un agent que et doni opinions breus i honestes sobre esborranys i lliuraments? Com vols que es digui?»
 
-**Once you have the names** (use lowercase folder names, one word, e.g. `ada`): for each legatus, and for any role the user does not want, see the note below.
+**Quan tinguis els noms** (fes servir noms de carpeta en minúscules, d'una sola paraula, p. ex. `ada`): fes el que segueix per a cada legatus; per als rols que l'usuari no vulgui, mira la nota de més avall.
 
-- Rename the folder with `git mv characters/orchestrator characters/<name>` (and likewise for `writer/`, `comms/`, `reviewer/`) so the history follows.
-- In `characters/<name>/boot.md`: the heading, "You are …", and the reply prefix (`[ADA]`). Remove the `[!todo]` callout about renaming.
-- In `characters/<name>/character.md`: the heading.
-- In `AGENTS.md` §1: the roster lines and the "Which legatus?" question (`ada · …`), and the name of the default legatus.
-- In `legati/roster.toml`: rename each `[section]`.
-- Every mention of the old role name in the other boot files' hand-off lines, in `characters/README.md` (table and handoff map), in `skills/README.md` (the "Who runs it" column) and in `INDEX.md` (the agents table).
-- Regenerate the root launchers: `bash tools/legati/make-launchers.sh` (it writes `claude_<name>.sh` and `codex_<name>.sh` and archives the old role-named ones).
-- Check: `LEGATUS_DRY_RUN=1 ./claude_<name>.sh` prints the command it would run; `grep -rn "orchestrator\|writer\|comms\|reviewer" AGENTS.md characters legati skills/README.md` finds what is left.
-- Commit through the sync: `bash tools/git/sync.sh commit -m "workshop init: name legati <name1>, <name2>, <name3>, <name4>" -- AGENTS.md INDEX.md characters legati skills/README.md archive claude_*.sh codex_*.sh` (if the repo has no remote yet, add `--no-push`).
+- Reanomena la carpeta amb `git mv characters/orchestrator characters/<name>` (i el mateix per a `writer/`, `comms/`, `reviewer/`) perquè l'historial la segueixi.
+- A `characters/<name>/boot.md`: el títol, «Ets …» i el prefix de resposta (`[ADA]`). Treu el callout `[!todo]` que parla de reanomenar.
+- A `characters/<name>/character.md`: el títol.
+- A `AGENTS.md` §1: les línies de la plantilla de legati i la pregunta «Quin legatus?» (`ada · …`), i el nom del legatus per defecte.
+- A `legati/roster.toml`: reanomena cada `[section]`.
+- Totes les mencions del nom de rol antic a les línies de traspàs dels altres fitxers d'arrencada, a `characters/README.md` (taula i mapa de traspassos), a `skills/README.md` (la columna «Qui l'executa») i a `INDEX.md` (la taula d'agents).
+- Regenera els llançadors de l'arrel: `bash tools/legati/make-launchers.sh` (escriu `claude_<name>.sh` i `codex_<name>.sh` i arxiva els antics, els que porten nom de rol).
+- Comprova: `LEGATUS_DRY_RUN=1 ./claude_<name>.sh` imprimeix l'ordre que executaria; `grep -rn "orchestrator\|writer\|comms\|reviewer" AGENTS.md characters legati skills/README.md` troba el que queda.
+- Fes el commit a través de la sincronització: `bash tools/git/sync.sh commit -m "workshop init: name legati <name1>, <name2>, <name3>, <name4>" -- AGENTS.md INDEX.md characters legati skills/README.md archive claude_*.sh codex_*.sh` (si el repositori encara no té remot, afegeix `--no-push`).
 
-A role the user does not want (often comms): move its folder to `archive/characters/` with `git mv`, drop its roster line and its `roster.toml` section, and run `make-launchers.sh`.
+Un rol que l'usuari no vol (sovint, comunicacions): mou-ne la carpeta a `archive/characters/` amb `git mv`, treu-ne la línia de la plantilla de legati i la secció de `roster.toml`, i executa `make-launchers.sh`.
 
-Report back to the user: "Your legati are named. Open one with `./claude_<name>.sh` or `./codex_<name>.sh`, or address it by name in any session."
+Informa l'usuari: «Els teus legati ja tenen nom. Obre'n un amb `./claude_<name>.sh` o `./codex_<name>.sh`, o adreça-t'hi pel nom en qualsevol sessió.»
 
 ---
 
-## Step 2: Write your author profile (30 minutes)
+## Pas 2: Escriu el teu perfil d'autor (30 minuts)
 
-This is the most important thing you can do for the quality of the workshop output. Skip it and everything the agents write will be generic. Do it and the output starts to sound like you.
+És el més important que pots fer per a la qualitat del que produeix el taller. Si te'l saltes, tot el que escriguin els agents serà genèric. Si el fas, el resultat comença a sonar com tu.
 
-**What to do:**
+**Què cal fer:**
 
-Tell the user: "Now we're going to write a first draft of your writing profile. I'll ask you some questions. Answer honestly — this document is for the agents, not for publication."
+Digues a l'usuari: «Ara escriurem un primer esborrany del teu perfil d'escriptura. Et faré unes quantes preguntes. Respon amb sinceritat: aquest document és per als agents, no per publicar-lo.»
 
-Ask these questions. Take notes as the user answers. You'll use the answers to draft the profile.
+Fes aquestes preguntes. Pren notes mentre l'usuari respon. Faràs servir les respostes per redactar el perfil.
 
-1. "How would you describe the register of your writing? Academic? Essayistic? Conversational? Technical? Different for different contexts?"
-2. "What's a piece of writing you've done that you're proud of — where it really sounded like you? What made it work?"
-3. "What are the writing tics or patterns you know you overuse and try to edit out?"
-4. "Are there specific words or phrases you hate in other people's writing — things that make you stop and wince?"
-5. "Do you write in multiple languages? If so, are there voice differences you want to preserve?"
-6. "How do you typically structure an argument? Historical context first, then thesis? Or thesis first, then evidence? Or something else?"
-7. "How do you use humor in your writing, if at all? What's the anti-pattern — humor that doesn't land for you?"
+1. «Com descriuries el registre de la teva escriptura? Acadèmic? Assagístic? Conversacional? Tècnic? Diferent segons el context?»
+2. «Quin text teu t'agrada de debò, un en què sonaves com tu de veritat? Què el feia funcionar?»
+3. «Quins tics o patrons d'escriptura saps que fas servir massa i intentes treure quan edites?»
+4. «Hi ha paraules o expressions concretes que no suportes en els textos dels altres, coses que et fan aturar i arrufar el nas?»
+5. «Escrius en diverses llengües? Si és així, hi ha diferències de veu que vulguis preservar?»
+6. «Com estructures normalment un argument? Primer el context històric i després la tesi? O primer la tesi i després les proves? O d'una altra manera?»
+7. «Com fas servir l'humor quan escrius, si és que el fas servir? Quin és l'antipatró, l'humor que a tu no et funciona?»
 
-Draft `principals/[your-name]/writing-profile.md` from the user's answers. Use the template structure already in the file. Show them a draft and let them correct it.
+Redacta `principals/[your-name]/writing-profile.md` a partir de les respostes de l'usuari. Fes servir l'estructura de plantilla que ja hi ha al fitxer. Ensenya-li un esborrany i deixa que el corregeixi.
 
-Tell them: "This is a first draft. Every time a session produces something that misses your voice and you can articulate why, add a note to this file. It gets better over time."
+Digues-li: «Això és un primer esborrany. Cada vegada que una sessió produeixi alguna cosa que no encerti la teva veu i sàpigues explicar per què, afegeix una nota a aquest fitxer. Millora amb el temps.»
 
-Rename `principals/your-name/` to `principals/[their-name]/` with `git mv`. Update the references in `AGENTS.md` §9, in `skills/write-as-user.md` (rename it `write-as-[their-name].md` and update its row in `skills/README.md` and the writer's `boot.md`).
+Reanomena `principals/your-name/` a `principals/[their-name]/` amb `git mv`. Actualitza les referències a `AGENTS.md` §9 i a `skills/write-as-user.md` (reanomena'l a `write-as-[their-name].md` i actualitza'n la fila a `skills/README.md` i al `boot.md` de l'escriptor).
 
 Commit: `"init: first draft writing profile for [name]"`
 
 ---
 
-## Step 3: Set up the worldview document (20 minutes)
+## Pas 3: Prepara el document de visió del món (20 minuts)
 
-This is the document that teaches agents what you believe. Without it, agents write things that contradict your positions.
+Aquest és el document que ensenya als agents què penses. Sense ell, els agents escriuen coses que contradiuen les teves posicions.
 
-**What to do:**
+**Què cal fer:**
 
-Tell the user: "The worldview document is where you write your intellectual positions — the things you believe that should inform everything your agents write. You don't need to fill in all of it now. Three to five positions are enough to start."
+Digues a l'usuari: «El document de visió del món és on escrius les teves posicions intel·lectuals, les coses que creus i que haurien d'informar tot el que escriguin els teus agents. No cal que l'omplis sencer ara. Amb tres o cinc posicions n'hi ha prou per començar.»
 
-Ask:
-1. "What's a position you hold strongly that most people in your field don't — or at least don't say out loud?"
-2. "What's the thing you most often find yourself arguing against in your domain?"
-3. "What's a framework or metaphor you return to constantly in your thinking?"
+Pregunta:
+1. «Quina posició defenses amb força que la majoria de la gent del teu camp no comparteix, o almenys no diu en veu alta?»
+2. «Contra què et trobes argumentant més sovint, en el teu àmbit?»
+3. «A quin marc o a quina metàfora tornes una vegada i una altra quan penses?»
 
-Draft 3-5 worldview entries in `principals/[their-name]/worldview.md`. Number them §1, §2, etc. Show the drafts and let them correct.
+Redacta de 3 a 5 entrades de visió del món a `principals/[their-name]/worldview.md`. Numera-les §1, §2, etc. Ensenya'n els esborranys i deixa que els corregeixi.
 
-Tell them: "Add to this whenever a session produces something you'd never say. That moment of 'I'd never put it that way' is new material for the worldview."
+Digues-li: «Afegeix-hi coses cada vegada que una sessió produeixi alguna cosa que tu no diries mai. Aquell moment de “jo no ho diria mai així” és material nou per a la visió del món.»
 
 Commit: `"init: first worldview entries for [name]"`
 
 ---
 
-## Step 4: Configure your first project (10 minutes)
+## Pas 4: Configura el teu primer projecte (10 minuts)
 
-**What to do:**
+**Què cal fer:**
 
-Ask: "What's the first writing project you want to run through the workshop? Give it a short name."
+Pregunta: «Quin és el primer projecte d'escriptura que vols fer passar pel taller? Posa-li un nom curt.»
 
-Create `writting-projects/[project-slug]/BACKLOG.md` with the standard structure (a directory with a `BACKLOG.md` is what the lane tool calls a project: `python3 tools/legati/lane.py claim writting-projects/[project-slug] "<task>"`):
+Crea `writting-projects/[project-slug]/BACKLOG.md` amb l'estructura estàndard (un directori amb un `BACKLOG.md` és el que l'eina de carrils anomena projecte: `python3 tools/legati/lane.py claim writting-projects/[project-slug] "<task>"`):
 
 ```markdown
 # [Project name] — backlog
@@ -126,88 +126,88 @@ Create `writting-projects/[project-slug]/BACKLOG.md` with the standard structure
 *(not now, not never)*
 ```
 
-Add the project to `INDEX.md`.
+Afegeix el projecte a `INDEX.md`.
 
-Create `memory/project-[slug].md` from the project template in `memory/_templates/`.
+Crea `memory/project-[slug].md` a partir de la plantilla de projecte de `memory/_templates/`.
 
 Commit: `"init: first project [project-slug]"`
 
 ---
 
-## Step 5: Run the status check
+## Pas 5: Fes la comprovació d'estat
 
-Invoke `/status` to verify the repo is in good shape and the orientation procedure works.
+Invoca `/status` per verificar que el repositori està en bon estat i que el procediment d'orientació funciona.
 
-The status check should:
-- Read `INDEX.md` and report the active projects
-- Read `memory/MEMORY.md` and confirm the profile is in place
-- List the available skills
-- Report any open `> [!todo]` items in key files that still need the user's attention
+La comprovació d'estat hauria de:
+- Llegir `INDEX.md` i informar dels projectes actius
+- Llegir `memory/MEMORY.md` i confirmar que el perfil hi és
+- Llistar les skills disponibles
+- Informar de qualsevol element `> [!todo]` obert en els fitxers clau que encara necessiti l'atenció de l'usuari
 
-If there are unresolved `[!todo]` markers in `AGENTS.md`, the boot files or the writing profile, surface them now.
+Si hi ha marques `[!todo]` pendents a `AGENTS.md`, als fitxers d'arrencada o al perfil d'escriptura, fes-les aflorar ara.
 
 ---
 
-## Step 6: Set up this machine (20-60 minutes depending on what you have)
+## Pas 6: Configura aquesta màquina (20-60 minuts segons el que ja tinguis)
 
-Do what applies. Record the result as this machine's section of `memory/reference_hosts.md` (the template's example shows the shape; `hostname -s` gives the heading). Every legatus reads that section at boot, so keep it short and true.
+Fes el que calgui. Deixa constància del resultat com a secció d'aquesta màquina a `memory/reference_hosts.md` (l'exemple de la plantilla en mostra la forma; `hostname -s` et dona el títol). Tots els legati llegeixen aquesta secció en arrencar, així que mantén-la curta i certa.
 
-**Git remote (strongly recommended):**
-- Ask: "Is this workshop in a private Git remote (GitHub, GitLab, your own server)? It is what lets several sessions and several machines share one workshop."
-- If not yet: create a **private** repository, then `git remote set-url origin <url>` (or `git remote add origin <url>`) and `bash tools/git/sync.sh push`. Never push a personal workshop to a public repository: it will hold drafts, notes and memories.
+**Remot de Git (molt recomanable):**
+- Pregunta: «Aquest taller és en un remot de Git privat (GitHub, GitLab, un servidor teu)? És el que permet que diverses sessions i diverses màquines comparteixin un mateix taller.»
+- Si encara no ho és: crea un repositori **privat** i després `git remote set-url origin <url>` (o `git remote add origin <url>`) i `bash tools/git/sync.sh push`. No facis mai push d'un taller personal a un repositori públic: hi haurà esborranys, notes i memòries.
 
 **Claude Code:**
-- Nothing to install in the repo: the tracked `.claude/settings.json` carries the hooks. Claude Code asks once to trust the folder.
-- Test: `./claude_<name>.sh` opens a tab named after that legatus, and the first lines of the session show the `[legati]` briefing.
+- Res a instal·lar al repositori: el `.claude/settings.json` versionat ja porta els hooks. Claude Code demana un cop que confiïs en la carpeta.
+- Prova: `./claude_<name>.sh` obre una pestanya amb el nom d'aquell legatus, i les primeres línies de la sessió mostren el resum `[legati]`.
 
-**Codex (optional, recommended for a second model family):**
-- `codex login` (browser flow), then `bash tools/legati/install-hooks.sh codex`.
-- Start Codex in the repo once and approve the hooks with `/hooks`.
-- Test: `./codex_<name>.sh`; the session should answer with that legatus's prefix. Inside Codex's sandbox the start hook gives a local briefing and asks to run `bash tools/legati/session-start.sh --refresh` through an approval: that is expected.
-- Optional: pin a legatus to Codex in `legati/roster.toml` (a reviewer on a different model family from the writer gives an independent second opinion).
+**Codex (opcional, recomanat per tenir una segona família de models):**
+- `codex login` (flux al navegador), després `bash tools/legati/install-hooks.sh codex`.
+- Engega Codex un cop al repositori i aprova els hooks amb `/hooks`.
+- Prova: `./codex_<name>.sh`; la sessió hauria de respondre amb el prefix d'aquell legatus. Dins del sandbox de Codex, el hook d'arrencada dona un resum local i demana executar `bash tools/legati/session-start.sh --refresh` mitjançant una aprovació: és el que s'espera.
+- Opcional: fixa un legatus a Codex a `legati/roster.toml` (un revisor amb una família de models diferent de la de l'escriptor dona una segona opinió independent).
 
-**The `llm` front door (other models):**
-- See `tools/llm/README.md`: `uv tool install llm`, then the plugins you need (`llm install llm-ollama` for a local Ollama server), `llm keys set openai` for a paid key.
-- Test: `llm models` lists what this machine can call; `llm -m <model> 'say hi'` answers; `llm logs -n 1` shows it was logged.
+**La porta d'entrada `llm` (altres models):**
+- Mira `tools/llm/README.md`: `uv tool install llm`, després els connectors que necessitis (`llm install llm-ollama` per a un servidor Ollama local), `llm keys set openai` per a una clau de pagament.
+- Prova: `llm models` llista el que pot cridar aquesta màquina; `llm -m <model> 'say hi'` respon; `llm logs -n 1` mostra que ha quedat registrat.
 
-**PDF generation:**
-- Test: `pandoc --version && typst --version`
-- If either is missing: `brew install pandoc typst` (macOS) or see the documentation for your OS.
-- Test the full pipeline: write a short markdown file and run `/md2pdf` on it.
+**Generació de PDF:**
+- Prova: `pandoc --version && typst --version`
+- Si en falta algun: `brew install pandoc typst` (macOS) o consulta la documentació del teu sistema operatiu.
+- Prova tot el circuit: escriu un fitxer markdown curt i passa-hi `/md2pdf`.
 
-**Reference checking (if you write academic work):** `bash tools/refs-check/setup.sh`, and set `REFS_CHECK_CONTACT` to your email (see `tools/refs-check/README.md`).
+**Verificació de referències (si escrius textos acadèmics):** `bash tools/refs-check/setup.sh`, i posa la teva adreça electrònica a `REFS_CHECK_CONTACT` (mira `tools/refs-check/README.md`).
 
-**Google Workspace (for the comms legatus, if enabled):**
-- See `tools/google/README.md` for the OAuth setup procedure.
-- This requires: a Google account, creating an OAuth app in Google Cloud Console, running the auth flow once. Takes 30 minutes the first time.
-
----
-
-## Step 7: Add your first source
-
-Pick something you're currently reading or working with and run `/add-source` on it. This confirms the source intake pipeline works and gives you a concrete example of what a processed source looks like.
-
-Good first sources: a PDF paper you've read recently, a YouTube talk you want to reference, a web article you bookmarked.
+**Google Workspace (per al legatus de comunicacions, si està activat):**
+- Mira `tools/google/README.md` per al procediment de configuració d'OAuth.
+- Cal: un compte de Google, crear una aplicació OAuth a Google Cloud Console i passar pel flux d'autenticació un cop. La primera vegada són 30 minuts.
 
 ---
 
-## After setup
+## Pas 7: Afegeix la teva primera font
 
-Tell the user:
+Tria alguna cosa que estiguis llegint o amb què estiguis treballant ara i passa-hi `/add-source`. Això confirma que el circuit d'entrada de fonts funciona i et dona un exemple concret de com és una font processada.
 
-> The workshop is set up. From here, it evolves as you use it. A few things to keep in mind:
+Bones primeres fonts: un article en PDF que hagis llegit fa poc, una xerrada de YouTube que vulguis citar, un article web que tinguis a les adreces d'interès.
+
+---
+
+## Després de la configuració
+
+Digues a l'usuari:
+
+> El taller ja està configurat. A partir d'aquí, evoluciona a mesura que el fas servir. Unes quantes coses a tenir presents:
 >
-> - When an agent does something you want it to stop doing, add a feedback memory. When it does something perfectly, note that too — both directions matter.
-> - The writing profile and worldview grow best through use, not through filling in templates in advance. Run sessions. Notice what misses. Add the rule.
-> - The good-practices guide at `good-practices/` is worth reading over the next week. Not everything will be relevant yet — read it when you have a question about how something should work.
-> - When you add something to the filesystem, update `INDEX.md` in the same commit. This is the one rule that's genuinely non-optional.
-> - Commit through `bash tools/git/sync.sh commit -m "…" -- <paths>`, so every session and every machine sees the work at once.
-> - Running several legati at once, or from two harnesses or two machines? Read `good-practices/08-many-legati-many-harnesses.md` first.
+> - Quan un agent faci alguna cosa que vols que deixi de fer, afegeix una memòria de feedback. Quan faci alguna cosa perfecta, apunta-ho també: totes dues direccions compten.
+> - El perfil d'escriptura i la visió del món creixen millor amb l'ús que no pas omplint plantilles per avançat. Fes sessions. Fixa't en què falla. Afegeix la regla.
+> - La guia de bones pràctiques de `good-practices/` val la pena llegir-la durant la setmana que ve. No tot serà rellevant encara: llegeix-la quan tinguis un dubte sobre com hauria de funcionar alguna cosa.
+> - Quan afegeixis alguna cosa al sistema de fitxers, actualitza `INDEX.md` en el mateix commit. Aquesta és l'única regla que de debò no és opcional.
+> - Fes els commits a través de `bash tools/git/sync.sh commit -m "…" -- <paths>`, perquè totes les sessions i totes les màquines vegin la feina a l'instant.
+> - Fas anar diversos legati alhora, o des de dos harness o dues màquines? Llegeix primer `good-practices/08-many-legati-many-harnesses.md`.
 
-Commit a final `"workshop setup complete"` commit covering any remaining open items.
+Fes un últim commit, `"workshop setup complete"`, que reculli qualsevol element obert que quedi.
 
 ---
 
-## If the user wants to skip steps
+## Si l'usuari vol saltar-se passos
 
-That's fine. The most important three are Step 1 (names), Step 2 (writing profile), and Step 4 (first project). The rest can happen when needed. Don't enforce a linear order.
+Cap problema. Els tres més importants són el pas 1 (noms), el pas 2 (perfil d'escriptura) i el pas 4 (primer projecte). La resta pot venir quan calgui. No imposis un ordre lineal.

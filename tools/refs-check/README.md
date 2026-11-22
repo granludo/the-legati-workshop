@@ -1,34 +1,34 @@
 # tools/refs-check/
 
-Reference verification for academic documents the reviewer reviews. Wraps `bibsleuth` (six-database triangulation: OpenAlex, Semantic Scholar, CrossRef, arXiv, DBLP, PubMed) and adds an abstract-fetch pass so the reviewer can compare the **claim** the reviewed paper makes about a reference against **what the reference actually says**.
+Verificació de referències dels documents acadèmics que revisa el revisor. Embolcalla `bibsleuth` (triangulació en sis bases de dades: OpenAlex, Semantic Scholar, CrossRef, arXiv, DBLP, PubMed) i hi afegeix una passada que obté els resums, perquè el revisor pugui comparar l'**afirmació** que fa l'article revisat sobre una referència amb **el que diu realment la referència**.
 
-Produces a `<paper-stem>-refs-checks.md` markdown file that lives next to the reviewed document and becomes the **source of truth** for that document's reference verification — the reviewer reads it on subsequent reviews rather than re-querying bibsleuth.
+Produeix un fitxer markdown `<paper-stem>-refs-checks.md` que viu al costat del document revisat i es converteix en la **font de veritat** de la verificació de referències d'aquell document: el revisor el llegeix a les revisions posteriors en lloc de tornar a consultar bibsleuth.
 
-The commissioning brief, from the original workshop (2026-05-28):
+L'encàrrec inicial, del taller original (2026-05-28):
 
-> *"[reviewer], when you review an academic document, create a paralet `*-refs-checks.md` there you compile the list of references of the paper and your validation. If possible get the paper abstract, so you can verify the likelihood that the paper actually provides the claims the reviewed paper is making about the reference. Then you can treat this `*-refs-checks.md` file as source of truth so you do not have to re-query the bibsleuth tool."*
+> «[reviewer], quan revisis un document acadèmic, crea-hi al costat un `*-refs-checks.md` paral·lel on recullis la llista de referències de l'article i la teva validació. Si pots, aconsegueix el resum de cada article, per poder verificar la probabilitat que l'article digui de debò el que l'article revisat afirma sobre la referència. Després pots tractar aquest fitxer `*-refs-checks.md` com a font de veritat, i així no cal que tornis a consultar l'eina bibsleuth.»
 
-## What's in here
+## Què hi ha aquí
 
-| File | What it does |
+| Fitxer | Què fa |
 |---|---|
-| `check_refs.py` | The wrapper. Runs `bibsleuth check`, fetches abstracts (Semantic Scholar → OpenAlex → Crossref fallback chain), emits the source-of-truth markdown. Idempotent — re-running with a new ref in the .bib appends only the new entry; the reviewer's manual annotations are preserved. |
-| `setup.sh` | Idempotent host bootstrap. Installs `bibsleuth` via `uv tool install bibsleuth --python 3.12`, runs a network-reachability smoke test against a known-real reference. Run once per host. |
-| `README.md` | This file. |
+| `check_refs.py` | L'embolcall. Executa `bibsleuth check`, obté els resums (cadena d'alternatives Semantic Scholar → OpenAlex → Crossref) i genera el markdown font de veritat. Idempotent: si el tornes a executar amb una referència nova al .bib, només afegeix l'entrada nova; les anotacions manuals del revisor es conserven. |
+| `setup.sh` | Preparació idempotent de la màquina. Instal·la `bibsleuth` amb `uv tool install bibsleuth --python 3.12` i fa una prova ràpida d'accés a la xarxa contra una referència que se sap real. Executa'l una vegada per màquina. |
+| `README.md` | Aquest fitxer. |
 
-## First-time setup on a new host
+## Primera configuració en una màquina nova
 
 ```bash
 bash tools/refs-check/setup.sh
 ```
 
-Set `REFS_CHECK_CONTACT=you@example.org` in your shell profile: OpenAlex and Crossref ask polite clients for a contact address, and the wrapper adds it to its User-Agent only when the variable is set.
+Posa `REFS_CHECK_CONTACT=you@example.org` al perfil del shell: OpenAlex i Crossref demanen una adreça de contacte als clients educats, i l'embolcall l'afegeix al seu User-Agent només quan la variable està definida.
 
-Idempotent — re-runs safely. Requires `uv` (the script will tell you how to install if missing). Installs bibsleuth as a uv tool (`~/.local/bin/bibsleuth`), pinned to Python 3.12 because bibsleuth requires `>=3.12`. After setup, both `bibsleuth` and the workshop wrapper script are pre-approved in `.claude/settings.json` — no permission prompts during agent runs.
+Idempotent: el pots tornar a executar sense risc. Necessita `uv` (si falta, l'script t'explica com instal·lar-lo). Instal·la bibsleuth com a eina uv (`~/.local/bin/bibsleuth`), fixada a Python 3.12 perquè bibsleuth requereix `>=3.12`. Després de la configuració, tant `bibsleuth` com l'script embolcall del taller estan preaprovats a `.claude/settings.json`: cap petició de permís durant les execucions dels agents.
 
-Per-host install state is recorded in [`memory/reference_hosts.md`](../../memory/reference_hosts.md).
+L'estat d'instal·lació de cada màquina es registra a [`memory/reference_hosts.md`](../../memory/reference_hosts.md).
 
-## Daily use
+## Ús diari
 
 ```bash
 # Produce / refresh the source-of-truth file:
@@ -38,11 +38,11 @@ python3 tools/refs-check/check_refs.py PATH/TO/refs.bib
 python3 tools/refs-check/check_refs.py PATH/TO/refs.bib -o PATH/TO/my-refs.md
 ```
 
-Default output is `<bib-stem>-refs-checks.md` alongside the input. So:
+La sortida per defecte és `<bib-stem>-refs-checks.md`, al costat de l'entrada. Per exemple:
 - `academic-reviews/schweitzer_rocuts_review/thesis.bib` →
 - `academic-reviews/schweitzer_rocuts_review/thesis-refs-checks.md`
 
-## What the source-of-truth file looks like
+## Com és el fitxer font de veritat
 
 ```markdown
 # Reference verification — `thesis.bib`
@@ -79,48 +79,48 @@ Default output is `<bib-stem>-refs-checks.md` alongside the input. So:
 ---
 ```
 
-## Reviewer verdicts — what they mean
+## Veredictes del revisor: què volen dir
 
-The wrapper computes a **reviewer verdict** on top of bibsleuth's output, combining the academic-DB triangulation with a URL-liveness check (fetch the URL, follow redirects, compare the page title and body to the cited title).
+L'embolcall calcula un **veredicte del revisor** (el «Reviewer verdict») a partir de la sortida de bibsleuth, combinant la triangulació en bases de dades acadèmiques amb una comprovació de disponibilitat de l'URL (obre l'URL, segueix les redireccions i compara el títol i el cos de la pàgina amb el títol citat).
 
-| Verdict | Meaning | Action |
+| Veredicte | Significat | Acció |
 |---|---|---|
-| ✅ `confirmed` | Bibsleuth `verified`/`likely` **or** URL alive + page title/body matches cited title | OK to ship |
-| ⚠️ `title-mismatch` | URL exists, page returns 200, but page title doesn't match cited title | Inspect — could be publisher reframing (OK) or chimeric ref (Critical) |
-| 🚫 `unreachable` | URL returns 4xx/5xx/timeout | Link rot or fabrication — find the live URL or remove the citation |
-| ❓ `escalate` | No URL, no DOI, no academic-DB candidates | **The principal must verify manually.** No paper ships until this list is empty. |
+| ✅ `confirmed` | Bibsleuth `verified`/`likely` **o** URL viu + el títol o el cos de la pàgina coincideixen amb el títol citat | Es pot enviar |
+| ⚠️ `title-mismatch` | L'URL existeix i la pàgina torna 200, però el títol de la pàgina no coincideix amb el títol citat | Cal mirar-ho: pot ser que l'editorial hagi reformulat el títol (correcte) o una referència quimèrica (crític) |
+| 🚫 `unreachable` | L'URL torna 4xx/5xx o se n'esgota el temps | Enllaç trencat o invenció: troba l'URL viu o treu la citació |
+| ❓ `escalate` | Ni URL, ni DOI, ni candidats a les bases de dades acadèmiques | **El principal ho ha de verificar a mà.** Cap article surt fins que aquesta llista estigui buida. |
 
-## Bibsleuth verdicts — the lower layer
+## Veredictes de bibsleuth: la capa inferior
 
-Bibsleuth itself outputs `verified` / `likely` / `unverified`. These feed into the reviewer verdict but **aren't the final word** — in particular, `verified` for a `@misc` entry with a URL field only means *"there is a URL string here"*, not *"the URL points at a real page"*. The principal 2026-05-28 caught this gap; the URL-liveness layer is the fix.
+Bibsleuth mateix genera `verified` / `likely` / `unverified`. Aquests veredictes alimenten el veredicte del revisor, però **no són l'última paraula**: en concret, `verified` per a una entrada `@misc` amb un camp d'URL només vol dir «aquí hi ha una cadena d'URL», no pas «l'URL apunta a una pàgina real». El principal va detectar aquest forat el 2026-05-28; la capa de disponibilitat d'URL n'és la solució.
 
-| Bibsleuth verdict | Meaning at the academic-DB layer |
+| Veredicte de bibsleuth | Significat a la capa de bases de dades acadèmiques |
 |---|---|
-| `verified` | High-confidence match across multiple providers (academic refs); OR misc-with-URL placeholder (gray-lit refs — URL liveness needed for real verification) |
-| `likely` | Probable academic-DB match; some metadata drift but the same paper |
-| `unverified` | Below match threshold across all providers. May be a real paper with bad metadata, OR a fabrication. The principal or the reviewer checks. |
+| `verified` | Coincidència d'alta confiança en diversos proveïdors (referències acadèmiques); O BÉ un marcador de posició «misc amb URL» (literatura grisa: cal comprovar la disponibilitat de l'URL per a una verificació real) |
+| `likely` | Coincidència probable a les bases de dades acadèmiques; alguna desviació de metadades, però és el mateix article |
+| `unverified` | Per sota del llindar de coincidència a tots els proveïdors. Pot ser un article real amb metadades dolentes, O BÉ una invenció. Ho comprova el principal o el revisor. |
 
-The **chimeric** case is the subtle one: the bib has a fake DOI; bibsleuth follows the DOI and gets back a real-but-different paper. The URL-liveness step's title-comparison catches this: the URL is alive, but the page title doesn't match the cited title → `title-mismatch` flag.
+El cas **quimèric** és el subtil: el bib té un DOI fals; bibsleuth segueix el DOI i en treu un article real però diferent. La comparació de títols del pas de disponibilitat d'URL ho detecta: l'URL és viu, però el títol de la pàgina no coincideix amb el títol citat → marca `title-mismatch`.
 
-## The URL-liveness layer — what it does
+## La capa de disponibilitat d'URL: què fa
 
-For every `.bib` entry with a `url` field (and for every DOI's resolved URL):
+Per a cada entrada del `.bib` amb un camp `url` (i per a l'URL resolt de cada DOI):
 
-1. **Fetch the URL** with a Safari-like User-Agent (publishers often block default Python UAs).
-2. **Follow redirects** up to the standard limit.
-3. **Classify the response:**
-   - 200 → alive; extract page title (og:title → `<title>` → first `<h1>`) and body
-   - 401/403/429 → blocked (paywall, bot-blocker, rate limit — page may exist; can't confirm)
-   - 404/410 → dead — link rot or fabrication
-   - 5xx / timeout / connection refused → unreachable
-4. **Compare cited title to page title** via token-overlap heuristic. If title-only match fails, fall back to searching the page body (handles publishers who reframe titles — e.g. Khan Academy wraps Khan's TED talk title in their own header).
-5. **Feed the result into the reviewer verdict.**
+1. **Obre l'URL** amb un User-Agent semblant al de Safari (les editorials sovint bloquegen els UA per defecte de Python).
+2. **Segueix les redireccions** fins al límit habitual.
+3. **Classifica la resposta:**
+   - 200 → viu; n'extreu el títol de la pàgina (og:title → `<title>` → primer `<h1>`) i el cos
+   - 401/403/429 → bloquejat (mur de pagament, bloqueig antibots, límit de freqüència: la pàgina pot existir, però no es pot confirmar)
+   - 404/410 → mort: enllaç trencat o invenció
+   - 5xx / temps esgotat / connexió rebutjada → inaccessible
+4. **Compara el títol citat amb el títol de la pàgina** amb una heurística de solapament de tokens. Si la coincidència només amb el títol falla, recorre a cercar-lo al cos de la pàgina (així es resolen les editorials que reformulen els títols: per exemple, Khan Academy embolcalla el títol de la xerrada TED de Khan amb la seva pròpia capçalera).
+5. **Passa el resultat al veredicte del revisor.**
 
-The wrapper rate-limits to ~0.3s between URL fetches to be polite to free-tier APIs and publisher servers.
+L'embolcall espera ~0,3 s entre obertures d'URL per ser respectuós amb les API gratuïtes i els servidors de les editorials.
 
-## The Playwright URL re-check layer — `verify-urls.mjs`
+## La capa de recomprovació d'URL amb Playwright: `verify-urls.mjs`
 
-`check_refs.py`'s URL pass uses a plain HTTP client. Many publisher and blog hosts (Macmillan, BJET, RIED, theconversation, Cloudflare-fronted sites) **bot-block non-browser clients** and return `403` to it — leaving a wall of `escalate` verdicts that are really just *"my fetcher got refused,"* not *"this reference is suspect."* `verify-urls.mjs` is the **escalation layer**: it re-loads those URLs in a real headless Chromium (proper User-Agent + headers), which sails past most soft bot-blocks, and writes the result back into the `*-refs-checks.md`.
+La passada d'URL de `check_refs.py` fa servir un client HTTP simple. Molts servidors d'editorials i de blogs (Macmillan, BJET, RIED, theconversation, llocs darrere de Cloudflare) **bloquegen els clients que no són navegadors** i li tornen `403`, cosa que deixa un mur de veredictes `escalate` que en realitat només volen dir «han rebutjat el meu client», no pas «aquesta referència és sospitosa». `verify-urls.mjs` és la **capa d'escalada**: torna a carregar aquests URL en un Chromium headless real (User-Agent i capçaleres correctes), que passa per sobre de la majoria de bloquejos antibots suaus, i escriu el resultat al `*-refs-checks.md`.
 
 ```bash
 # Re-check every not-yet-`alive` URL in a refs-checks file (default):
@@ -134,66 +134,66 @@ node tools/refs-check/verify-urls.mjs PATH/TO/foo-refs-checks.md --dry
 #   --timeout MS     per-page nav timeout (default 25000)
 ```
 
-It reads cited titles from the sibling `.bib` (or `--bib PATH`), loads each target URL, records final HTTP status + page `<title>`, computes a token-overlap title match, and patches **only** the `**URL check**` sub-block, the `**The reviewer verdict:**` bullet, the `## [key]` header verdict, and the roll-up. It never touches the manual Claim/Assessment annotations.
+Llegeix els títols citats del `.bib` germà (o de `--bib PATH`), carrega cada URL de destinació, registra l'estat HTTP final i el `<title>` de la pàgina, calcula una coincidència de títol per solapament de tokens i modifica **només** el subbloc `**URL check**`, la vinyeta `**The reviewer verdict:**`, el veredicte de la capçalera `## [key]` i el resum agregat. Mai no toca les anotacions manuals de Claim/Assessment.
 
-**The one hard invariant — re-check only ever *upgrades*.** URL-liveness and academic-DB triangulation are independent axes of evidence. A reference bibsleuth already `confirmed` via the databases must **never** be downgraded to `escalate` just because a publisher bot-blocks the browser. So on a `403`/nav-error the script *preserves* the prior verdict (refreshing only the URL-check notes); a hard `404` is surfaced as `unreachable` but still won't clobber a DB-`confirmed`. Alive + title-match → `confirmed`; alive + title-mismatch → `title-mismatch` (chimeric smell), unless the ref was already DB-confirmed. (This invariant exists because the first cut got it wrong and downgraded four DB-confirmed refs on 2026-05-29; the fix is the reason the rule is written down.)
+**L'única invariant estricta: la recomprovació només pot millorar.** La disponibilitat de l'URL i la triangulació a les bases de dades acadèmiques són eixos d'evidència independents. Una referència que les bases de dades de bibsleuth ja han deixat en `confirmed` **mai** no pot baixar a `escalate` només perquè una editorial bloqueja el navegador. Per això, davant d'un `403` o d'un error de navegació, l'script conserva el veredicte anterior (i només actualitza les notes de la comprovació d'URL); un `404` dur apareix com a `unreachable`, però tampoc no esborra un `confirmed` per les bases de dades. Viu + títol coincident → `confirmed`; viu + títol no coincident → `title-mismatch` (olor de quimera), tret que la referència ja estigués confirmada per les bases de dades. (Aquesta invariant existeix perquè la primera versió ho feia malament i el 2026-05-29 va rebaixar quatre referències confirmades per les bases de dades; aquest error és el motiu que la regla estigui escrita.)
 
-A residual `403` even from the real browser (typically a Cloudflare interstitial — `"Just a moment…"` / `"Access Denied"`) means the URL is genuinely behind a hard challenge: the verdict stays whatever it was, and a no-prior-evidence ref stays `escalate` for the principal to confirm by hand.
+Un `403` residual fins i tot des del navegador real (normalment una pàgina intersticial de Cloudflare: `"Just a moment…"` / `"Access Denied"`) vol dir que l'URL és realment darrere d'un repte dur: el veredicte es queda com estava, i una referència sense evidència prèvia es queda en `escalate` perquè el principal la confirmi a mà.
 
-Setup is handled by `setup.sh` (step 6 — installs the `playwright` npm package locally + provisions Chromium). `node_modules/` is gitignored; the committed durable assets are `verify-urls.mjs`, `package.json`, and `.gitignore`.
+La configuració la fa `setup.sh` (pas 6: instal·la el paquet npm `playwright` localment i aprovisiona Chromium). `node_modules/` està ignorat per git; els elements duradors versionats són `verify-urls.mjs`, `package.json` i `.gitignore`.
 
-## The strict anti-hallucination rule
+## La regla estricta contra les al·lucinacions
 
-**Never invent a URL or DOI to "fill in" a missing-metadata entry.** This is the failure mode the whole system exists to prevent. From the same brief:
+**No inventis mai un URL o un DOI per «omplir» una entrada amb metadades que falten.** És el mode de fallada que tot el sistema existeix per evitar. Del mateix encàrrec:
 
-> *"What is CRITICAL and I mean CRITICAL is that we can't send a paper with a reference [not] fully verified... try'ing to publish with halucinated references is a loss of prestige I do not want to risk."*
+> «El que és CRÍTIC, i vull dir CRÍTIC, és que no podem enviar un article amb una referència [no] verificada del tot... intentar publicar amb referències al·lucinades és una pèrdua de prestigi que no vull arriscar.»
 
-If a `.bib` entry has no URL or DOI in the source material, leave the field empty. The ref will surface in the `❓ Refs to confirm manually` section. The principal finds the right URL; the reviewer updates the .bib; re-run with `--force`.
+Si una entrada del `.bib` no té URL ni DOI al material font, deixa el camp buit. La referència apareixerà a la secció `❓ Refs to confirm manually` (referències per confirmar a mà). El principal troba l'URL correcte; el revisor actualitza el .bib; torna-ho a executar amb `--force`.
 
-In the original workshop the reviewer (2026-05-28) caught itself fabricating a plausible-looking EU Commission URL while extracting the RIED .bib. The auto-detection + revert was correct. The lesson: *the temptation to "fill in" a missing URL is exactly the failure mode.* Resist.
+Al taller original, el revisor (2026-05-28) es va adonar que s'estava inventant un URL de la Comissió Europea d'aparença plausible mentre extreia el .bib de RIED. La detecció automàtica i la reversió van ser correctes. La lliçó: la temptació d'«omplir» un URL que falta és exactament el mode de fallada. Resisteix-la.
 
-## The abstract-fetch fallback chain
+## La cadena d'alternatives per obtenir resums
 
-Bibsleuth itself does not return abstracts. `check_refs.py` adds:
+Bibsleuth mateix no torna resums. `check_refs.py` hi afegeix:
 
-1. **Semantic Scholar** — cleanest abstract field, no API key, free tier rate-limited.
-2. **OpenAlex** — inverted-index format, de-inverted into running text by the script.
-3. **Crossref** — JATS XML in the `abstract` field, HTML-stripped.
+1. **Semantic Scholar**: el camp de resum més net, sense clau d'API, nivell gratuït amb límit de freqüència.
+2. **OpenAlex**: format d'índex invertit, que l'script desinverteix en text corrent.
+3. **Crossref**: XML JATS al camp `abstract`, sense l'HTML.
 
-Each ref triggers one to three GETs (whichever provider responds first wins). 0.4-second sleep between refs to keep us under free-tier rate limits.
+Cada referència dispara d'una a tres peticions GET (guanya el primer proveïdor que respon). Espera de 0,4 segons entre referències per mantenir-nos per sota dels límits del nivell gratuït.
 
-If none of the three providers returns an abstract — common for books, theses, gray literature, conference posters — the entry shows *"Abstract: not retrievable"* and the reviewer notes this explicitly in the Assessment field.
+Si cap dels tres proveïdors no torna un resum (habitual en llibres, tesis, literatura grisa, pòsters de congressos), l'entrada mostra «Abstract: not retrievable» i el revisor ho anota explícitament al camp Assessment.
 
-## Idempotency rules
+## Regles d'idempotència
 
-`check_refs.py` parses the existing markdown's `## [refkey]` sections before writing. For each ref in the .bib:
+`check_refs.py` analitza les seccions `## [refkey]` del markdown existent abans d'escriure. Per a cada referència del .bib:
 
-- **Key already in the file** → skip. The reviewer's manual fields (Cited-at, Claim, Assessment, manual Flags) are preserved.
-- **New key not in the file** → run bibsleuth check + fetch abstract + append.
+- **La clau ja és al fitxer** → se salta. Els camps manuals del revisor (Cited-at, Claim, Assessment, Flags manuals) es conserven.
+- **Clau nova que no és al fitxer** → s'executa la comprovació de bibsleuth + s'obté el resum + s'afegeix.
 
-This means: as a paper's reference list grows during writing, you re-run the script and only the new refs get processed. The accumulated reviewing labour stays intact.
+Això vol dir que, a mesura que la llista de referències d'un article creix durant l'escriptura, tornes a executar l'script i només es processen les referències noves. La feina de revisió acumulada es manté intacta.
 
-## What the reviewer does with this file
+## Què fa el revisor amb aquest fitxer
 
-The short version of the reviewer's workflow:
+La versió curta del flux de treball del revisor:
 
-1. Extract .bib from the document being reviewed (author-provided is ideal; GROBID-extracted for PDFs without source).
-2. Run this script → get the `*-refs-checks.md`.
-3. For each ref: locate the citing claim in the paper, paste it into *Claim made*, compare against the *Abstract*, write the *Assessment*.
-4. Roll up the findings into the reviewer's main review document (per-engagement, in `academic-reviews/<engagement>/`). Citation issues map to the severity matrix: **Critical** for fabricated/chimeric refs, **Severe** for unsupported-claim citations, **Polish** for missing DOIs or metadata mismatches.
+1. Extreu el .bib del document que es revisa (l'ideal és el que proporciona l'autor; extret amb GROBID per als PDF sense font).
+2. Executa aquest script → obtens el `*-refs-checks.md`.
+3. Per a cada referència: localitza l'afirmació que la cita a l'article, enganxa-la a Claim made, compara-la amb l'Abstract i escriu l'Assessment.
+4. Agrega les troballes al document principal de revisió del revisor (un per encàrrec, a `academic-reviews/<engagement>/`). Els problemes de citació s'assignen a la matriu de gravetat: **Crític** per a referències inventades o quimèriques, **Greu** per a citacions que no sostenen l'afirmació, **Retoc** per a DOI que falten o metadades que no coincideixen.
 
-## Limitations
+## Limitacions
 
-- **No PDF reference extractor yet.** Document-level intake assumes a `.bib` source. For PDFs without source: ask the author, or run GROBID separately (queued as a follow-up tool when the first PDF-only engagement arrives).
-- **Bibsleuth's `--no-llm` mode is used by default** for determinism and cost. The LLM-assisted mode catches more semantic mis-citations but costs API calls and adds non-reproducibility. If a critical engagement warrants the deeper check, add `--llm-on` to the bibsleuth subprocess invocation (not currently surfaced as a `check_refs.py` flag; trivial to add).
-- **Abstracts are not full-text.** The reviewer can verify generic-claim alignment from an abstract, but not specific-claim alignment (*"the paper says X about Y"* where X is a detail buried on page 14). For those, the citing paper's full-text or a manual check is needed.
+- **Encara no hi ha extractor de referències de PDF.** L'entrada de documents dona per fet una font `.bib`. Per als PDF sense font: demana-la a l'autor, o executa GROBID a part (previst com a eina de seguiment quan arribi el primer encàrrec només amb PDF).
+- **Per defecte es fa servir el mode `--no-llm` de bibsleuth**, per determinisme i cost. El mode assistit per LLM detecta més citacions semànticament errònies, però costa crides a l'API i fa el resultat menys reproduïble. Si un encàrrec crític justifica la comprovació més profunda, afegeix `--llm-on` a la invocació del subprocés de bibsleuth (ara mateix no està exposat com a opció de `check_refs.py`; afegir-l'hi és trivial).
+- **Els resums no són el text complet.** El revisor pot verificar a partir d'un resum que una afirmació genèrica hi encaixa, però no una afirmació específica («l'article diu X sobre Y», on X és un detall enterrat a la pàgina 14). Per a aquests casos cal el text complet de l'article citat o una comprovació manual.
 
-## Related
+## Relacionat
 
-- [The reviewer's rules — make reference verification non-optional there](../../characters/reviewer/rules.md)
-- [Code-as-action operating mode](../../memory/feedback_browser_tasks_code_as_action.md) — same posture applied to browser tasks; reference verification follows the same pattern (small dedicated tool, persistent output file, idempotent re-runs).
-- [bibsleuth upstream](https://github.com/yy/bibsleuth) — MIT, active dev as of March 2026.
+- [Les regles del revisor: fan que la verificació de referències no sigui opcional](../../characters/reviewer/rules.md)
+- [Mode de treball de codi com a acció](../../memory/feedback_browser_tasks_code_as_action.md): la mateixa actitud aplicada a les tasques de navegador; la verificació de referències segueix el mateix patró (eina petita i dedicada, fitxer de sortida persistent, reexecucions idempotents).
+- [bibsleuth upstream](https://github.com/yy/bibsleuth): MIT, en desenvolupament actiu el març del 2026.
 
 ---
 
-*Created 2026-05-28 in the original workshop, for the reviewer's reference verification.*
+Creat el 2026-05-28 al taller original, per a la verificació de referències del revisor.

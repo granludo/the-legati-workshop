@@ -1,23 +1,23 @@
-# Writing projects
+# Projectes d'escriptura
 
-Active writing projects live here. Each project gets its own folder with a `BACKLOG.md` tracking discrete tasks (recently done / active / up next / postponed).
+Aquí viuen els projectes d'escriptura actius. Cada projecte té la seva carpeta amb un `BACKLOG.md` que fa el seguiment de les tasques concretes (fet fa poc / actiu / següent / ajornat).
 
-## Conventions
+## Convencions
 
-- One folder per project.
-- Every project folder has a `BACKLOG.md`. Maintaining it is part of "done" — any change to a project's files must update the backlog in the same commit.
-- Projects that are complete or inactive move to `archive/`.
-- Domain separation: projects in different topic domains should not borrow references or anecdotes from each other unless the connection is genuinely organic.
+- Una carpeta per projecte.
+- Cada carpeta de projecte té un `BACKLOG.md`. Mantenir-lo forma part de «fet»: qualsevol canvi als fitxers d'un projecte ha d'actualitzar el backlog en el mateix commit.
+- Els projectes acabats o inactius passen a `archive/`.
+- Separació de dominis: els projectes de dominis temàtics diferents no s'haurien de manllevar referències ni anècdotes entre ells, tret que la connexió sigui genuïnament orgànica.
 
-## Currently active
+## Actius ara mateix
 
-*(none yet — add your first project and document it in INDEX.md)*
+*(encara cap: afegeix el teu primer projecte i documenta'l a INDEX.md)*
 
 ---
 
-> [!todo] You
-> When you start your first writing project:
-> 1. Create `writting-projects/[project-slug]/`
-> 2. Create `writting-projects/[project-slug]/BACKLOG.md`
-> 3. Add a line to `INDEX.md` pointing at it
-> 4. Add a memory file at `memory/project-[slug].md` with the project brief
+> [!todo] Tu
+> Quan comencis el teu primer projecte d'escriptura:
+> 1. Crea `writting-projects/[project-slug]/`
+> 2. Crea `writting-projects/[project-slug]/BACKLOG.md`
+> 3. Afegeix una línia a `INDEX.md` que hi apunti
+> 4. Afegeix un fitxer de memòria a `memory/project-[slug].md` amb la descripció del projecte

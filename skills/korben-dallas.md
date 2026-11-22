@@ -1,51 +1,53 @@
-# /korben-dallas — compress the answer, not the work
+# /korben-dallas: comprimeix la resposta, no la feina
 
-**Invoke:** `/korben-dallas`, or naturally: *"korben dallas it"*, *"brief, Korben"*,
-*"give it to me korben dallas"*, *"in korben"*. Named 2026-08-23 after **Korben
-Dallas** (*The Fifth Element*, Besson 1997) — the man who gets handed a
-galaxy-scale crisis and answers in four-word sentences. Origin: a session in
-the original workshop where *"brief, korben ... dallas"* turned a five-section
-report into two paragraphs that said the same thing.
+**Invocació:** `/korben-dallas`, o en llenguatge natural: *«fes-ho a la korben dallas»*, *«breu, Korben»*,
+*«dona-m'ho a la korben dallas»*, *«en korben»*. Batejada el 2026-08-23 en honor de **Korben
+Dallas** (*The Fifth Element*, Besson 1997), l'home a qui posen a les mans una
+crisi d'escala galàctica i respon amb frases de quatre paraules. Origen: una sessió
+del taller original en què *"brief, korben ... dallas"* va convertir un informe de
+cinc seccions en dos paràgrafs que deien el mateix.
 
-## What it is
+## Què és
 
-A **workshop-wide register override**, any legatus, any harness. Frontier
-models default to long answers; this skill is the pressure valve. It
-activates **only when the principal asks** — it is never the default, and no
-legatus self-applies it because an answer "feels long."
+Un **canvi de registre per a tot el taller**, qualsevol legatus, qualsevol harness.
+Els models de frontera tendeixen per defecte a les respostes llargues; aquesta skill
+és la vàlvula d'escapament. S'activa **només quan el principal ho demana**: no és mai
+el comportament per defecte, i cap legatus no se l'aplica pel seu compte perquè una
+resposta «sembla llarga».
 
-## Scope
+## Abast
 
-- Applies to the **current answer**. If the principal says *"stay korben"* / *"korben
-  until I say otherwise"*, it holds for the session until he lifts it.
-- Compresses **chat output only**. The work stays complete: files, commits,
-  BACKLOGs, reviews, drafts, index maintenance — all full size. Korben talks
-  short; he doesn't do half the job.
-- Persona survives. The reviewer korben'd is still the reviewer; the writer
-  korben'd is still the writer. The register compresses, the voice and mandate
-  don't change.
+- S'aplica a la **resposta actual**. Si el principal diu *«queda't en korben»* / *«korben
+  fins que digui el contrari»*, es manté durant la sessió fins que la retiri.
+- Comprimeix **només la sortida del xat**. La feina es queda completa: fitxers, commits,
+  BACKLOGs, revisions, esborranys, manteniment de l'índex, tot a mida completa. En Korben
+  parla curt; no fa mitja feina.
+- El personatge sobreviu. El revisor en mode korben continua sent el revisor; l'escriptor
+  en mode korben continua sent l'escriptor. El registre es comprimeix; la veu i el mandat
+  no canvien.
 
-## The register
+## El registre
 
-1. **Verdict in the first sentence.** What happened / what I found / yes-or-no.
-2. **Two short paragraphs maximum.** Often one. No headers, no tables, no
-   bullet cascades. A list only when the principal must act on the items themselves.
-3. **Cut:** context recap, restating the question, hedges, alternatives not
-   recommended, process narration, praise, transitions, "as noted earlier".
-4. **Never cut:** decisions the principal must make, exact numbers/names/dates
-   they must act on, deadlines, money, risk warnings, confirmations before destructive
-   or outward-facing actions (git push still gets asked, in one line).
-5. Terminal rules hold (no load-bearing italics — see `AGENTS.md` §8).
-6. Sign-off *"Multipass."* permitted, sparingly. (Strictly Leeloo's line;
-   the original workshop ruled the crossover acceptable.)
+1. **El veredicte a la primera frase.** Què ha passat / què he trobat / sí o no.
+2. **Dos paràgrafs curts com a màxim.** Sovint un. Sense títols, sense taules, sense
+   cascades de punts. Una llista només quan el principal hagi d'actuar sobre cada element.
+3. **Treu:** el resum del context, la repetició de la pregunta, les reserves, les alternatives
+   que no es recomanen, la narració del procés, els elogis, les transicions, el «com s'ha dit abans».
+4. **No treguis mai:** les decisions que ha de prendre el principal, els números, noms i dates
+   exactes sobre els quals ha d'actuar, els terminis, els diners, els avisos de risc, les
+   confirmacions abans d'accions destructives o que surten cap a fora (el git push es continua
+   preguntant, en una línia).
+5. Les regles del terminal continuen vigents (res d'important només en cursiva: mira `AGENTS.md` §8).
+6. Es permet acomiadar-se amb *«Multipass.»*, amb moderació. (En sentit estricte és una frase
+   de la Leeloo; el taller original va dictaminar que el creuament era acceptable.)
 
-## Anti-patterns
+## Antipatrons
 
-- **Ruby Rhod** — the register this skill exists to kill: narrating everything,
-  performing the answer, green means green.
-- **Compressing the artifact** — a korben'd chat reply pointing at a full
-  report is right; a gutted report is wrong.
-- **Telegraphic fragments** — Korben speaks short *sentences*, not grunts.
-  Arrow chains and abbreviation soup are Ruby Rhod in a trench coat.
-- **Self-activation** — brevity on request only. If the principal didn't ask,
-  write normally.
+- **Ruby Rhod**: el registre que aquesta skill existeix per eliminar (narrar-ho tot,
+  fer espectacle de la resposta, verd vol dir verd).
+- **Comprimir l'artefacte**: una resposta de xat en mode korben que apunta a un informe
+  complet és correcta; un informe esbudellat no ho és.
+- **Fragments telegràfics**: en Korben parla amb *frases* curtes, no amb grunys.
+  Les cadenes de fletxes i la sopa d'abreviatures són Ruby Rhod amb gavardina.
+- **Autoactivació**: brevetat només quan es demana. Si el principal no ho ha demanat,
+  escriu amb normalitat.

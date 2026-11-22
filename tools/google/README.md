@@ -1,17 +1,17 @@
-# tools/google — Google Workspace setup
+# tools/google: configuració de Google Workspace
 
-This folder is for setting up `gws` (Google Workspace CLI) for the comms agent. `gws` provides read-only access to Gmail, Google Calendar, and Google Drive via OAuth.
+Aquesta carpeta serveix per configurar `gws` (la CLI de Google Workspace) per a l'agent comms. `gws` dona accés de només lectura a Gmail, Google Calendar i Google Drive a través d'OAuth.
 
-## What gws does
+## Què fa gws
 
-`gws` is a CLI tool by the same team as the workshop. The comms agent uses it to:
-- List and read Gmail messages
-- Read Google Calendar events
-- List and read Google Drive files
+`gws` és una eina de línia d'ordres del mateix equip que el taller. L'agent comms la fa servir per:
+- Llistar i llegir missatges de Gmail
+- Llegir esdeveniments de Google Calendar
+- Llistar i llegir fitxers de Google Drive
 
-It **cannot** send emails, create calendar events, or modify any Google data. The OAuth scope ceiling enforces this at the credential level.
+**No pot** enviar correus, crear esdeveniments de calendari ni modificar cap dada de Google. El límit d'àmbits d'OAuth ho imposa a la mateixa credencial.
 
-## Install
+## Instal·lació
 
 ```bash
 npm install -g @googleworkspace/cli
@@ -19,26 +19,26 @@ npm install -g @googleworkspace/cli
 npx @googleworkspace/cli@latest
 ```
 
-Check the installed version:
+Comprova la versió instal·lada:
 ```bash
 gws --version
 ```
 
-## One-time OAuth setup
+## Configuració d'OAuth (una sola vegada)
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/).
-2. Create a new project (or use an existing one).
-3. Enable the Gmail API, Google Calendar API, and Google Drive API for the project.
-4. Create an OAuth 2.0 Client ID (Application type: Desktop app).
-5. Download the `client_secret.json` file and save it to `~/.config/gws/client_secret.json` (create the directory if it doesn't exist, set mode 0600).
-6. Run the auth flow:
+1. Ves a [Google Cloud Console](https://console.cloud.google.com/).
+2. Crea un projecte nou (o fes-ne servir un d'existent).
+3. Activa la Gmail API, la Google Calendar API i la Google Drive API per al projecte.
+4. Crea un ID de client OAuth 2.0 (tipus d'aplicació: aplicació d'escriptori).
+5. Descarrega el fitxer `client_secret.json` i desa'l a `~/.config/gws/client_secret.json` (crea el directori si no existeix i posa-hi el mode 0600).
+6. Executa el flux d'autenticació:
    ```bash
    gws auth login
    ```
-7. Follow the browser prompts to authorize. The scope you want: `gmail.readonly`, `calendar.readonly`, `drive.readonly`.
-8. Credentials are saved to `~/.config/gws/credentials.enc` (encrypted with a key stored in your OS keychain).
+7. Segueix les indicacions del navegador per autoritzar-lo. Els àmbits que vols: `gmail.readonly`, `calendar.readonly`, `drive.readonly`.
+8. Les credencials es desen a `~/.config/gws/credentials.enc` (xifrades amb una clau guardada al clauer del sistema operatiu).
 
-## Testing
+## Proves
 
 ```bash
 gws gmail users messages list --maxResults 5
@@ -46,12 +46,12 @@ gws calendar calendarList list
 gws drive files list --pageSize 5
 ```
 
-If these return data, you're set up correctly.
+Si aquestes ordres tornen dades, la configuració és correcta.
 
-## Cross-machine setup
+## Configuració en diverses màquines
 
-OAuth credentials are per-machine (the encrypted file uses your OS keychain). To set up a second machine, run `gws auth login` again on that machine with the same `client_secret.json`. The `client_secret.json` can be shared via iCloud or a password manager; `credentials.enc` cannot.
+Les credencials d'OAuth són per màquina (el fitxer xifrat fa servir el clauer del sistema operatiu). Per configurar una segona màquina, torna a executar `gws auth login` en aquella màquina amb el mateix `client_secret.json`. El `client_secret.json` es pot compartir per iCloud o amb un gestor de contrasenyes; `credentials.enc`, no.
 
-## The comms agent's mandate
+## El mandat de l'agent comms
 
-Once set up, the comms agent uses `gws` via shell calls in the session. It reads, summarizes, and surfaces information. It never calls `gws` commands that write data. The `--help` output lists all available commands; verify that any new commands used are read-only before adding them to the comms agent's toolset.
+Un cop configurat, l'agent comms fa servir `gws` amb crides al shell dins la sessió. Llegeix, resumeix i fa aflorar informació. Mai no crida ordres de `gws` que escriguin dades. La sortida de `--help` llista totes les ordres disponibles; comprova que qualsevol ordre nova que es faci servir sigui de només lectura abans d'afegir-la al conjunt d'eines de l'agent comms.

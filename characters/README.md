@@ -1,61 +1,61 @@
-# The Legati — your AI agents
+# Els legati: els teus agents d'IA
 
-This folder holds the identity files for your workshop's AI agents. Each agent is a *legatus* (plural: *legati*) — a delegate who acts on your authority within a defined lane.
+Aquesta carpeta conté els fitxers d'identitat dels agents d'IA del teu taller. Cada agent és un *legatus* (plural: *legati*): un delegat que actua amb la teva autoritat dins d'un carril definit.
 
-The word matters. The AI industry calls these "agents," which implies autonomous action. But what you want are *delegates*: entities that act on your behalf, within boundaries you set, with judgment you have calibrated. The distinction is epistemological, not cosmetic.
+La paraula importa. La indústria de la IA en diu «agents», cosa que implica acció autònoma. Però el que vols són *delegats*: entitats que actuen en nom teu, dins dels límits que tu fixes, amb un criteri que tu has calibrat. La distinció és epistemològica, no cosmètica.
 
 ---
 
-## The four starter agents
+## Els quatre agents inicials
 
-This workshop seeds four agent roles. They have no names, no personalities, and no characters yet. That's your job. Each folder contains a short `boot.md` (what the legatus reads at session start), a stub `character.md` and an empty `rules.md`. Fill them in.
+Aquest taller sembra quatre rols d'agent. Encara no tenen nom, ni personalitat, ni personatge. Això és feina teva. Cada carpeta conté un `boot.md` curt (el que el legatus llegeix en començar la sessió), un `character.md` esquemàtic i un `rules.md` buit. Omple'ls.
 
-| Folder | Role | Your job |
+| Carpeta | Rol | La teva feina |
 |---|---|---|
-| `orchestrator/` | Default agent; tooling, engineering, repo stewardship, coordination | Name it. Give it a personality. This is the agent that runs most sessions. |
-| `writer/` | Drafting, editorial, voice mimicry, multilingual output | Name it. Give it your writing voice as a reference. This agent should know how you write. |
-| `comms/` | Calendar, inbox, schedule — read-only on external services | Name it. Define its read-only mandate carefully. This agent should never send anything you didn't authorize. |
-| `reviewer/` | Honest, calibrated feedback on drafts and deliverables | Name it. Calibrate its severity. This agent should tell you the truth, not what you want to hear. |
+| `orchestrator/` | Agent per defecte; eines, enginyeria, custòdia del repositori, coordinació | Posa-li nom. Dona-li una personalitat. És l'agent que porta la majoria de sessions. |
+| `writer/` | Redacció, edició, imitació de la veu, textos en diverses llengües | Posa-li nom. Dona-li la teva veu d'escriptura com a referència. Aquest agent ha de saber com escrius. |
+| `comms/` | Calendari, safata d'entrada, agenda: només lectura als serveis externs | Posa-li nom. Defineix amb cura el seu mandat de només lectura. Aquest agent no hauria d'enviar mai res que no hagis autoritzat. |
+| `reviewer/` | Opinió honesta i calibrada sobre esborranys i lliuraments | Posa-li nom. Calibra'n la severitat. Aquest agent t'ha de dir la veritat, no el que vols sentir. |
 
 ---
 
-## How to design an agent
+## Com dissenyar un agent
 
-See `good-practices/02-the-legati.md` for the full guide. The short version:
+Consulta `good-practices/02-the-legati.md` per a la guia completa. La versió curta:
 
-1. **Name it from fiction or history you care about.** The name sets the register and gives you a handle for invoking the persona. A name you chose deliberately lands differently than "Assistant 2."
-2. **Define its lane precisely.** What does it do? What does it explicitly *not* do? The anti-mandate is as important as the mandate.
-3. **Give it a voice anchor.** One sentence or a quote that captures the register. "Terse, specific, no flattery" is a voice anchor. "Helpful and friendly" is not.
-4. **Name the anti-pattern.** Who is this agent *not*? Naming the failure mode helps you calibrate and helps the agent self-correct.
-5. **Rules accrete over time.** The `rules.md` file starts empty. It fills up as you give the agent instructions across sessions.
-
----
-
-## On naming
-
-You don't have to name agents from fiction. But names from fiction you love tend to stick, because they come loaded with associations you already have. When you say a name in a session, you're invoking those associations — the character's voice, values, and posture. Use that.
-
-The agents in this workshop were named from *Expeditionary Force* (Craig Alanson), *Heinlein*, *Conan Doyle*, *Philip K. Dick*, and *Harry Potter*. Each name carried something the agent needed.
+1. **Posa-li un nom tret de la ficció o de la història que t'estimes.** El nom fixa el registre i et dona una nansa per invocar el personatge. Un nom triat a consciència no fa el mateix efecte que «Assistent 2».
+2. **Defineix-ne el carril amb precisió.** Què fa? Què és el que explícitament *no* fa? L'antimandat és tan important com el mandat.
+3. **Dona-li una àncora de veu.** Una frase o una cita que en capti el registre. «Concís, concret, sense afalacs» és una àncora de veu. «Servicial i amable» no ho és.
+4. **Anomena l'antipatró.** Qui *no* és aquest agent? Posar nom al mode de fallada t'ajuda a calibrar-lo i ajuda l'agent a corregir-se tot sol.
+5. **Les regles s'acumulen amb el temps.** El fitxer `rules.md` comença buit. S'omple a mesura que dones instruccions a l'agent al llarg de les sessions.
 
 ---
 
-## Boot files, the roster and the launchers
+## Sobre els noms
 
-A session is one legatus. It reads `AGENTS.md` (the core, shared by every harness), then **only** its own `characters/<name>/boot.md`, which points at its `character.md`, its `rules.md`, the skills it runs and the memories it opens when a trigger fires. Keep boot files short: everything a legatus does not need in the first minute stays behind a link.
+No cal que posis als agents noms de ficció. Però els noms de la ficció que t'estimes solen quedar-se, perquè arriben carregats d'associacions que ja tens. Quan dius un nom en una sessió, invoques aquestes associacions: la veu, els valors i l'actitud del personatge. Aprofita-ho.
 
-The roster has three places that must agree, and `/start-here` (step 1) updates all of them when you name or rename a legatus:
+Els agents d'aquest taller van rebre noms d'*Expeditionary Force* (Craig Alanson), de *Heinlein*, de *Conan Doyle*, de *Philip K. Dick* i de *Harry Potter*. Cada nom portava alguna cosa que l'agent necessitava.
 
-1. the roster lines in `AGENTS.md` §1 (and the "which legatus?" question there);
-2. the folder `characters/<name>/` and the heading and reply prefix in its `boot.md`;
-3. the section `[<name>]` in `legati/roster.toml`, which picks the default harness (`claude-code` or `codex`) and model.
+---
 
-Then regenerate the root launchers with `bash tools/legati/make-launchers.sh`: you get `./claude_<name>.sh` and `./codex_<name>.sh` for every legatus with a boot file. A launcher sets `LEGATUS_AGENT`, names the terminal tab and hands the boot file to the harness. Two legati can share a tab: `legati/bin/legatus comms --with reviewer`.
+## Fitxers d'arrencada, la plantilla de legati i els llançadors
 
-## Handoff map (starter)
+Una sessió és un legatus. Llegeix `AGENTS.md` (el nucli, compartit per tots els harness) i després **només** el seu `characters/<name>/boot.md`, que apunta al seu `character.md`, al seu `rules.md`, a les skills que executa i a les memòries que obre quan salta un disparador. Mantén curts els fitxers d'arrencada: tot el que un legatus no necessita el primer minut es queda darrere d'un enllaç.
 
-- Orchestrator → Writer for any prose of more than a few paragraphs that should read as yours.
-- Orchestrator → Comms for schedule and inbox lookups.
-- Anyone → Reviewer before a deliverable leaves the workshop. The reviewer proposes, you decide, the writer rewrites.
-- Writer → Orchestrator for tooling and rendering trouble.
+La plantilla de legati té tres llocs que han de coincidir, i `/start-here` (pas 1) els actualitza tots quan poses nom a un legatus o el reanomenes:
 
-Between sessions these hand-offs are files (`tools/legati/handoff.py`); inside one session they are a persona switch for one block, announced in the reply.
+1. les línies de la plantilla a `AGENTS.md` §1 (i la pregunta «quin legatus?» que hi ha);
+2. la carpeta `characters/<name>/` i l'encapçalament i el prefix de resposta del seu `boot.md`;
+3. la secció `[<name>]` de `legati/roster.toml`, que tria el harness per defecte (`claude-code` o `codex`) i el model.
+
+Després regenera els llançadors de l'arrel amb `bash tools/legati/make-launchers.sh`: obtens `./claude_<name>.sh` i `./codex_<name>.sh` per a cada legatus que tingui fitxer d'arrencada. Un llançador defineix `LEGATUS_AGENT`, posa nom a la pestanya del terminal i passa el fitxer d'arrencada al harness. Dos legati poden compartir una pestanya: `legati/bin/legatus comms --with reviewer`.
+
+## Mapa de traspassos (inicial)
+
+- Orquestrador → Escriptor per a qualsevol prosa de més d'uns quants paràgrafs que hagi de semblar teva.
+- Orquestrador → Comunicacions per a consultes d'agenda i de safata d'entrada.
+- Qualsevol → Revisor abans que un lliurament surti del taller. El revisor proposa, tu decideixes, l'escriptor reescriu.
+- Escriptor → Orquestrador per a problemes d'eines i de renderitzat.
+
+Entre sessions, aquests traspassos són fitxers (`tools/legati/handoff.py`); dins d'una sessió són un canvi de personatge durant un bloc, anunciat a la resposta.

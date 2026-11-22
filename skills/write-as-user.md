@@ -1,37 +1,37 @@
-# /write-as-[you] — load your writing profile
+# /write-as-[you]: carrega el teu perfil d'escriptura
 
-**When to invoke:** before any writing task. The Writer agent loads your writing profile so output sounds like you, not like a generic AI.
+**Quan s'invoca:** abans de qualsevol tasca d'escriptura. L'agent escriptor carrega el teu perfil d'escriptura perquè el resultat soni com tu, no com una IA genèrica.
 
-**Who runs it:** the Writer agent.
+**Qui l'executa:** l'agent escriptor (`writer`).
 
-> [!todo] You
-> This skill file is a template. Before using it:
-> 1. Write `principals/[your-name]/writing-profile.md` — the document that teaches agents your voice.
-> 2. Rename this file to `write-as-[your-name].md` (e.g., `write-as-alice.md`).
-> 3. Update the path in step 1 below to match your file.
-> 4. Update the skill table in `skills/README.md` and the writer's `boot.md` to point at the renamed file.
+> [!todo] Tu
+> Aquest fitxer de skill és una plantilla. Abans de fer-lo servir:
+> 1. Escriu `principals/[your-name]/writing-profile.md`, el document que ensenya la teva veu als agents.
+> 2. Reanomena aquest fitxer a `write-as-[your-name].md` (p. ex., `write-as-alice.md`).
+> 3. Actualitza el camí del pas 1 de més avall perquè coincideixi amb el teu fitxer.
+> 4. Actualitza la taula de skills de `skills/README.md` i el `boot.md` de l'escriptor perquè apuntin al fitxer reanomenat.
 
 ---
 
-## What to do
+## Què cal fer
 
-1. Read `principals/[your-name]/writing-profile.md` in full.
-2. Confirm to the user: "Writing profile loaded — ready to write as [your name]."
-3. Apply the profile to everything you write this session until told otherwise.
+1. Llegeix sencer `principals/[your-name]/writing-profile.md`.
+2. Confirma a l'usuari: «Perfil d'escriptura carregat: a punt per escriure com a [el teu nom].»
+3. Aplica el perfil a tot el que escriguis en aquesta sessió fins que se t'indiqui el contrari.
 
-## What this means in practice
+## Què vol dir això a la pràctica
 
-- Match the voice, tone, and rhythm described in the profile.
-- Use the domain-specific register for the domain you're working in.
-- Apply the structural patterns (how the user opens, closes, structures arguments).
-- Avoid the explicit "what to avoid" list.
-- Do not add features, caveats, or sections the user did not ask for.
-- If the profile says first-draft-in-English, do that regardless of the target language.
+- Ajusta't a la veu, el to i el ritme que descriu el perfil.
+- Fes servir el registre propi del domini en què treballes.
+- Aplica els patrons estructurals (com obre l'usuari, com tanca, com estructura els arguments).
+- Evita la llista explícita de «què cal evitar».
+- No afegeixis elements, advertiments ni seccions que l'usuari no hagi demanat.
+- Si el perfil diu primer esborrany en anglès, fes-ho així sigui quina sigui la llengua de destinació.
 
-## When the profile is thin or new
+## Quan el perfil és prim o nou
 
-The profile grows over time. If it's sparse, write the best approximation you can and flag to the user what you guessed — so they can add to the profile.
+El perfil creix amb el temps. Si és escàs, escriu la millor aproximació que puguis i indica a l'usuari què has hagut d'endevinar, perquè ho pugui afegir al perfil.
 
-## The profile is not a cage
+## El perfil no és una gàbia
 
-The profile captures patterns, not rules. If a specific piece calls for a departure from the usual register (e.g., a formal grant proposal when the user usually writes colloquially), note the departure and ask before proceeding.
+El perfil recull patrons, no regles. Si un text concret demana apartar-se del registre habitual (p. ex., una sol·licitud de finançament formal quan l'usuari sol escriure en to col·loquial), fes notar el canvi i pregunta abans de continuar.

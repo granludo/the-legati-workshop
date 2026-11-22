@@ -1,14 +1,14 @@
 ---
 name: reference-[slug]
-description: [one-line summary — what external resource does this point to, and why?]
+description: [resum en una línia. A quin recurs extern apunta i per què?]
 metadata:
   type: reference
 ---
 
-**Location:** [URL, path, or system name]
+**Ubicació:** [URL, camí o nom del sistema]
 
-**What it contains:** [What information lives here? What would you look for here?]
+**Què conté:** [Quina informació hi ha aquí? Què hi buscaries?]
 
-**When to use:** [What triggers a lookup here? What questions does this resource answer?]
+**Quan fer-lo servir:** [Què motiva una consulta aquí? A quines preguntes respon aquest recurs?]
 
-**Access:** [How to reach it — credentials needed, tool to use, any gotchas.]
+**Accés:** [Com s'hi arriba: credencials necessàries, eina que cal fer servir, possibles paranys.]

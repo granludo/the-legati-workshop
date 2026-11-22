@@ -1,10 +1,10 @@
 ---
 name: user-[slug]
-description: [one-line summary — what does knowing this change about how agents should work with you?]
+description: [resum en una línia. Què canvia, saber això, en la manera com els agents haurien de treballar amb tu?]
 metadata:
   type: user
 ---
 
-[Content: describe the relevant aspect of who you are. Focus on what an agent needs to know to serve you well — your background, your expertise level in different domains, how you prefer to work, what frustrates you. Not a biography; a briefing for a smart collaborator.]
+[Contingut: descriu l'aspecte rellevant de qui ets. Centra't en el que un agent necessita saber per servir-te bé: la teva formació, el teu nivell d'expertesa en cada àmbit, com prefereixes treballar, què et frustra. No una biografia, sinó un informe per a un col·laborador espavilat.]
 
-**How to apply:** [one sentence: when should agents invoke this knowledge?]
+**Com aplicar-ho:** [una frase: quan haurien de recórrer els agents a aquest coneixement?]

@@ -1,29 +1,29 @@
-# 4. Source management
+# 4. La gestió de fonts
 
-A source is raw material — a paper, a recording, a video, a book chapter, a web article. Sources are not outputs. They feed your thinking; they are not your thinking. The distinction sounds obvious, but the workflow consequences are significant.
+Una font és material en brut: un article acadèmic, un enregistrament, un vídeo, un capítol de llibre, un article web. Les fonts no són resultats. Alimenten el teu pensament; no són el teu pensament. La distinció sembla òbvia, però té conseqüències importants en la manera de treballar.
 
-The `sources/` folder is not a library. It's a processing queue with long-term storage. Something enters as a source, gets processed into usable form, and then sits as a citable, searchable resource for future sessions. If it doesn't get processed, it's just a file accumulating dust.
+La carpeta `sources/` no és una biblioteca. És una cua de processament amb emmagatzematge a llarg termini. Una cosa hi entra com a font, es processa fins que és utilitzable i després s'hi queda com a recurs citable i cercable per a sessions futures. Si no es processa, només és un fitxer que acumula pols.
 
-## The processing pipeline
+## El circuit de processament
 
-Every source that enters the workshop goes through the `/add-source` skill. That skill handles the mechanics: transcript extraction for video and audio, text extraction for PDFs, clean retrieval for web articles. What it produces is not just a copy of the source — it's the source plus metadata: where it came from, when you acquired it, what it's for, key claims or passages you flagged.
+Cada font que entra al taller passa per la skill `/add-source`. Aquesta skill s'encarrega de la mecànica: extreure la transcripció dels vídeos i els àudios, extreure el text dels PDF, recuperar net el contingut dels articles web. El que produeix no és només una còpia de la font, sinó la font més unes metadades: d'on ve, quan la vas aconseguir, per a què serveix, les afirmacions o els passatges clau que vas marcar.
 
-The reason for this discipline: a source that's just a PDF or a transcript is hard to use in a session. A source that's been processed — with a summary, with key passages extracted, with a README that explains why you cared about it — is immediately useful. The three minutes of processing saves ten minutes of search across twenty sessions.
+El motiu d'aquesta disciplina: una font que només és un PDF o una transcripció costa de fer servir en una sessió. Una font processada (amb un resum, amb els passatges clau extrets, amb un README que explica per què t'interessava) és útil a l'acte. Els tres minuts de processament t'estalvien deu minuts de cerca en vint sessions.
 
-## Whisper transcripts need review
+## Les transcripcions de Whisper s'han de revisar
 
-If you process audio or video through automatic transcription, never trust the transcript directly. Automatic speech recognition makes characteristic errors: proper nouns, technical terms, in-group vocabulary, language-switching. It often mishears the specific words that matter most. Run a review pass before citing anything from a transcript. For your own language, a quick skim is enough; for technical content, a more careful pass.
+Si passes àudio o vídeo per una transcripció automàtica, no et fiïs mai directament del resultat. El reconeixement automàtic de la parla fa errors característics: noms propis, termes tècnics, vocabulari de grup, canvis de llengua. Sovint entén malament justament les paraules que més importen. Fes una passada de revisió abans de citar res d'una transcripció. En la teva pròpia llengua, n'hi ha prou amb una lectura ràpida; per a contingut tècnic, cal una passada més acurada.
 
-## The shared vs. per-project split
+## La divisió entre compartit i per projecte
 
-Sources that a single project needs go in `sources/[project-slug]/`. Sources that multiple projects might draw on go in `sources/shared/`. When a source migrates from one project to shared, update both `INDEX.md` files.
+Les fonts que només necessita un projecte van a `sources/[project-slug]/`. Les fonts que poden fer servir diversos projectes van a `sources/shared/`. Quan una font passa d'un projecte a la carpeta compartida, actualitza tots dos fitxers `INDEX.md`.
 
-Don't be too clever about the split. When in doubt, put it in the project folder. Premature sharing creates confusion about who owns the source and whether updates affect other projects.
+No et passis de llest amb la divisió. En cas de dubte, posa-la a la carpeta del projecte. Compartir abans d'hora crea confusió sobre de qui és la font i sobre si els canvis afecten altres projectes.
 
-## Your own past work
+## La teva pròpia obra
 
-Your own published papers belong in `sources/shared/papers-own/`. This sounds redundant — you know what you wrote — but it has a specific purpose: giving the writing agent concrete examples of your voice and your argument style in their final, published form. The writing profile describes your voice abstractly; your own papers instantiate it. When the agent is struggling to match your register, reading three of your papers is more effective than re-reading the writing profile.
+Els teus articles publicats van a `sources/shared/papers-own/`. Sembla redundant (ja saps què has escrit), però té un propòsit concret: donar a l'agent d'escriptura exemples reals de la teva veu i de la teva manera d'argumentar en la seva forma final, publicada. El perfil d'escriptura descriu la teva veu en abstracte; els teus articles la fan concreta. Quan a l'agent li costa encertar el teu registre, llegir tres articles teus és més eficaç que rellegir el perfil d'escriptura.
 
-## The citation discipline
+## La disciplina de les citacions
 
-Sources feed citations. Citations require verification. Before any paper leaves the workshop, every reference should have a verified DOI or URL and a confirmed match between the title/authors you're citing and the actual document. The `/refs-check` tooling handles most of this automatically. The rule is: never invent a URL or DOI to fill in missing metadata — leave the field empty and escalate to yourself. A broken citation is better than a fabricated one.
+Les fonts alimenten les citacions. Les citacions s'han de verificar. Abans que cap article surti del taller, cada referència ha de tenir un DOI o un URL verificat i una coincidència confirmada entre el títol i els autors que cites i el document real. Les eines de `/refs-check` en fan la major part de manera automàtica. La regla és: no t'inventis mai un URL ni un DOI per omplir metadades que falten; deixa el camp buit i eleva-ho a tu mateix. Més val una citació trencada que una d'inventada.

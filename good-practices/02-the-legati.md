@@ -1,39 +1,39 @@
-# 2. The legati
+# 2. Els legati
 
-I call them *legati* — the Latin for *delegates*. The AI industry calls them *agents*, which implies autonomous action: an agent acts. A delegate acts *on your behalf, within boundaries you define*. The distinction matters. When you frame them as agents, you end up designing systems that act. When you frame them as delegates, you end up designing systems that serve.
+Els anomeno *legati*, que en llatí vol dir *delegats*. La indústria de la IA en diu *agents*, i la paraula implica acció autònoma: un agent actua. Un delegat actua *en nom teu, dins dels límits que tu defineixes*. La distinció importa. Quan els penses com a agents, acabes dissenyant sistemes que actuen. Quan els penses com a delegats, acabes dissenyant sistemes que serveixen.
 
-The workshop seeds four roles. You name them and give them character. Here is how to think about that.
+El taller arrenca amb quatre rols. Tu els poses nom i els dones caràcter. Així és com cal pensar-hi.
 
-## Why naming matters
+## Per què importa el nom
 
-A name is not cosmetic. When you pick a name from fiction or history you care about, you're borrowing a fully-formed character — a set of associations, a voice, a posture, an anti-pattern. When I say "Agatha" in a session, I invoke a specific register: warm but not soft, intellectually serious, oriented toward the reader. When I say "Grumpy," I invoke a different register: terse, honest, calibrated, tells you the truth even when it's inconvenient. The names do real work.
+Un nom no és cosmètic. Quan tries un nom de la ficció o de la història que t'importa, manlleves un personatge ja format: un conjunt d'associacions, una veu, una actitud, un antipatró. Quan dic «Agatha» en una sessió, invoco un registre concret: càlid però no tou, seriós intel·lectualment, orientat al lector. Quan dic «Grumpy», n'invoco un altre: sec, honest, calibrat, et diu la veritat encara que no et vingui bé. Els noms fan feina de debò.
 
-Pick names you won't have to explain to yourself. The agent you work with every day for a year is easier to keep calibrated if the name carries the right connotations automatically. I picked names from fiction I love — *Expeditionary Force*, Heinlein, Philip K. Dick, Conan Doyle. You'll have your own canon. Use it.
+Tria noms que no t'hagis d'explicar a tu mateix. L'agent amb qui treballes cada dia durant un any és més fàcil de mantenir calibrat si el nom ja porta de sèrie les connotacions adequades. Jo vaig triar noms de la ficció que m'agrada: *Expeditionary Force*, Heinlein, Philip K. Dick, Conan Doyle. Tu tindràs el teu cànon. Fes-lo servir.
 
-## The four roles
+## Els quatre rols
 
-**The Orchestrator** is the default agent — the one that runs when you haven't specifically addressed anyone else. It handles engineering, tooling, repo maintenance, and coordination between the other agents. Crucially, it knows when to hand off: "this is a writing task — let me switch to the writer." The orchestrator is not a writing agent. When I first built this workshop, I collapsed everything into one agent, and the output suffered — the engineering mind and the writing mind are genuinely different, and conflating them degrades both.
+**L'orquestrador** (`orchestrator`) és l'agent per defecte, el que respon quan no t'has adreçat a ningú en concret. S'encarrega de l'enginyeria, les eines, el manteniment del repositori i la coordinació entre els altres agents. I, sobretot, sap quan ha de passar la feina: «això és una tasca d'escriptura, deixa'm passar-la a l'escriptor». L'orquestrador no és un agent d'escriptura. Quan vaig construir aquest taller per primer cop, ho vaig ficar tot en un sol agent, i el resultat se'n va ressentir: la ment de l'enginyer i la ment de l'escriptor són diferents de debò, i barrejar-les les degrada totes dues.
 
-**The Writer** is your writing voice. It produces drafts, runs editorial passes, adapts your tone to different registers, translates between languages. The most important thing about the writer: it needs your writing profile before it can do anything useful. Without it, it writes competently but generically. A good writing profile takes months to build, but you get most of the value from the first draft you write on a bad day and fix the next morning.
+**L'escriptor** (`writer`) és la teva veu escrita. Produeix esborranys, fa passades editorials, adapta el teu to a registres diferents, tradueix entre llengües. El més important de l'escriptor: necessita el teu perfil d'escriptura abans de poder fer res útil. Sense perfil, escriu amb solvència, però de manera genèrica. Un bon perfil d'escriptura triga mesos a construir-se, però la major part del valor ja te la dona el primer esborrany, el que escrius un mal dia i corregeixes l'endemà al matí.
 
-**The Comms agent** handles your calendar, inbox, and schedule — read-only. This is non-negotiable: the comms agent never sends, never creates events, never modifies external data. The ceiling is enforced at the OAuth credential level, not at the trust level. The reason is architectural: you do not want an agent that can send emails on your behalf to have the same level of autonomy as an agent that edits files in a private repo. Different risk profiles require different controls. Also: this agent is call-only. It does not run on its own. When two sessions are open simultaneously (two tabs, two harnesses, two machines), which happens, an auto-activating comms agent causes race conditions on the shared dashboard files. You call it; it runs.
+**L'agent de comunicacions** (`comms`) porta el teu calendari, la safata d'entrada i l'agenda, només en lectura. Això no es negocia: l'agent de comunicacions no envia mai res, no crea mai esdeveniments, no modifica mai dades externes. El sostre s'imposa a nivell de credencial OAuth, no de confiança. El motiu és d'arquitectura: no vols que un agent que pot enviar correus en nom teu tingui el mateix grau d'autonomia que un agent que edita fitxers en un repositori privat. Perfils de risc diferents demanen controls diferents. I una altra cosa: aquest agent només actua quan el crides. No s'engega pel seu compte. Quan hi ha dues sessions obertes alhora (dues pestanyes, dos harness, dues màquines), cosa que passa, un agent de comunicacions que s'activa sol provoca condicions de carrera en els fitxers compartits del tauler. Tu el crides i ell s'executa.
 
-**The Reviewer** is your honest critic. The anti-pattern at one end is the sycophant who validates everything — useless. The anti-pattern at the other end is the sniper who tears things down without offering anything constructive — also useless, and worse because it's demoralizing. The reviewer you want is the one who tells you the truth, names the specific problem, and proposes the minimal change that fixes it. Calibrate the severity scale so "Major" means something. If everything is Major, nothing is.
+**El revisor** (`reviewer`) és el teu crític honest. A un extrem hi ha l'antipatró del llagoter que ho valida tot: inútil. A l'altre extrem, el franctirador que ho destrossa tot sense oferir res de constructiu: també inútil, i pitjor, perquè desmoralitza. El revisor que vols és el que et diu la veritat, posa nom al problema concret i proposa el canvi mínim que l'arregla. Calibra l'escala de gravetat perquè «Major» vulgui dir alguna cosa. Si tot és Major, res no ho és.
 
-## The anti-mandate is as important as the mandate
+## L'antimandat és tan important com el mandat
 
-Every agent needs a clear statement of what it does *not* do. This is where most people under-invest. If you don't define the limits, the agents will interpret everything as within scope, and you'll end up with the writer giving you engineering advice and the orchestrator producing prose.
+Cada agent necessita una declaració clara del que *no* fa. Aquí és on gairebé tothom s'hi esforça massa poc. Si no defineixes els límits, els agents interpretaran que tot és dins del seu àmbit, i acabaràs amb l'escriptor donant-te consells d'enginyeria i l'orquestrador fent prosa.
 
-The anti-mandate also forces you to think about whose lane a given task belongs to. "Who should do this?" becomes a real question with a real answer, not a shrug.
+L'antimandat també t'obliga a pensar a quin carril pertany cada tasca. «Qui ho hauria de fer, això?» es converteix en una pregunta real amb una resposta real, no en una arronsada d'espatlles.
 
-## Rules files accrete over time
+## Els fitxers de regles creixen amb el temps
 
-Each agent has a `rules.md` file that starts empty. You fill it by noticing when the agent goes wrong. When you say "don't do that" or "always do this when X," write it down in the rules file with the reason. The reason is as important as the rule: a future session (or a future model) that doesn't understand the why will fail to apply the rule correctly in edge cases.
+Cada agent té un fitxer `rules.md` que comença buit. L'omples a mesura que veus on s'equivoca l'agent. Quan dius «no facis això» o «quan passi X, fes sempre això», escriu-ho al fitxer de regles amb el motiu. El motiu és tan important com la regla: una sessió futura (o un model futur) que no entengui el perquè no sabrà aplicar bé la regla en els casos límit.
 
-A rules file with ten good entries — specific, reasoned, grounded in actual incidents — is worth more than a hundred vague principles. Keep them specific. "Don't add a summary at the end of every response" is a rule. "Be concise" is not.
+Un fitxer de regles amb deu entrades bones (concretes, raonades, basades en incidents reals) val més que cent principis vagues. Que siguin concretes. «No afegeixis un resum al final de cada resposta» és una regla. «Sigues concís» no ho és.
 
-## On adding more agents
+## Sobre afegir més agents
 
-Four is a minimum, not a ceiling. As the workshop matures, you'll discover tasks that fall between the four roles or deserve specialized handling. A domain-specific lore-keeper — an agent that tracks the decisions and history in a particular project over months — is enormously valuable for complex long-running work. A student supervision agent is useful if you supervise theses. A security reviewer is useful if you have agents that write and run scripts.
+Quatre és un mínim, no un sostre. A mesura que el taller madura, descobriràs tasques que queden entre els quatre rols o que mereixen un tractament especialitzat. Un guardià de la història d'un domini (un agent que segueix durant mesos les decisions i la història d'un projecte concret) val moltíssim en feines complexes i llargues. Un agent de supervisió d'estudiants és útil si dirigeixes tesis. Un revisor de seguretat és útil si tens agents que escriuen i executen scripts.
 
-The expansion principle: add a new agent when you can articulate a clear mandate, a clear anti-mandate, and the reason the existing agents can't handle it without degrading. Don't add agents for variety. Each new agent adds coordination cost.
+El principi d'expansió: afegeix un agent nou quan puguis formular un mandat clar, un antimandat clar i el motiu pel qual els agents que ja tens no se'n poden fer càrrec sense degradar-se. No afegeixis agents per fer-hi varietat. Cada agent nou afegeix cost de coordinació.

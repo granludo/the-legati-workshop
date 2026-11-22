@@ -1,16 +1,16 @@
 ---
 type: project-folder
 project: Legati Observatory
-status: working — portable core + Claude Code and Codex adapters
+status: en funcionament (nucli portable + adaptadors per a Claude Code i Codex)
 ---
 
-# Legati Observatory
+# Observatori dels Legati
 
-A **portable, static, stigmergic** observability + light-coordination layer for a workshop's parallel AI sessions (the *legati* — your named agents). When several agent instances run against the same repo at once, this tells you **who is live, what they're doing, who is orchestrating whom, and what it cost** — and gives them a way to **not step on each other** when writing shared files.
+Una capa d'observabilitat i coordinació lleugera **portable, estàtica i estigmèrgica** per a les sessions d'IA en paral·lel d'un taller (els legati, els teus agents amb nom). Quan diverses instàncies d'agent treballen alhora contra el mateix repositori, et diu **qui és actiu, què fa, qui orquestra qui i quant ha costat**, i els dona una manera de **no trepitjar-se** quan escriuen fitxers compartits.
 
-**Why build your own** instead of installing a third-party dashboard: it stays portable across harnesses (not coupled to one tool), static (no webserver, no cloud-DB trust surface), aligned to the coordination problem that actually bites (parallel instances racing on the same file), and legible enough to double as teaching material. It is a worked example of **stigmergy over orchestration**: the agents coordinate **with no central orchestrator** — by leaving traces in shared files (presence + advisory-lock files as pheromone trails) and reading the environment's state. The repository is the termite mound.
+**Per què fer-ne un de propi** en lloc d'instal·lar un dashboard de tercers: es manté portable entre harness (no està lligat a una sola eina), estàtic (sense servidor web, sense la superfície de confiança d'una base de dades al núvol), centrat en el problema de coordinació que de debò fa mal (instàncies en paral·lel que competeixen pel mateix fitxer) i prou llegible per servir també de material docent. És un exemple resolt d'**estigmèrgia per sobre d'orquestració**: els agents es coordinen **sense cap orquestrador central**, deixant rastres en fitxers compartits (fitxers de presència i de bloqueig consultiu com a rastres de feromones) i llegint l'estat de l'entorn. El repositori és el termiter.
 
-## How it works (three layers, one firewall)
+## Com funciona (tres capes, un tallafoc)
 
 ```
  harness hooks  ──►  adapters/<harness>/  ──►  event schema  ──►  .observatory/  ──►  obs render  ──►  dashboard
@@ -18,21 +18,21 @@ A **portable, static, stigmergic** observability + light-coordination layer for 
   Codex, …)            aware code)              ADAPTERS.md)        events+presence+locks)
 ```
 
-The core (`obs.py` + renderers) knows nothing about any harness. To support a new harness you write **one** adapter that emits the same event schema; nothing else changes. See [`DESIGN.md`](DESIGN.md) and [`ADAPTERS.md`](ADAPTERS.md).
+El nucli (`obs.py` + els generadors) no sap res de cap harness. Per donar suport a un harness nou, escrius **un** adaptador que emeti el mateix esquema d'esdeveniments; no canvia res més. Vegeu [`DESIGN.md`](DESIGN.md) i [`ADAPTERS.md`](ADAPTERS.md).
 
-## Files
+## Fitxers
 
-| File | What |
+| Fitxer | Què és |
 |---|---|
-| [`obs.py`](obs.py) | The portable core CLI — `emit` · `task` · `heartbeat` · `who` · `agent` · `lock {acquire,check,release}` · `say` · `chat` · `render`. Pure stdlib, Python 3.9+. |
-| [`DESIGN.md`](DESIGN.md) | The design — the portability firewall, event schema, file layout, lock protocol, renderers. |
-| [`ADAPTERS.md`](ADAPTERS.md) | The portability contract: event schema + worked Claude Code hook config + how to port to another harness. |
-| [`adapters/claude-code/hook-handler.py`](adapters/claude-code/hook-handler.py) | Claude Code capture adapter (harness-aware code lives only in adapters; fail-silent, exits 0 so it can never block a session). |
-| [`adapters/codex/hook-handler.py`](adapters/codex/hook-handler.py) | Codex CLI capture adapter (same contract). Installed per machine by `bash tools/legati/install-hooks.sh codex`. |
+| [`obs.py`](obs.py) | La CLI del nucli portable: `emit` · `task` · `heartbeat` · `who` · `agent` · `lock {acquire,check,release}` · `say` · `chat` · `render`. Només biblioteca estàndard, Python 3.9+. |
+| [`DESIGN.md`](DESIGN.md) | El disseny: el tallafoc de portabilitat, l'esquema d'esdeveniments, l'organització dels fitxers, el protocol de bloqueig, els generadors. |
+| [`ADAPTERS.md`](ADAPTERS.md) | El contracte de portabilitat: esquema d'esdeveniments + configuració de hooks de Claude Code d'exemple + com portar-lo a un altre harness. |
+| [`adapters/claude-code/hook-handler.py`](adapters/claude-code/hook-handler.py) | Adaptador de captura de Claude Code (el codi que coneix el harness només viu als adaptadors; falla en silenci i surt amb 0, de manera que mai no pot bloquejar una sessió). |
+| [`adapters/codex/hook-handler.py`](adapters/codex/hook-handler.py) | Adaptador de captura de Codex CLI (el mateix contracte). S'instal·la a cada màquina amb `bash tools/legati/install-hooks.sh codex`. |
 
-The committed [`.claude/settings.json`](../../.claude/settings.json) already wires the five Claude Code hook events to the adapter using `$CLAUDE_PROJECT_DIR`, so a fresh clone starts capturing on the next session. Codex needs one step per machine: `bash tools/legati/install-hooks.sh codex`, then approve the hooks once inside Codex with `/hooks`.
+El [`.claude/settings.json`](../../.claude/settings.json) del repositori ja connecta els cinc esdeveniments de hook de Claude Code a l'adaptador fent servir `$CLAUDE_PROJECT_DIR`, de manera que un clon nou comença a capturar des de la sessió següent. Codex necessita un pas per màquina: `bash tools/legati/install-hooks.sh codex`, i després aprovar els hooks una vegada dins Codex amb `/hooks`.
 
-## Usage
+## Ús
 
 ```bash
 OBS=engineering-projects/legati-observatory/obs.py
@@ -46,14 +46,14 @@ python3 $OBS render --html                                     # interactive HTM
 python3 $OBS render --html --since 7d                          # HTML embed window: today|7d|30d|all (default 30d)
 ```
 
-**Two surfaces, both static + gitignored + per-host:**
-- **Markdown** (`render/dashboard-<host>.md`) — the at-a-glance view: live sessions, locks, today's feed/cost, Mermaid orchestration graph.
-- **HTML** (`render/dashboard-<host>.html`) — open in a browser (`file://`, no server). Event data is embedded as JSON with vanilla JS, so the **zoom levels are interactive in-page**: time-range (now / today / 7d / 30d / all), filter by agent/project, free-text search, click a session to drill into its full timeline. Cost bars + counts recompute on every control change.
+**Dues superfícies, totes dues estàtiques + ignorades per git + per màquina:**
+- **Markdown** (`render/dashboard-<host>.md`): la vista d'un cop d'ull: sessions actives, bloquejos, activitat i cost d'avui, graf d'orquestració en Mermaid.
+- **HTML** (`render/dashboard-<host>.html`): s'obre en un navegador (`file://`, sense servidor). Les dades dels esdeveniments van incrustades com a JSON amb JS pur, de manera que els **nivells de zoom són interactius dins la pàgina**: interval de temps (ara / avui / 7d / 30d / tot), filtres per agent o projecte, cerca de text lliure, i clic sobre una sessió per veure'n la cronologia completa. Les barres de cost i els recomptes es recalculen a cada canvi de control.
 
-All machine state lives under `<repo>/.observatory/` (hidden) and the rendered dashboards under `render/` — **both gitignored**, because they are machine- and host-dependent.
+Tot l'estat de la màquina viu a `<repo>/.observatory/` (ocult) i els dashboards generats a `render/`, **tots dos ignorats per git**, perquè depenen de la màquina.
 
-> The HTML orchestration graph uses Mermaid. To render the graph offline, drop a `mermaid.min.js` into `engineering-projects/legati-observatory/vendor/` (it is gitignored). Without it the HTML still renders — the graph just shows as text, and `obs render --html` prints the hint.
+> El graf d'orquestració de l'HTML fa servir Mermaid. Per generar el graf sense connexió, posa un `mermaid.min.js` a `engineering-projects/legati-observatory/vendor/` (està ignorat per git). Sense aquest fitxer l'HTML es genera igualment: el graf només es mostra com a text, i `obs render --html` n'imprimeix l'avís.
 
-## License
+## Llicència
 
-See the repository [`LICENSE`](../../LICENSE).
+Vegeu la [`LICENSE`](../../LICENSE) del repositori.
