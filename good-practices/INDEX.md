@@ -10,6 +10,7 @@ The pieces:
 4. [Source management](04-sources.md) — how to process raw material into something that can actually feed your thinking
 5. [The writing workflow](05-writing-workflow.md) — how writing and AI collaboration actually work when they work
 6. [Tooling](06-tooling.md) — compute routing, the local-vs-cloud decision, what each tier is for
-7. [The scaffold](07-scaffolding.md) — what CLAUDE.md does, why portability matters, how the system survives tool changes
+7. [The scaffold](07-scaffolding.md) — what AGENTS.md and CLAUDE.md do, why portability matters, how the system survives tool changes
+8. [Many legati, many harnesses](08-many-legati-many-harnesses.md): running several legati at once, under Claude Code and Codex, on more than one machine
 
 Read them in order the first time. After that, treat them as reference.

@@ -2,12 +2,15 @@
 
 Scripts that build and maintain the wiki-index layer over the workshop's markdown.
 
+> [!note] Built for the original workshop
+> These scripts were written against one specific workshop: its folders, its legati and its model servers (see the `SERVERS` / backend switches at the top of `ingest.py` and `bootstrap.py`). Read them as a worked example to adapt, not a turnkey tool. Run logs (`*-log.md`) are written next to the scripts and are gitignored.
+
 ## Files
 
 - **`bootstrap.py`** — first-pass scaffolding. Walks in-scope folders, calls Ollama (qwen3.5:122b) per file under a 16k-context budget, aggregates across files, writes per-facet scaffolds to `wiki/<facet>/<slug>.md`. Cached by file hash → idempotent on re-run. Run via `python3 tools/wiki/bootstrap.py [--smoke|--dry-run|--resume|--limit N|--skip-write]`.
 - **`chunk.py`** — splits long markdown into 16k-context-safe chunks for Ollama. Strategy: H2 splits → paragraph splits → sentence splits. Reusable from any wiki-bootstrap-adjacent tool.
 - **`validate.py`** — sanity-checker for the wiki tree: broken wikilinks, duplicate slugs, entries with no sources, sources missing on disk. Run after a bootstrap; safe to re-run any time.
-- **`bootstrap-log.md`** — append-only run log written by `bootstrap.py`. Records every per-file analysis, every aggregate count, every failure, every "decision needed from Marc" item.
+- **`bootstrap-log.md`** — append-only run log written by `bootstrap.py`. Records every per-file analysis, every aggregate count, every failure, every "decision needed from the principal" item.
 - **`cache/`** — gitignored. Per-file Ollama outputs keyed by SHA-256 of file content. Re-running `bootstrap.py --resume` skips files whose hash matches.
 
 ## Scope
@@ -15,14 +18,14 @@ Scripts that build and maintain the wiki-index layer over the workshop's markdow
 In-scope folders (markdown files only):
 - `writting-projects/` — except Hugo theme/build dirs (`themes/`, `public/`, `resources/`, `layouts/`, `archetypes/`, `static/`)
 - `characters/` — the legati identity files
-- `principals/` — human authors (currently just Marc)
+- `principals/` — human authors (you)
 - `memory/` — persistent memory system
 - `sources/` — raw source materials
 - `engineering-projects/` — engineering work folders
 - Selected root files: `INDEX.md`, `BACKLOG.md`, `PROJECTS.md`, `TODO.md`, `CLAUDE.md`, `README.md`
 
 Out of scope:
-- `inbox/` — Bilby's email/calendar lore (volatile, lane-separate, per Marc's 2026-05-08 instruction)
+- `inbox/` — the comms legatus's email/calendar lore (volatile, lane-separate, a rule of the original workshop)
 - `archive/` — preserved but inactive
 - `confidential/` — gitignored
 - `worldview-draft/` — per-host graph pilot (gitignored, may not exist on every machine)
@@ -31,7 +34,7 @@ Out of scope:
 
 - **`qwen3.5:122b` only** (per `memory/feedback_ollama_big_guns_only.md`). Both Studios reachable from this host.
 - **16k context max** (per `memory/feedback_ollama_context_under_16k.md`). `chunk.py` enforces a working budget of 10k input tokens / call.
-- **No git commits** during the bootstrap. The script writes files; Marc commits.
+- **No git commits** during the bootstrap. The script writes files; the principal commits.
 
 ## Output
 

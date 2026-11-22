@@ -1,6 +1,6 @@
 # /start-here — workshop setup guide
 
-**Who runs this:** the Orchestrator agent.
+**Who runs this:** the orchestrator legatus, under Claude Code or Codex (launch it with `./claude_orchestrator.sh` or `./codex_orchestrator.sh`).
 
 **When to invoke:** once, at the beginning, when the repo is fresh and you haven't personalized anything. Can also be re-invoked for any setup step you've skipped.
 
@@ -32,15 +32,21 @@ Ask the user the following questions, one at a time:
 
 4. "Do you want a reviewer — an agent that gives you terse, honest feedback on drafts and deliverables? What do you want to call it?"
 
-**Once you have the names:**
+**Once you have the names** (use lowercase folder names, one word, e.g. `ada`): for each legatus, and for any role the user does not want, see the note below.
 
-- Update `CLAUDE.md`: replace `[Orchestrator]`, `[Writer]`, `[Comms]`, `[Reviewer]` with the user's chosen names throughout.
-- Rename the `characters/orchestrator/`, `characters/writer/`, `characters/comms/`, `characters/reviewer/` folders to the chosen names (use `git mv` so the history follows).
-- Update `characters/*/character.md` to use the new name as the heading.
-- Update the skills table in `CLAUDE.md` to use the new names.
-- Commit: `"workshop init: name agents [name1], [name2], [name3], [name4]"`
+- Rename the folder with `git mv characters/orchestrator characters/<name>` (and likewise for `writer/`, `comms/`, `reviewer/`) so the history follows.
+- In `characters/<name>/boot.md`: the heading, "You are …", and the reply prefix (`[ADA]`). Remove the `[!todo]` callout about renaming.
+- In `characters/<name>/character.md`: the heading.
+- In `AGENTS.md` §1: the roster lines and the "Which legatus?" question (`ada · …`), and the name of the default legatus.
+- In `legati/roster.toml`: rename each `[section]`.
+- Every mention of the old role name in the other boot files' hand-off lines, in `characters/README.md` (table and handoff map), in `skills/README.md` (the "Who runs it" column) and in `INDEX.md` (the agents table).
+- Regenerate the root launchers: `bash tools/legati/make-launchers.sh` (it writes `claude_<name>.sh` and `codex_<name>.sh` and archives the old role-named ones).
+- Check: `LEGATUS_DRY_RUN=1 ./claude_<name>.sh` prints the command it would run; `grep -rn "orchestrator\|writer\|comms\|reviewer" AGENTS.md characters legati skills/README.md` finds what is left.
+- Commit through the sync: `bash tools/git/sync.sh commit -m "workshop init: name legati <name1>, <name2>, <name3>, <name4>" -- AGENTS.md INDEX.md characters legati skills/README.md archive claude_*.sh codex_*.sh` (if the repo has no remote yet, add `--no-push`).
 
-Report back to the user: "Your agents are named. You can now address them by name in any session."
+A role the user does not want (often comms): move its folder to `archive/characters/` with `git mv`, drop its roster line and its `roster.toml` section, and run `make-launchers.sh`.
+
+Report back to the user: "Your legati are named. Open one with `./claude_<name>.sh` or `./codex_<name>.sh`, or address it by name in any session."
 
 ---
 
@@ -66,7 +72,7 @@ Draft `principals/[your-name]/writing-profile.md` from the user's answers. Use t
 
 Tell them: "This is a first draft. Every time a session produces something that misses your voice and you can articulate why, add a note to this file. It gets better over time."
 
-Rename `principals/your-name/` to `principals/[their-name]/`. Update references in `CLAUDE.md`.
+Rename `principals/your-name/` to `principals/[their-name]/` with `git mv`. Update the references in `AGENTS.md` §9, in `skills/write-as-user.md` (rename it `write-as-[their-name].md` and update its row in `skills/README.md` and the writer's `boot.md`).
 
 Commit: `"init: first draft writing profile for [name]"`
 
@@ -99,7 +105,7 @@ Commit: `"init: first worldview entries for [name]"`
 
 Ask: "What's the first writing project you want to run through the workshop? Give it a short name."
 
-Create `writting-projects/[project-slug]/BACKLOG.md` with the standard structure:
+Create `writting-projects/[project-slug]/BACKLOG.md` with the standard structure (a directory with a `BACKLOG.md` is what the lane tool calls a project: `python3 tools/legati/lane.py claim writting-projects/[project-slug] "<task>"`):
 
 ```markdown
 # [Project name] — backlog
@@ -138,31 +144,40 @@ The status check should:
 - List the available skills
 - Report any open `> [!todo]` items in key files that still need the user's attention
 
-If there are unresolved `[!todo]` markers in `CLAUDE.md` or the writing profile, surface them now.
+If there are unresolved `[!todo]` markers in `AGENTS.md`, the boot files or the writing profile, surface them now.
 
 ---
 
-## Step 6: Set up tooling (20-60 minutes depending on what you have)
+## Step 6: Set up this machine (20-60 minutes depending on what you have)
 
-The tooling setup is optional but significant. Do what applies to you.
+Do what applies. Record the result as this machine's section of `memory/reference_hosts.md` (the template's example shows the shape; `hostname -s` gives the heading). Every legatus reads that section at boot, so keep it short and true.
 
-**Ollama (local LLM):**
-- Ask: "Do you have an Ollama server running? On localhost or on a LAN machine?"
-- Edit `tools/ollama/call.py` — update the `SERVERS` list with the correct address.
-- Test: `python3 tools/ollama/call.py list`
-- If it lists models, you're done. If not, check that Ollama is running.
+**Git remote (strongly recommended):**
+- Ask: "Is this workshop in a private Git remote (GitHub, GitLab, your own server)? It is what lets several sessions and several machines share one workshop."
+- If not yet: create a **private** repository, then `git remote set-url origin <url>` (or `git remote add origin <url>`) and `bash tools/git/sync.sh push`. Never push a personal workshop to a public repository: it will hold drafts, notes and memories.
 
-**OpenAI API:**
-- Ask: "Do you have an OpenAI API key?"
-- If yes: "Create a `.env` file at the repo root with `OPENAI_API_KEY=sk-...`"
-- Test: `python3 tools/openai/call.py list --filter gpt-4`
+**Claude Code:**
+- Nothing to install in the repo: the tracked `.claude/settings.json` carries the hooks. Claude Code asks once to trust the folder.
+- Test: `./claude_<name>.sh` opens a tab named after that legatus, and the first lines of the session show the `[legati]` briefing.
+
+**Codex (optional, recommended for a second model family):**
+- `codex login` (browser flow), then `bash tools/legati/install-hooks.sh codex`.
+- Start Codex in the repo once and approve the hooks with `/hooks`.
+- Test: `./codex_<name>.sh`; the session should answer with that legatus's prefix. Inside Codex's sandbox the start hook gives a local briefing and asks to run `bash tools/legati/session-start.sh --refresh` through an approval: that is expected.
+- Optional: pin a legatus to Codex in `legati/roster.toml` (a reviewer on a different model family from the writer gives an independent second opinion).
+
+**The `llm` front door (other models):**
+- See `tools/llm/README.md`: `uv tool install llm`, then the plugins you need (`llm install llm-ollama` for a local Ollama server), `llm keys set openai` for a paid key.
+- Test: `llm models` lists what this machine can call; `llm -m <model> 'say hi'` answers; `llm logs -n 1` shows it was logged.
 
 **PDF generation:**
 - Test: `pandoc --version && typst --version`
 - If either is missing: `brew install pandoc typst` (macOS) or see the documentation for your OS.
 - Test the full pipeline: write a short markdown file and run `/md2pdf` on it.
 
-**Google Workspace (for the comms agent, if enabled):**
+**Reference checking (if you write academic work):** `bash tools/refs-check/setup.sh`, and set `REFS_CHECK_CONTACT` to your email (see `tools/refs-check/README.md`).
+
+**Google Workspace (for the comms legatus, if enabled):**
 - See `tools/google/README.md` for the OAuth setup procedure.
 - This requires: a Google account, creating an OAuth app in Google Cloud Console, running the auth flow once. Takes 30 minutes the first time.
 
@@ -186,6 +201,8 @@ Tell the user:
 > - The writing profile and worldview grow best through use, not through filling in templates in advance. Run sessions. Notice what misses. Add the rule.
 > - The good-practices guide at `good-practices/` is worth reading over the next week. Not everything will be relevant yet — read it when you have a question about how something should work.
 > - When you add something to the filesystem, update `INDEX.md` in the same commit. This is the one rule that's genuinely non-optional.
+> - Commit through `bash tools/git/sync.sh commit -m "…" -- <paths>`, so every session and every machine sees the work at once.
+> - Running several legati at once, or from two harnesses or two machines? Read `good-practices/08-many-legati-many-harnesses.md` first.
 
 Commit a final `"workshop setup complete"` commit covering any remaining open items.
 

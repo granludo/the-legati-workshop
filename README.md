@@ -2,13 +2,30 @@
 
 A scaffold for building your own AI-augmented intellectual workspace.
 
-**What this is:** An opinionated starting point for running long-form intellectual work — writing, research, supervision, teaching, thinking — with Claude Code as a collaborator. It comes with working tooling, a memory system, a skill framework, and a set of named AI personas. You name the personas, give them missions, and fill in your own voice and worldview.
+**What this is:** An opinionated starting point for running long-form intellectual work — writing, research, supervision, teaching, thinking — with Claude Code or OpenAI's Codex CLI as a collaborator. It comes with working tooling, a memory system, a skill framework, and a set of named AI personas. You name the personas, give them missions, and fill in your own voice and worldview.
 
 **What this is not:** A blank template. The infrastructure here works on day one. Your job is to personalize it, not to build it from scratch.
 
-**Start here:** Read `skills/start-here.md`, then invoke it: tell Claude Code `"start here"` or `"/start-here"`.
+**Start here:** Read `skills/start-here.md`, then invoke it: tell Claude Code or Codex `"start here"` or `"/start-here"`.
 
 **Read the guide:** `good-practices/` is a guide written by someone who has run a workshop like this for over a year. It covers what works, what doesn't, and why.
+
+---
+
+## Quick start
+
+1. Clone the repo: `git clone https://github.com/granludo/the-legati-workshop.git` and `cd the-legati-workshop`.
+2. Start a session as the orchestrator:
+   - **Claude Code:** `./claude_orchestrator.sh`. Claude Code asks you to trust the folder the first time.
+   - **Codex:** once per machine, `codex login` and then `bash tools/legati/install-hooks.sh codex`. After that, `./codex_orchestrator.sh`. The first time, approve the hooks inside Codex with `/hooks`.
+3. Say `start here`. The onboarding skill names your legati and writes your first profile with you.
+4. Give the workshop a home of its own: create a **private** repository and point `origin` at it (`git remote set-url origin <your-url>`). Your workshop will hold drafts, notes and memories, so it should never live in a public repository. Until you do, it works locally and `tools/git/sync.sh` keeps commits on your machine. The onboarding skill walks you through this (step 6).
+
+---
+
+## Languages
+
+Branch `main` is in English. Branch `castellano` has every markdown file in Spanish (Spain), and branch `català` has them in Catalan: `git switch castellano` or `git switch català`, or clone straight into one: `git clone -b castellano https://github.com/granludo/the-legati-workshop.git`. Code, commands and file names stay in English on every branch, so a command you read in one language works in all three.
 
 ---
 

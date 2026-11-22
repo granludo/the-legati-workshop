@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 /**
- * verify-urls.mjs — Playwright URL-liveness re-check for Grumpy's refs-checks files.
+ * verify-urls.mjs — Playwright URL-liveness re-check for the reviewer's refs-checks files.
  *
  * bibsleuth's plain HTTP client gets a 403 from many publisher / blog hosts that
  * bot-block non-browser user agents (Macmillan, BJET, RIED, theconversation, ...).
- * That leaves a wall of `escalate` verdicts Marc has to clear by hand even though
+ * That leaves a wall of `escalate` verdicts you have to clear by hand even though
  * the URLs are perfectly alive. This loads each not-yet-`alive` reference URL in a
  * real headless Chromium, records the final HTTP status + page <title>, computes a
  * title-match against the cited title, and writes the result back into the
  * `*-refs-checks.md` source-of-truth file — upgrading `escalate` → `confirmed`
  * (alive + title match) or `title-mismatch` / `unreachable` where warranted.
  *
- * It only ever TOUCHES the `**URL check**` sub-block, the `**Grumpy verdict:**`
+ * It only ever TOUCHES the `**URL check**` sub-block, the `**Reviewer verdict:**`
  * bullet, the `## [key] — emoji verdict` header, and the roll-up section. It never
  * touches the manual claim/assessment annotations.
  *
@@ -213,7 +213,7 @@ for (const b of blocks) {
     /^## \[([^\]]+)\]\s*—\s*\S+\s*`[^`]+`.*$/m,
     `## [$1] — ${VERDICT_EMOJI[r.newVerdict]} \`${r.newVerdict}\``);
 
-  // 2) Grumpy verdict bullet
+  // 2) Reviewer verdict bullet
   const verdictNote = r.newVerdict === 'confirmed'
     ? `URL alive (HTTP ${r.status})` + (r.tm ? ` + page title ${r.tm.match ? 'matches' : 'differs from'} cited title` : ' (no cited title on file to match)')
     : r.newVerdict === 'title-mismatch'
@@ -222,8 +222,8 @@ for (const b of blocks) {
     ? r.notes
     : r.notes;
   b.text = b.text.replace(
-    /^- \*\*Grumpy verdict:\*\* .*$/m,
-    `- **Grumpy verdict:** \`${r.newVerdict}\` — ${verdictNote} _(Playwright re-check ${stamp})_`);
+    /^- \*\*Reviewer verdict:\*\* .*$/m,
+    `- **Reviewer verdict:** \`${r.newVerdict}\` — ${verdictNote} _(Playwright re-check ${stamp})_`);
 
   // 3) URL check sub-block (from "**URL check**" up to the next "\n\n**Field:")
   const lines = [`**URL check** — \`${r.newStatus}\`${r.status ? ` (HTTP ${r.status})` : ''}`,
@@ -238,7 +238,7 @@ for (const b of blocks) {
 // --------------------------------------------------------------- regen roll-up
 const finalVerdicts = blocks.map(b => {
   const h = b.text.match(/^## \[[^\]]+\]\s*—\s*\S+\s*`([^`]+)`/m);
-  const note = b.text.match(/^- \*\*Grumpy verdict:\*\* `[^`]+` — (.*)$/m);
+  const note = b.text.match(/^- \*\*Reviewer verdict:\*\* `[^`]+` — (.*)$/m);
   const key = b.text.match(/^## \[([^\]]+)\]/m)[1];
   return { key, verdict: h ? h[1] : 'escalate', note: note ? note[1].replace(/\s*_\(Playwright.*$/, '') : '' };
 });
@@ -250,7 +250,7 @@ const total = finalVerdicts.length;
 const listOf = (v) => finalVerdicts.filter(x => x.verdict === v)
   .map(x => `- **\`[${x.key}]\`** — ${x.note}`).join('\n') || '_(none)_';
 
-const rollup = `## Submission gate — Grumpy verdict roll-up
+const rollup = `## Submission gate — Reviewer verdict roll-up
 
 **${confirmed} / ${total} references confirmed.** Per rule §14: a paper does not ship until every reference is \`confirmed\`. _(URL-liveness last re-checked via Playwright: ${stamp})_
 
@@ -259,7 +259,7 @@ const rollup = `## Submission gate — Grumpy verdict roll-up
 | ✅ \`confirmed\`    | ${String(confirmed).padStart(3)} | bibsleuth verified/likely **or** URL alive + title match |
 | ⚠️ \`title-mismatch\` | ${String(mismatch).padStart(3)} | URL exists but page title doesn't match the cited title — possible chimeric ref |
 | 🚫 \`unreachable\`  | ${String(unreach).padStart(3)} | URL returns 4xx/5xx/timeout — link rot or fabrication |
-| ❓ \`escalate\`     | ${String(escalate).padStart(3)} | no positive evidence — **Marc must verify manually** |
+| ❓ \`escalate\`     | ${String(escalate).padStart(3)} | no positive evidence — **verify manually** |
 
 ### ⚠️ Title-mismatch — chimeric smell, inspect each one
 
@@ -269,7 +269,7 @@ ${listOf('title-mismatch')}
 
 ${listOf('unreachable')}
 
-### ❓ Refs Marc must confirm manually
+### ❓ Refs to confirm manually
 
 Bibsleuth can't reach these, and a real browser couldn't either (hard bot-block) or there's no URL/DOI to check. Confirm each one exists (publisher page, ISBN, archive snapshot, etc.) and either upgrade the bib entry with a verifiable URL/DOI, or remove the citation.
 
@@ -279,7 +279,7 @@ ${listOf('escalate')}
 // replace the existing roll-up section in the preamble (from its heading to the
 // trailing "---" that precedes the first ref block)
 let newPreamble = preamble.replace(
-  /## Submission gate — Grumpy verdict roll-up[\s\S]*?(?=\n---\n)/,
+  /## Submission gate — Reviewer verdict roll-up[\s\S]*?(?=\n---\n)/,
   rollup.trimEnd() + '\n');
 
 const out = newPreamble + blocks.map(b => b.text).join('');

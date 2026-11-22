@@ -2,7 +2,7 @@
 
 Helper for OpenAI's API — parallel to `tools/ollama/call.py`. Same CLI shape, different backend.
 
-Use this when a task needs **frontier-quality reasoning** that local Ollama can't reach AND the call is worth real money. For routine/voluminous work stay on Ollama. For Marc's voice and editorial dialogue stay on Claude (current conversation).
+Use this when a task needs **frontier-quality reasoning** that local Ollama can't reach AND the call is worth real money. For routine/voluminous work stay on Ollama. For the principal's voice and editorial dialogue stay on Claude (current conversation).
 
 ## Quick use
 
@@ -60,24 +60,24 @@ This is the third tier in the compute routing rules. The first two are documente
 - **Frontier-quality second opinion / review.** Take a chapter draft, run it through GPT-5.4 or o3-pro with a critical-editor system prompt, get a structured critique. Pair with the writing profile + density rules for calibration.
 - **Deep reasoning tasks** where local Ollama models visibly hit a ceiling and getting the right answer matters. Reasoning models (o3-pro, o4-mini-deep-research) for problems with verifiable structure.
 - **Complex multilingual nuance** where the local 122B Qwen falls short on specific Catalan/Spanish idioms or cultural register.
-- **Anything where Marc said "use the highest performance model".**
+- **Anything where the principal said "use the highest performance model".**
 
 **Stay on Ollama (`tools/ollama/call.py`) for:**
 - Routine translation drafts
 - Bulk summarization of long source material
 - Classification, tagging, transcription cleanup
-- First-pass outlines Marc will rewrite
+- First-pass outlines the principal will rewrite
 - Anything mechanical and voluminous where the output is raw material
 
 **Stay on Claude Opus (current conversation) for:**
-- Anything that needs to BE in Marc's voice (final drafts, chapter rewrites)
-- Editorial dialogue with Marc
+- Anything that needs to BE in the principal's voice (final drafts, chapter rewrites)
+- Editorial dialogue with the principal
 - Structural decisions and tradeoffs
-- Anything load-bearing where getting it wrong would silently damage a document Marc trusts
+- Anything load-bearing where getting it wrong would silently damage a document the principal trusts
 
 **Rule of thumb:**
 - *mechanical and voluminous* → Ollama (free, local)
-- *interpretive and load-bearing in Marc's voice* → Claude (current session)
+- *interpretive and load-bearing in the principal's voice* → Claude (current session)
 - *frontier reasoning, second opinion, deep critique* → OpenAI (paid)
 
 ## Cost
@@ -164,14 +164,14 @@ Full skill for when-to-use and prompt patterns: [`../../skills/image-gen.md`](..
 
 **Exit code 1** — empty prompt or other usage error.
 
-**Exit code 2** — API/network failure. The helper prints the API's error message (truncated to 1000 chars) and exits. Do not silently retry. **Tell Marc** when this happens, the same way the Ollama helper's fallback protocol works.
+**Exit code 2** — API/network failure. The helper prints the API's error message (truncated to 1000 chars) and exits. Do not silently retry. **Tell the principal** when this happens, the same way the Ollama helper's fallback protocol works.
 
 The most common causes:
 - Missing or invalid API key (`401 unauthorized`) — check `.env`
 - Model name typo (`404 model not found`) — run `list` to see what exists
-- Rate limit (`429`) — retry once with backoff, then tell Marc
+- Rate limit (`429`) — retry once with backoff, then tell the principal
 - Context too long (`400`) — split the input or use a model with bigger context
 
 ## Memory pointer
 
-See [`../../memory/reference_openai_api.md`](../../memory/reference_openai_api.md) for the canonical infrastructure reference, kept in sync with any model lineup changes Marc reports.
+See [`../../memory/reference_openai_api.md`](../../memory/reference_openai_api.md) for the canonical infrastructure reference, kept in sync with any model lineup changes the principal reports.

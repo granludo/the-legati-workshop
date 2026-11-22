@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 check_refs.py — orchestrate bibsleuth verification + abstract fetch, emit a
-markdown source-of-truth file that Grumpy uses to ground reference reviews.
+markdown source-of-truth file that the reviewer uses to ground reference reviews.
 
 Usage:
     python3 tools/refs-check/check_refs.py PAPER.bib [--output OUT.md]
@@ -15,21 +15,22 @@ Behaviour:
     3) Crossref (JATS XML, stripped here)
 - Emits / updates a markdown file with one section per reference:
     citation · bibsleuth verdict · score · DOI · abstract · placeholders for
-    Grumpy's manual assessment (cited-at, claim, supported-or-not).
+    the reviewer's manual assessment (cited-at, claim, supported-or-not).
 
 Idempotent: if the output file already exists, ref entries already present
-are preserved (Grumpy's manual fields are not overwritten); only new
+are preserved (the reviewer's manual fields are not overwritten); only new
 references in the .bib get appended.
 
-Marc's standing rule (2026-05-28): the output file is the source of truth.
-Subsequent Grumpy reviews of the same document read this file rather than
-re-running bibsleuth. See skills/grumpy-check-refs.md.
+Standing rule (2026-05-28): the output file is the source of truth.
+Subsequent the reviewer reviews of the same document read this file rather than
+re-running bibsleuth. See characters/reviewer/boot.md.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -41,7 +42,8 @@ from urllib.parse import quote
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 
-USER_AGENT = "ludo-writting-workshop/refs-check (mailto:marc.alier@upc.edu)"
+# Polite APIs (OpenAlex, Crossref) ask for a contact address; set REFS_CHECK_CONTACT to your own.
+USER_AGENT = "legati-workshop/refs-check" + (f" (mailto:{os.environ['REFS_CHECK_CONTACT']})" if os.environ.get("REFS_CHECK_CONTACT") else "")
 # A separate, browser-like UA for URL-liveness checks (publishers/blog hosts
 # often 403 the polite identifier above; a Safari UA passes most filters).
 BROWSER_UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15"
@@ -113,7 +115,7 @@ def check_url_liveness(url: str, cited_title: str | None = None) -> dict:
 
     "blocked" means a 401/403/429 — page exists but our request was refused.
     Distinguishable from "dead" (404/410); blocked URLs are NOT proof of
-    fabrication and Grumpy should escalate them rather than flag them.
+    fabrication and the reviewer should escalate them rather than flag them.
     """
     if not url:
         return {"status": "no-url", "http_code": None, "final_url": None,
@@ -262,17 +264,17 @@ def compare_titles(cited: str, fetched: str) -> str:
     return "mismatch"
 
 
-def grumpy_verdict(bibsleuth_verdict: str, url_check: dict,
+def reviewer_verdict(bibsleuth_verdict: str, url_check: dict,
                    has_doi: bool, has_url: bool, has_candidates: bool) -> tuple[str, str]:
     """
-    Combine bibsleuth verdict + URL liveness into the final Grumpy verdict.
+    Combine bibsleuth verdict + URL liveness into the final Reviewer verdict.
     Returns (verdict, rationale).
 
     Verdicts:
       confirmed     — strong evidence the reference exists and matches the citation
       unreachable   — URL returns 4xx/5xx/timeout (could be link rot, could be fabrication)
       title-mismatch — URL alive but page title differs from cited title (chimeric smell)
-      escalate      — no positive evidence; Marc must verify manually
+      escalate      — no positive evidence; verify manually
     """
     # Academic-track first: bibsleuth verified/likely with provider hits → confirmed.
     # The academic-DB triangulation is the strong signal here; the URL check is
@@ -298,12 +300,12 @@ def grumpy_verdict(bibsleuth_verdict: str, url_check: dict,
         if status == "dead":
             return "unreachable", f"URL returns {url_check.get('http_code')} ({url_check.get('notes')})"
         if status == "blocked":
-            return "escalate", f"URL exists but request blocked (HTTP {url_check.get('http_code')}); Marc must verify manually"
+            return "escalate", f"URL exists but request blocked (HTTP {url_check.get('http_code')}); verify manually"
         if status in ("timeout", "unreachable"):
             return "unreachable", url_check.get("notes", "URL could not be reached")
 
     # No URL, no DOI, no academic-DB candidates → escalate
-    return "escalate", "no URL, no DOI hit, no academic-DB candidates — Marc must verify this reference manually"
+    return "escalate", "no URL, no DOI hit, no academic-DB candidates — verify this reference manually"
 
 
 def run_bibsleuth(bib_path: Path) -> dict:
@@ -412,7 +414,7 @@ def fmt_authors(authors: list[str]) -> str:
 
 def fmt_ref_block(result: dict, bib_entries: dict[str, dict]) -> tuple[str, str]:
     """
-    Render one Markdown section. Returns (markdown_block, grumpy_verdict).
+    Render one Markdown section. Returns (markdown_block, reviewer_verdict).
 
     bib_entries: dict from parse_bib_urls_and_titles — gives us the
     URL + title from the .bib directly, which bibsleuth does not surface.
@@ -456,8 +458,8 @@ def fmt_ref_block(result: dict, bib_entries: dict[str, dict]) -> tuple[str, str]
         url_check = check_url_liveness(url_to_check, cited_title)
         time.sleep(0.3)  # be polite to publishers
 
-    # Compute the Grumpy verdict
-    g_verdict, g_rationale = grumpy_verdict(
+    # Compute the Reviewer verdict
+    g_verdict, g_rationale = reviewer_verdict(
         bibsleuth_verdict=bib_verdict,
         url_check=url_check,
         has_doi=bool(doi),
@@ -476,7 +478,7 @@ def fmt_ref_block(result: dict, bib_entries: dict[str, dict]) -> tuple[str, str]
     lines = [f"## [{key}] — {verdict_emoji} `{g_verdict}`", ""]
     lines.append(f"**Citation:** {citation_line}")
     lines.append("")
-    lines.append(f"- **Grumpy verdict:** `{g_verdict}` — {g_rationale}")
+    lines.append(f"- **Reviewer verdict:** `{g_verdict}` — {g_rationale}")
     lines.append(f"- **Bibsleuth:** `{bib_verdict}`" + (f" (score {score:.2f})" if isinstance(score, (int, float)) else ""))
     lines.append(f"- **Entry type:** {entry_type}")
     if doi:
@@ -515,12 +517,12 @@ def fmt_ref_block(result: dict, bib_entries: dict[str, dict]) -> tuple[str, str]
         lines.append("**Abstract:** *not retrievable from semantic_scholar / openalex / crossref.*")
         lines.append("")
 
-    # Placeholders for Grumpy's manual claim-checking pass
-    lines.append("**Cited in paper at:** _(Grumpy: fill in section / page)_")
+    # Placeholders for the reviewer's manual claim-checking pass
+    lines.append("**Cited in paper at:** _(Reviewer: fill in section / page)_")
     lines.append("")
-    lines.append("**Claim made:** _(Grumpy: what the reviewed paper says about this reference)_")
+    lines.append("**Claim made:** _(Reviewer: what the reviewed paper says about this reference)_")
     lines.append("")
-    lines.append("**Assessment:** _(Grumpy: supported / partially supported / unsupported / claim is generic / no full-text access)_")
+    lines.append("**Assessment:** _(Reviewer: supported / partially supported / unsupported / claim is generic / no full-text access)_")
     lines.append("")
     lines.append("**Flags:** _(manual: anything else)_")
     lines.append("")
@@ -544,7 +546,7 @@ def fmt_header(bib_path: Path, report: dict) -> str:
         f"**Summary:** {summary_line}",
         "",
         "> [!info]",
-        "> This file is the **source of truth** for reference validation on this document. Subsequent reviews read this file rather than re-running bibsleuth. Grumpy fills in *Cited in paper at*, *Claim made*, and *Assessment* per reference after comparing the citing paper's claim to the cited paper's abstract.",
+        "> This file is the **source of truth** for reference validation on this document. Subsequent reviews read this file rather than re-running bibsleuth. The reviewer fills in *Cited in paper at*, *Claim made*, and *Assessment* per reference after comparing the citing paper's claim to the cited paper's abstract.",
         "",
         "---",
         "",
@@ -559,7 +561,7 @@ def fmt_escalation_summary(verdict_counts: dict[str, int],
     total = sum(verdict_counts.values())
     confirmed = verdict_counts.get("confirmed", 0)
     lines = [
-        "## Submission gate — Grumpy verdict roll-up",
+        "## Submission gate — Reviewer verdict roll-up",
         "",
         f"**{confirmed} / {total} references confirmed.** Per rule §14: a paper does not ship until every reference is `confirmed`.",
         "",
@@ -568,7 +570,7 @@ def fmt_escalation_summary(verdict_counts: dict[str, int],
         f"| ✅ `confirmed`    | {verdict_counts.get('confirmed', 0):>3} | bibsleuth verified/likely **or** URL alive + title match |",
         f"| ⚠️ `title-mismatch` | {verdict_counts.get('title-mismatch', 0):>3} | URL exists but page title doesn't match the cited title — possible chimeric ref |",
         f"| 🚫 `unreachable`  | {verdict_counts.get('unreachable', 0):>3} | URL returns 4xx/5xx/timeout — link rot or fabrication |",
-        f"| ❓ `escalate`     | {verdict_counts.get('escalate', 0):>3} | no positive evidence — **Marc must verify manually** |",
+        f"| ❓ `escalate`     | {verdict_counts.get('escalate', 0):>3} | no positive evidence — **verify manually** |",
         "",
     ]
 
@@ -587,7 +589,7 @@ def fmt_escalation_summary(verdict_counts: dict[str, int],
         lines.append("")
 
     if escalations:
-        lines.append("### ❓ Refs Marc must confirm manually")
+        lines.append("### ❓ Refs to confirm manually")
         lines.append("")
         lines.append("Bibsleuth can't reach these, and there's no URL/DOI to mechanically check. Confirm each one exists (publisher page, ISBN, archive snapshot, etc.) and either upgrade the bib entry with a verifiable URL/DOI, or remove the citation.")
         lines.append("")
@@ -644,7 +646,7 @@ def main() -> int:
         blocks.append(block)
         verdict_counts[g_verdict] = verdict_counts.get(g_verdict, 0) + 1
         # Extract the per-ref rationale from the first non-blank line of the block
-        rationale_match = re.search(r"- \*\*Grumpy verdict:\*\* `[^`]+` — (.+)", block)
+        rationale_match = re.search(r"- \*\*Reviewer verdict:\*\* `[^`]+` — (.+)", block)
         rationale = rationale_match.group(1).strip() if rationale_match else ""
         if g_verdict == "escalate":
             escalations.append((r["key"], rationale))
@@ -671,7 +673,7 @@ def main() -> int:
     print(f"\n→ wrote {out_path}", file=sys.stderr)
     print(f"→ verdict tally: {dict(verdict_counts)}", file=sys.stderr)
     if escalations:
-        print(f"→ {len(escalations)} ref(s) need Marc's manual confirmation — see top of file", file=sys.stderr)
+        print(f"→ {len(escalations)} ref(s) need manual confirmation — see top of file", file=sys.stderr)
     return 0
 
 

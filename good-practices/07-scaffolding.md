@@ -2,15 +2,15 @@
 
 The workshop repo is a scaffold for a long-running collaboration. Understanding what that means structurally is worth the ten minutes it takes to read this.
 
-## CLAUDE.md is the contract
+## AGENTS.md is the contract
 
-`CLAUDE.md` is the first thing any agent reads at session start. It's not documentation — it's operating instructions. It defines:
+`AGENTS.md` is the first thing any agent reads at session start, under any harness: Codex reads it natively, and Claude Code loads it through the one-line `@AGENTS.md` import at the top of `CLAUDE.md`. It's not documentation — it's operating instructions. It defines, or points to:
 - Who the agents are and what their lanes are
 - What skills are available and how to invoke them
 - What compute tiers exist and when to use them
 - What the non-negotiable rules are
 
-When you change a behavior — add an agent, deprecate a skill, change a routing rule — `CLAUDE.md` is where the change lives. Not in a memory file, not in a comment in a script. The contract.
+When you change a behavior — add an agent, deprecate a skill, change a routing rule — `AGENTS.md` is where the change lives. Not in a memory file, not in a comment in a script. The contract. If the change only concerns one harness, it goes in that harness's appendix (Claude Code's is in `CLAUDE.md`, Codex's at the end of `AGENTS.md`).
 
 ## The portability discipline
 
@@ -36,9 +36,9 @@ The reason is partly practical — you'll want that draft back more often than y
 
 ## Multiple sessions, same repo
 
-When you're deep in a project, it's common to run multiple Claude Code sessions simultaneously — one for writing, one for engineering, one handling background tooling. This is fine, but it requires coordination. The coordination mechanism is the per-project `BACKLOG.md`. Before any session starts work in a project folder, it checks the BACKLOG for what's in flight. Before it commits, it updates the BACKLOG.
+When you're deep in a project, it's common to run multiple sessions simultaneously, under Claude Code, Codex or both — one for writing, one for engineering, one handling background tooling. This is fine, but it requires coordination. The coordination mechanism is the per-project `BACKLOG.md`. Before any session starts work in a project folder, it checks the BACKLOG for what's in flight. Before it commits, it updates the BACKLOG.
 
-The corollary: don't run two sessions that regenerate the same dashboard or shared file simultaneously. Race conditions in a plain-text repo look like "File has been modified since read" errors and partial commits. The BACKLOG convention prevents most of them.
+The corollary: don't run two sessions that regenerate the same dashboard or shared file simultaneously. Race conditions in a plain-text repo look like "File has been modified since read" errors and partial commits. The BACKLOG convention prevents most of them. Chapter 8 covers the rest: lanes, hand-offs, and the commit discipline that keeps several legati working across machines and harnesses.
 
 ## When to add a skill
 

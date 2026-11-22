@@ -1,15 +1,15 @@
 ---
 name: add-source
-description: Intake a new source (YouTube video, PDF, audio file, web article, text) into the ludo-writting-workshop sources/ tree for a specific writing project or shared use. Handles download, audio extraction, transcription, placement, README, and INDEX.md registration.
+description: Intake a new source (YouTube video, PDF, audio file, web article, text) into the workshop's sources/ tree for a specific writing project or shared use. Handles download, audio extraction, transcription, placement, README, and INDEX.md registration.
 ---
 
 # /add-source
 
-Use this when Marc wants to bring new source material into the repo. The skill handles the full intake pipeline: acquire → derive → place → document → register. It is **conservative by design** — it lands the source and offers to link it into project docs, but does not auto-edit project wikis or memory. Integration is a separate step Marc approves.
+Use this when the principal wants to bring new source material into the repo. The skill handles the full intake pipeline: acquire → derive → place → document → register. It is **conservative by design** — it lands the source and offers to link it into project docs, but does not auto-edit project wikis or memory. Integration is a separate step the principal approves.
 
 ## When to invoke
 
-Marc says things like:
+The principal says things like:
 - "add this source: <URL>"
 - "/add-source <URL or path>"
 - "I found this paper, can you put it in the right place"
@@ -24,13 +24,13 @@ Accept any of the following, and auto-detect the type:
 - **Local audio or video file** → same, with derived audio/transcription steps.
 - **Pasted text / markdown** → write directly to a `.md` file under the right folder.
 
-If the input is ambiguous (e.g. a bare filename), ask Marc before proceeding.
+If the input is ambiguous (e.g. a bare filename), ask the principal before proceeding.
 
 ## Pipeline (follow in order)
 
 ### 1. Identify scope
 
-Ask Marc (or infer from context) which scope the source belongs to:
+Ask the principal (or infer from context) which scope the source belongs to:
 - **`sources/shared/<type>/`** if it feeds multiple projects or is of general interest.
 - **`sources/<project>/`** if it only makes sense for one specific writing project. Valid project slugs today: `ia-i-educacio`, `palantir-paper`, `aprenentatge-personalitzat`, `aac-book`.
 
@@ -84,9 +84,9 @@ subprocess.run([ffmpeg, '-y', '-i', 'input.webm', '-vn',
 ```bash
 uv run --project tools/transcribe tools/transcribe/transcribe.py --lang ca <audio.mp3>
 ```
-(Substitute `--lang es` or `--lang en` as appropriate.) This writes `.srt` and `.txt` next to the input. Language is detected from context — if Marc doesn't specify, ask.
+(Substitute `--lang es` or `--lang en` as appropriate.) This writes `.srt` and `.txt` next to the input. Language is detected from context — if the principal doesn't specify, ask.
 
-**Mandatory LLM review pass on the transcript.** Whisper produces blatant blunders — proper nouns, acronyms, code-switch, in-group vocab — at a high enough rate that the raw `.txt` must not be treated as citation-ready. Keep the raw file as the audit trail and produce a `<slug>.reviewed.txt` via an LLM pass. Model tier follows the writing rules: CA content → Claude (this conversation) or `tools/openai/call.py` with gpt-5; ES/EN content → DS4 on tom-nook (see `memory/reference_ds4_server.md`) for mechanical proper-noun correction, frontier review when the content is load-bearing. The reviewed file should flag what was changed (head section for short transcripts, inline `==highlight==` for long ones) so Marc can spot-check. Full rule and rationale: [../memory/feedback_whisper_transcripts_need_llm_review.md](../memory/feedback_whisper_transcripts_need_llm_review.md).
+**Mandatory LLM review pass on the transcript.** Whisper produces blatant blunders — proper nouns, acronyms, code-switch, in-group vocab — at a high enough rate that the raw `.txt` must not be treated as citation-ready. Keep the raw file as the audit trail and produce a `<slug>.reviewed.txt` via an LLM pass. Model tier follows the compute rules (`AGENTS.md` §6): the session model, or a frontier model through `llm`, for any language a local model writes badly; a large local model through `llm` is fine for mechanical proper-noun correction in languages it handles well; frontier review when the content is load-bearing. The reviewed file should flag what was changed (head section for short transcripts, inline `==highlight==` for long ones) so the principal can spot-check.
 
 **PDF:** keep as-is. If text extraction is useful, mention it as an *optional* follow-up; don't do it by default.
 
@@ -124,7 +124,7 @@ Add an entry under the right section (either `shared/<type>/` or `<project>/`). 
 
 **If a section for this scope doesn't exist yet**, create it in alphabetical order alongside the existing ones, and use the same heading style.
 
-**Deduplication check:** before landing the source, grep `sources/INDEX.md` for the origin URL, title, or filename. If there's a match, stop and tell Marc rather than ingesting twice.
+**Deduplication check:** before landing the source, grep `sources/INDEX.md` for the origin URL, title, or filename. If there's a match, stop and tell the principal rather than ingesting twice.
 
 ### 7. Offer integration (do not auto-apply)
 
@@ -133,7 +133,7 @@ Once the source is in place and indexed, **offer** to:
 - Update the project's `BACKLOG.md` with a follow-up task like "read X and decide whether it feeds chapter Y".
 - Update the project's memory with a new fact if the source changes the state of the world.
 
-**Wait for confirmation** before doing any of those. The reason: the domain-separation feedback in `memory/feedback_domain_separation.md` and the v3-overboard feedback in `memory/feedback_v3_overboard.md` warn against forcing references across project domains. Let Marc decide which project(s) actually want the pointer.
+**Wait for confirmation** before doing any of those. The reason: the domain-separation feedback in `memory/feedback_domain_separation.md` and the v3-overboard feedback in `memory/feedback_v3_overboard.md` warn against forcing references across project domains. Let the principal decide which project(s) actually want the pointer.
 
 ### 7.5 Offer wiki integration (also gated, also conservative)
 
@@ -150,7 +150,7 @@ The dry-run reports:
 - new entries that would be scaffolded (with their proposed slug),
 - entries already linked from the source (idempotent — already-ingested sources skip cleanly).
 
-Surface the dry-run output to Marc. If Marc approves, apply:
+Surface the dry-run output to the principal. If the principal approves, apply:
 
 ```bash
 python3 tools/wiki/ingest.py --apply <source-rel-path>
@@ -163,13 +163,13 @@ python3 tools/wiki/build_cooccurrence.py
 python3 tools/wiki/render_indexes.py
 ```
 
-If Marc skips, that's fine — the source still lives under `sources/` and can be ingested later in a batch via `tools/wiki/bootstrap.py --resume`.
+If the principal skips, that's fine — the source still lives under `sources/` and can be ingested later in a batch via `tools/wiki/bootstrap.py --resume`.
 
-**Why gated, not auto:** the extractor sometimes proposes new person/topic slugs that are variants of existing entries (e.g. `juan-antonio-pereira` when `juanan-pereira` already exists). Marc should eyeball the new-scaffold list before it lands so duplicates don't accrete. The same caution applies to topics — the extractor occasionally tags broader generic categories that the wiki has already declined to canonicalize.
+**Why gated, not auto:** the extractor sometimes proposes new person/topic slugs that are variants of existing entries (e.g. `juan-antonio-pereira` when `juanan-pereira` already exists). The principal should eyeball the new-scaffold list before it lands so duplicates don't accrete. The same caution applies to topics — the extractor occasionally tags broader generic categories that the wiki has already declined to canonicalize.
 
 ### 8. Report
 
-End with a short report to Marc:
+End with a short report to the principal:
 - What was added (scope + path).
 - What was derived (audio, transcription, etc.).
 - What was skipped (if anything, and why).
@@ -180,7 +180,7 @@ End with a short report to Marc:
 - **Does not** edit project drafts, book wikis, or memory files without explicit confirmation.
 - **Does not** move or rename files that are already in `sources/`. If something needs to move between scopes, that's a separate task.
 - **Does not** delete the original after successful derivation. The archive policy is "preserve everything"; the original webm/mp4 stays alongside the derived mp3/txt.
-- **Does not** guess at Marc's voice. If you summarize a source in its README, keep it factual and under 100 words. Summaries with opinions or framings belong in the project documents, where Marc can rewrite them.
+- **Does not** guess at the principal's voice. If you summarize a source in its README, keep it factual and under 100 words. Summaries with opinions or framings belong in the project documents, where the principal can rewrite them.
 
 ## Related
 

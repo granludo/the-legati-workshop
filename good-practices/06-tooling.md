@@ -6,7 +6,7 @@ The workshop ships with working tools. Here is how to think about when to use wh
 
 **Local (Ollama)** — models running on your own hardware. Free to call once set up, private (your data doesn't leave your machine), slow compared to cloud APIs. Best for bulk mechanical work: translation between languages where local models are adequate, summarization of long documents, classification and tagging, transcript cleanup. The rule for local models: bigger is better, almost without exception. A 125B model running slowly is more useful than a 27B model running fast, because the larger model makes fewer precision errors. Don't use smaller local models to save time — the time you save generating the draft, you spend correcting the errors.
 
-**Session AI (Claude, in this conversation)** — the model you're talking to right now. Best for load-bearing intellectual work: anything that requires your voice, anything that requires synthesis across sources, anything that requires calibrated judgment about a complex question. Don't route mechanical work here — it's slower for bulk tasks and costs more in attention than it's worth.
+**Session AI (the model running your Claude Code or Codex session)** — the model you're talking to right now. Best for load-bearing intellectual work: anything that requires your voice, anything that requires synthesis across sources, anything that requires calibrated judgment about a complex question. Don't route mechanical work here — it's slower for bulk tasks and costs more in attention than it's worth.
 
 **Paid API (OpenAI, or whichever frontier provider you have access to)** — second opinion, deep review, tasks where neither local nor session AI can reach the quality bar. Use deliberately. Every call costs real money; log it. Don't default here because it's convenient.
 
@@ -19,13 +19,17 @@ Before sending any batch task to a model, ask:
 
 The most common mistake is routing everything to the session AI because it's convenient. This is the vending-machine pattern: you get answers, but you're not building anything. For mechanical tasks, local models running a template are both cheaper and faster.
 
-## Ollama — the local fleet
+## One front door: the `llm` command
 
-The `tools/ollama/call.py` helper handles model routing across your local Ollama instances. Before using it, edit the `SERVERS` list at the top of the file to point at your machine. If Ollama is running locally, `localhost:11434` is the default. If you have a dedicated server on your LAN (a Mac Studio running Ollama, a Linux box with a GPU), add its address there.
+Every model call outside your session goes through one command, Simon Willison's `llm` (https://llm.datasette.io). Local Ollama models and paid APIs take the same syntax, and `llm` logs every prompt and response to a SQLite database on your machine, so you can see later what you sent, to which model, and what came back (`llm logs`). Setup is in `tools/llm/README.md`.
+
+For local models, install Ollama and the `llm-ollama` plugin (`llm install llm-ollama`). If Ollama is running locally, `localhost:11434` is the default, and your local models show up in `llm` next to the paid ones.
+
+The older helpers, `tools/ollama/call.py` and `tools/openai/call.py`, stay only for the scripts that already use them. Don't call them by hand or write new code against them: a call that goes around `llm` goes around the log.
 
 Always query the model list before writing a task that depends on a specific model:
 ```bash
-python3 tools/ollama/call.py list
+llm models
 ```
 
 Don't hardcode model names in scripts — Marc pulls new models regularly, and a script that references `qwen3.5:27b` may be running a worse model than `qwen3.5:122b` without knowing it.

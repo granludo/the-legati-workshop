@@ -9,7 +9,7 @@
 > 1. Write `principals/[your-name]/writing-profile.md` — the document that teaches agents your voice.
 > 2. Rename this file to `write-as-[your-name].md` (e.g., `write-as-alice.md`).
 > 3. Update the path in step 1 below to match your file.
-> 4. Update the skill table in `CLAUDE.md` to point at the renamed file.
+> 4. Update the skill table in `skills/README.md` and the writer's `boot.md` to point at the renamed file.
 
 ---
 

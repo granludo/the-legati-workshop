@@ -9,7 +9,7 @@ Generate an image via OpenAI's `gpt-image-*` family using `tools/openai/call.py 
 ## When NOT to use this skill
 
 - **Tables, 2×2 grids, bullet lists, simple shapes** — build these as native PowerPoint elements (python-pptx, Keynote, Excalidraw). They stay editable that way. The unex Día 4 deck (`writting-projects/BSC-AGENTS-COURSE/sources-unex-2026/build_slides_2026-05-13.py`) is the in-repo precedent: simple diagrams native, conceptual diagrams as pre-rendered PNGs.
-- **Anything Marc needs to tweak after the fact** — a generated image is a binary; a typo cannot be fixed without regenerating. Native shapes survive editing; images are frozen.
+- **Anything the principal needs to tweak after the fact** — a generated image is a binary; a typo cannot be fixed without regenerating. Native shapes survive editing; images are frozen.
 - **Photographs of real people, real places, real products** — use a real photo, not a generation.
 - **Anything where the ~$0.16 per high-quality image does not buy enough quality over a 5-minute native composition.**
 
@@ -79,7 +79,7 @@ Token usage is logged to stderr after every call:
 [wrote 1834 KB to /path/to/image.png]
 ```
 
-Tell Marc the cost in your summary (a high-quality 1536×1024 image is roughly **$0.15–$0.20** as of early 2026).
+Tell the principal the cost in your summary (a high-quality 1536×1024 image is roughly **$0.15–$0.20** as of early 2026).
 
 ## Prompt patterns that work
 
@@ -93,11 +93,11 @@ Tell Marc the cost in your summary (a high-quality 1536×1024 image is roughly *
 
 - **`404 model not found`** — `gpt-image-2` has been renamed / deprecated. Re-run `list --filter image` and pick the current id.
 - **Garbled text in the output** — common with small fonts / long titles. Increase size, shorten the text-burned-in portion, or split: keep editable text native and put only the genuinely-illustrative portion in the image.
-- **`429` rate limit** — retry once with backoff, then tell Marc.
+- **`429` rate limit** — retry once with backoff, then tell the principal.
 
 ## Cross-references
 
 - Helper (the `image` subcommand): [`tools/openai/call.py`](../tools/openai/call.py)
 - Helper README: [`tools/openai/README.md`](../tools/openai/README.md)
 - Infrastructure reference: [`memory/reference_openai_api.md`](../memory/reference_openai_api.md)
-- Compute routing tiers in [`CLAUDE.md`](../CLAUDE.md)
+- Compute routing in [`AGENTS.md`](../AGENTS.md) §6 and [`tools/llm/README.md`](../tools/llm/README.md)
